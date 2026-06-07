@@ -161,12 +161,8 @@ function getFormattedPrefix(trigger = 'general') {
   state[activeTrigger].push(selected);
   saveState(state);
 
-  // Format the prefix. If it already contains "Bill Bot", return it cleaned up.
-  // Otherwise, wrap it in "Bill Bot (xxxx)"
-  let formatted = selected;
-  if (!selected.toLowerCase().includes('bill bot')) {
-    formatted = `Bill Bot (${selected})`;
-  }
+  // Format the prefix. The user wants just the parenthetical, as it'll be posted by a bot named Jarvis.
+  let formatted = `(${selected})`;
 
   return `🎙️ | ${formatted}:\n\n`;
 }
