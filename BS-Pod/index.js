@@ -413,11 +413,26 @@ async function generateWeeklyRecap(options) {
     standings.push({ ownerName, teamName, wins, losses, pointsFor });
   }
 
+  // Map MANAGER_LORE keys from manager usernames to team names
+  const teamLore = {};
+  for (const [mgr, lore] of Object.entries(MANAGER_LORE)) {
+    const roster = sortedRosters.find(r => {
+      const user = users.find(u => u.user_id === r.owner_id);
+      return user && user.display_name === mgr;
+    });
+    if (roster) {
+      const details = await sleeper.getTeamDetailsByRosterId(LEAGUE_ID, roster.roster_id);
+      teamLore[details.teamName] = lore;
+    } else {
+      teamLore[mgr] = lore;
+    }
+  }
+
   const recapPayload = {
     week,
     matchups: mappedMatchups,
     standings,
-    managerLore: MANAGER_LORE
+    managerLore: teamLore
   };
 
   try {
