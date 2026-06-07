@@ -11,21 +11,19 @@ const axios = require('axios');
 const path = require('path');
 const { SYSTEM_INSTRUCTIONS, getTradePrompt, getRecapPrompt, getWaiverPrompt } = require('./promptTemplates');
 
-const EVALUATOR_API_URL = 'http://localhost:5000/api/evaluate';
+const { evaluate } = require('./evaluator');
 
 /**
- * Helper to get the Dynasty-Evaluator evaluation for a trade
+ * Helper to get the Dynasty-Evaluator evaluation for a trade natively
  */
 async function fetchTradeEvaluation(sideAPlayerIds, sideAPicks, sideBPlayerIds, sideBPicks, modeA = 'neutral', modeB = 'neutral') {
   try {
     const payload = {
       sideA: {
-        team_id: '1',
         players: sideAPlayerIds,
         picks: sideAPicks
       },
       sideB: {
-        team_id: '2',
         players: sideBPlayerIds,
         picks: sideBPicks
       },
@@ -35,11 +33,10 @@ async function fetchTradeEvaluation(sideAPlayerIds, sideAPicks, sideBPlayerIds, 
       }
     };
 
-    console.log(`📡 Sending trade to Dynasty-Evaluator API at ${EVALUATOR_API_URL}...`);
-    const response = await axios.post(EVALUATOR_API_URL, payload);
-    return response.data;
+    console.log(`📡 Evaluating trade natively using internal Dynasty-Evaluator logic...`);
+    return evaluate(payload);
   } catch (err) {
-    console.error('⚠️ Dynasty-Evaluator API call failed (make sure server is running on port 5000):', err.message);
+    console.error('⚠️ Native Evaluation failed:', err.message);
     // Return a mock/empty evaluation so generation can still try to continue
     return {
       sideA_raw_value: 0,
@@ -51,7 +48,7 @@ async function fetchTradeEvaluation(sideAPlayerIds, sideAPicks, sideBPlayerIds, 
       final_sideB_total: 0,
       fairness_ratio: 1.0,
       winner: 'even',
-      margin_description: 'Evaluator offline. Value calculations unavailable.'
+      margin_description: 'Evaluator failed. Value calculations unavailable.'
     };
   }
 }
