@@ -48,13 +48,31 @@ loadRankings();
 function findPlayer(query) {
   if (!rankingsData) return null;
   const q = String(query).toLowerCase().trim();
-  return rankingsData.rankings.find(p =>
+  const found = rankingsData.rankings.find(p =>
     p.id === query ||
     String(p.ktc_id) === q ||
     p.sleeper_id === query ||
     p.name.toLowerCase() === q ||
     p.slug === q
-  ) || null;
+  );
+  if (found) return found;
+
+  if (q.startsWith('mock_')) {
+    const parts = q.split('_'); // e.g. mock_2029_1st
+    if (parts.length >= 3) {
+      const rStr = parts[2];
+      const round = rStr.startsWith('1') ? 1 : rStr.startsWith('2') ? 2 : rStr.startsWith('3') ? 3 : 4;
+      const baseVals = { 1: 3000, 2: 1000, 3: 300, 4: 100 };
+      return {
+        id: query,
+        name: query,
+        position: 'RDP',
+        composite_value: baseVals[round] || 100
+      };
+    }
+  }
+  
+  return null;
 }
 
 // ─── GET /api/rankings ───────────────────────────────────────────────────────

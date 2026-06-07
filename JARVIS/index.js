@@ -302,8 +302,8 @@ async function checkTransactions(options) {
           }
         }
 
-        // Sleeper doesn't support Markdown bolding, so strip it out!
-        article = article.replace(/\*\*/g, '');
+        // Sleeper doesn't support Markdown, so strip all asterisks!
+        article = article.replace(/\*/g, '');
 
         await postToSleeper(USER_TOKEN, LEAGUE_ID, article, options.dryRun, 'trades', true);
 
@@ -509,8 +509,8 @@ async function generateWeeklyRecap(options) {
       await postToSleeper(USER_TOKEN, LEAGUE_ID, md.trim(), options.dryRun, 'recaps', false);
     }
 
-    // Sleeper doesn't support Markdown bolding, so strip it out!
-    article = article.replace(/\*\*/g, '');
+    // Sleeper doesn't support Markdown, so strip all asterisks!
+    article = article.replace(/\*/g, '');
 
     await postToSleeper(USER_TOKEN, LEAGUE_ID, article, options.dryRun, 'recaps', true);
   } catch (err) {

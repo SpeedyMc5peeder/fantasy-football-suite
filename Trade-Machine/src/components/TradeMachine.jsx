@@ -90,7 +90,7 @@ export default function TradeMachine() {
         const tradedPicks = await pRes.json();
         
         const allPicks = [];
-        const seasons = [2026, 2027, 2028];
+        const seasons = [2026, 2027, 2028, 2029];
         const rounds = [1, 2, 3, 4];
         
         rosters.forEach(r => {
@@ -107,9 +107,9 @@ export default function TradeMachine() {
         });
 
         tradedPicks.forEach(tp => {
-             const pick = allPicks.find(p => p.season === parseInt(tp.season) && p.round === tp.round && p.original_owner_id === tp.original_owner_id);
+             const pick = allPicks.find(p => p.season === parseInt(tp.season) && p.round === tp.round && p.original_owner_id === tp.roster_id);
              if (pick) {
-                 pick.owner_id = tp.roster_id;
+                 pick.owner_id = tp.owner_id;
              }
         });
         
@@ -132,7 +132,20 @@ export default function TradeMachine() {
           teamPicks.forEach(pick => {
              const suffix = pick.round === 1 ? '1st' : pick.round === 2 ? '2nd' : pick.round === 3 ? '3rd' : '4th';
              const pickName = `${pick.season} Mid ${suffix}`;
-             const pickData = rankingsMap.get(pickName);
+             let pickData = rankingsMap.get(pickName);
+             
+             // Fallback for future picks (e.g. 2029) not yet in KTC database
+             if (!pickData && pick.season > 2028) {
+                 const baseVals = { 1: 3000, 2: 1000, 3: 300, 4: 100 };
+                 pickData = {
+                     id: `mock_${pick.season}_${suffix}`,
+                     name: pickName,
+                     position: 'RDP',
+                     composite_value: baseVals[pick.round] || 100,
+                     ktc_value: baseVals[pick.round] || 100,
+                     ecr_value: baseVals[pick.round] || 100
+                 };
+             }
              
              const origRoster = rosters.find(or => or.roster_id === pick.original_owner_id);
              const origUser = users.find(u => u.user_id === origRoster?.owner_id);

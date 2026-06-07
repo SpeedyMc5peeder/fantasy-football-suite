@@ -43,7 +43,7 @@ Follow these strict persona and league guidelines:
 
 --- FORMATTING & STYLE ---
 - Write as a sports column/article with a catchy headline, subheaders, and paragraphs. 
-- Use markdown formatting: bold key player names, italicize movie names/quotes, and use bullet points where appropriate.
+- CRITICAL: Do NOT use markdown formatting (no asterisks, no bold, no italics). The chat platform does not support it.
 - Keep the writing sharp, witty, and deeply local. Reference the specific fantasy managers and their franchise team names.
 - ALWAYS use the numerical trade evaluation figures and rankings provided in the prompt to ground the column in actual league statistics.
 `;
