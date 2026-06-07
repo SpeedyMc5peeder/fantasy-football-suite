@@ -277,8 +277,8 @@ async function checkTransactions(options) {
       try {
         let article = await generator.generateTradeCommentary(tradeData);
 
-        // Generate a trade comic 100% of the time (increased from 10%)
-        if (true) {
+        // Generate a trade comic ~50% of the time (changed from 100%)
+        if (Math.random() < 0.5) {
           console.log(`   🎨 Generating trade cartoon...`);
           const mascotA = MANAGER_MASCOTS[managerA] || MANAGER_MASCOTS[teamNameA] || "a cunning fantasy football manager";
           const mascotB = MANAGER_MASCOTS[managerB] || MANAGER_MASCOTS[teamNameB] || "a desperate fantasy football manager";
