@@ -1,0 +1,26 @@
+{
+  "gemini_api_key": "YOUR_GEMINI_API_KEY",
+  "sleeper_user_token": "YOUR_SLEEPER_USER_TOKEN",
+  "leagues": [
+    {
+      "name": "DFL",
+      "sleeper_league_id": "1326430815118163968",
+      "2025_sleeper_league_id": "YOUR_2025_DFL_LEAGUE_ID",
+      "role": "commissioner",
+      "auto_post": true,
+      "webhook_url": "YOUR_SLEEPER_INCOMING_WEBHOOK_URL",
+      "manager_lore": {
+        "Tklumb86": "Took over the franchise formerly owned by TakethecakeJake. Known for aggressive rebuild moves and late-night trade negotiations.",
+        "manager_username_2": "Describe their style, past beefs, or trade habits here..."
+      }
+    },
+    {
+      "name": "DynastyWarriors",
+      "sleeper_league_id": "YOUR_DYNASTY_WARRIORS_LEAGUE_ID",
+      "role": "player",
+      "auto_post": false,
+      "webhook_url": "",
+      "user_team_username": "Rhymenoceros"
+    }
+  ]
+}
