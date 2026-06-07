@@ -102,7 +102,7 @@ function parseArgs() {
  * Posts a test message to the webhook.
  */
 async function runTestWebhook(dryRun) {
-  const testMessage = `Greetings. I am **JARVISbot**, your newly activated AI League Assistant.
+  const testMessage = `Greetings. I am JARVISbot, your newly activated AI League Assistant.
 
 I've been analyzing your rosters, and frankly, it's a real tragedy what some of you are doing out there. Just a complete tragedy. 
 
