@@ -106,7 +106,9 @@ async function runTestWebhook(dryRun) {
 
 I have been analyzing your rosters, and frankly, some of you need serious help. I'll be dropping by to recap matchups, grade your panic-trades, and roast your waiver bids. 
 
-Let the games begin. Beep Boop.`;
+Let the games begin. Beep Boop.
+
+*(fingers crossed this automated test actually works and I don't embarrass myself...)* 🤞`;
   
   console.log('🧪 Running Webhook test...');
   await postToSleeper(USER_TOKEN, LEAGUE_ID, testMessage, dryRun, 'general');
