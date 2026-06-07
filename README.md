@@ -243,19 +243,37 @@ Since Sleeper lacks official incoming webhooks, the bot will post messages direc
     ```
 
 
-### ⚡ Article Triggers & Schedule
-1. **Pre-Season Over/Under Double-Feature (1 Week Before Kickoff)**:
-   - *Part 1: The Apex Predators (Contenders)*. Projected win totals, tier rankings, and Over/Under bets for the top teams.
-   - *Part 2: The Lottery Ticket Hoarders (Rebuilders)*. Rants about tanking, mock trades for the future, and rookie pick valuations.
-2. **Weekly Matchup Recaps (Tuesdays)**: Summary of the week's matchups, high scorers, and bench regrets.
-3. **Trade Comments (On Transaction)**: Triggered immediately when a trade goes through. Evaluates the deal using the API and writes a sports column breakdown.
+### ⚡ Article Triggers, Schedule & Graphics
+1. **Pre-Season Daily Team Previews (10 Days Leading to Kickoff)**:
+   - *Schedule:* 1 article per team per day, counting down the 10 days to the regular season.
+   - *Format:* Written in a classic Bill Simmons preview column structure, grouping managers into humorous pre-season tiers:
+     - **Tier 1: The Apex Predators** (The league favorites, veteran win-now rosters).
+     - **Tier 2: The "I Don't See It" Group** (Bubble teams with structural flaws).
+     - **Tier 3: The Lottery Ticket Hoarders / Tanking Brigade** (Rebuilders playing for draft picks).
+   - *Graphics:* Each preview features a custom 16:9 illustration of the team's mascot generated via `Image-Gen` from the `"manager_mascots"` configurations.
+2. **Weekly Matchup Recaps (Tuesdays)**:
+   - *Content:* Summary of the week's matchups, high scorers, and bench regrets.
+   - *Graphics:* Each recap is headed by a custom "magazine cover photo" styled with text overlays by `Image-Gen`. The style is selected dynamically on each run using the following probabilities:
+     - **50% Probability: Sports Illustrated Style** (Photorealistic sports action shot + bold overlays).
+     - **35% Probability: The Ringer Style** (Vibrant vector/flat graphic illustration).
+     - **15% Probability: Retro Comic Book Style** (Classic ink illustration + vintage textures).
+3. **Trade Comments (On Transaction)**:
+   - *Content:* Triggered immediately on league trades.
+   - *Graphics:* If the trade has a value margin deficit exceeding **15%** (a significant fleecing), the bot generates a "fleecing cartoon" representing the crime (e.g. a robber with gold escaping a sad mascot).
 4. **Waiver Wire Add/Drops**:
    - For major waiver runs (e.g. Wednesday mornings), writes a short summary of the key additions.
    - For individual one-off transactions, drops a quick 1-2 sentence comedic reaction, even if it's a minor/shitty player addition.
 5. **Star Injuries (On Occurrence)**: Comments on injuries to players valued over `4000` KTC.
 6. **Quarterly Standings Reviews (Weeks 4, 8, 12, 14)**: Mid-season playoff standing projections.
 7. **"Good Stats, Bad Team" Award (Mid-Season)**: Criticizing elite players trapped on struggling 1-7 rosters.
-8. **Trade Deadline Panic Guide (2 Weeks Before Deadline)**: Fake trade scenarios for bubble teams.
+8. **Trade Deadline Panic Guide (2 Weeks Before Deadline)**: Proposing fake, desperate trades for bubble teams.
+
+### 🖼️ Automated Image Delivery Flow
+Since Sleeper chat cannot ingest binary uploads via webhook/GraphQL, images are delivered as embeds:
+1. `Image-Gen` creates the graphic and saves it in `/Image-Gen/images/`.
+2. The automation workflow commits and pushes the new JPG to your private GitHub repository.
+3. The bot posts the direct GitHub raw URL (e.g., `https://raw.githubusercontent.com/SpeedyMc5peeder/fantasy-football-suite/main/Image-Gen/images/filename.jpg`) inside the Sleeper chat message.
+4. Sleeper's chat client reads the link and automatically renders the image inside the chat bubble.
 
 ---
 
