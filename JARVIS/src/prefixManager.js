@@ -1,8 +1,8 @@
 /**
  * prefixManager.js — State Manager for Randomized Bill Bot Prefixes
  *
- * Loads custom prefixes from `/BS-Pod/bot-prefix/fantasy_bot_parentheticals_by_trigger.txt`.
- * Tracks used prefixes in `/BS-Pod/data/prefix_state.json` to prevent repetition.
+ * Loads custom prefixes from `/JARVIS/bot-prefix/fantasy_bot_parentheticals_by_trigger.txt`.
+ * Tracks used prefixes in `/JARVIS/data/prefix_state.json` to prevent repetition.
  * Recycles prefixes once all in a category have been used.
  */
 

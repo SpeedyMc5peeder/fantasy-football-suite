@@ -26,7 +26,7 @@ jobs:
           cache-dependency-path: |
             Dynasty-Evaluator/package-lock.json
             Trade-Machine/package-lock.json
-            BS-Pod/package-lock.json
+            JARVIS/package-lock.json
             Image-Gen/package-lock.json
 
       - name: Install Dynasty-Evaluator dependencies
@@ -34,9 +34,9 @@ jobs:
           cd Dynasty-Evaluator
           npm ci
 
-      - name: Install BS-Pod dependencies
+      - name: Install JARVIS dependencies
         run: |
-          cd BS-Pod
+          cd JARVIS
           npm ci
 
       - name: Install Image-Gen dependencies

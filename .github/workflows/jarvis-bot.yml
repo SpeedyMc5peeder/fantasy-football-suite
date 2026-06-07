@@ -35,7 +35,7 @@ jobs:
           cache: 'npm'
           cache-dependency-path: |
             Dynasty-Evaluator/package-lock.json
-            BS-Pod/package-lock.json
+            JARVIS/package-lock.json
             Image-Gen/package-lock.json
 
       - name: Install Dynasty-Evaluator dependencies
@@ -43,9 +43,9 @@ jobs:
           cd Dynasty-Evaluator
           npm ci
 
-      - name: Install BS-Pod dependencies
+      - name: Install JARVIS dependencies
         run: |
-          cd BS-Pod
+          cd JARVIS
           npm ci
 
       - name: Install Image-Gen dependencies
@@ -77,7 +77,7 @@ jobs:
           SLEEPER_LEAGUE_ID: ${{ secrets.SLEEPER_LEAGUE_ID }}
           PERSONAL_DISCORD_WEBHOOK: ${{ secrets.PERSONAL_DISCORD_WEBHOOK }}
         run: |
-          cd BS-Pod
+          cd JARVIS
           CMD="${{ inputs.command || '--check-transactions' }}"
           echo "Running command: node index.js $CMD"
           node index.js $CMD
@@ -88,7 +88,7 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           
           # Add changes from data folder
-          git add BS-Pod/data/processed_transactions.json BS-Pod/data/prefix_state.json || true
+          git add JARVIS/data/processed_transactions.json JARVIS/data/prefix_state.json || true
           
           # Check if there are changes to commit
           if git diff --cached --quiet; then

@@ -1,5 +1,5 @@
 /**
- * index.js — BS-Pod Commentary Bot Entrypoint & CLI Orchestrator
+ * index.js — JARVIS Commentary Bot Entrypoint & CLI Orchestrator
  *
  * Usage:
  *   node index.js --check-transactions
@@ -102,7 +102,7 @@ function parseArgs() {
  * Posts a test message to the webhook.
  */
 async function runTestWebhook(dryRun) {
-  const testMessage = `This is a test message from the **BS-Pod Commentary Bot**! 
+  const testMessage = `This is a test message from the **JARVIS Commentary Bot**! 
 
 *Are we sure this webhook is good? Look, I watched the tape, and the endpoint participation is at 100%. Good job by you.*`;
   
@@ -540,7 +540,7 @@ async function startDaemon(options) {
  */
 async function main() {
   const options = parseArgs();
-  console.log('🎙️ Starting BS-Pod Commentary Bot...');
+  console.log('🎙️ Starting JARVIS Commentary Bot...');
   console.log(`   Options: checkTransactions=${options.checkTransactions}, weeklyRecap=${options.weeklyRecap}, testWebhook=${options.testWebhook}, dryRun=${options.dryRun}, watch=${options.watch}`);
 
   // Set up local file cache at startup
@@ -557,7 +557,7 @@ async function main() {
       await checkTransactions(options);
     }
   } else {
-    console.log('\n🎙️  BS-Pod Bot: No action specified.');
+    console.log('\n🎙️  JARVIS Bot: No action specified.');
     console.log('   Use: --check-transactions, --weekly-recap, or --test-webhook');
     console.log('   Add: --dry-run (to output locally only) or --force (to reprocess old trades)');
     console.log('   Add: --watch (to run continuously in watch mode)\n');

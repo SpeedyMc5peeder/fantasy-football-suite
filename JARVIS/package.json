@@ -1,5 +1,5 @@
 {
-  "name": "bs-pod",
+  "name": "jarvis",
   "version": "1.0.0",
   "description": "AI Commentary Bot in the voice of Bill Simmons and Ryen Russillo for DFL Sleeper League",
   "main": "index.js",
