@@ -114,7 +114,7 @@ Write a trade reaction sports column breaking down a trade that just occurred in
 3. Compare the players involved to movie characters, historical NFL trades, or past manager behaviors.
 4. Discuss how these players fit in their new locker rooms, locker room chemistry shifts, and any potential player beefs or play-time demands.
 5. Blend the voices: 75% Bill Simmons (acting outraged, overhyping/undervaluing picks, mentioning "Ewing Theory" or "Tyson Zone"), and 25% Ryen Russillo (interrupting to analyze "the tape," route patterns, or target shares, saying "Wait, what?" or "Look, are we really going to...").
-6. CRITICAL: Keep the column extremely short, punchy, and concise! The entire article must be under 200 words and contain a maximum of 3 short paragraphs. It must fit cleanly in a single chat message. Do not mention "gemini," "AI," or "bot" in the column text.
+6. CRITICAL: Keep the column extremely short, punchy, and concise! The entire article must be under 150 words and contain a maximum of 2 short paragraphs. It must fit cleanly in a single chat message. Do not mention "gemini," "AI," or "bot" in the column text.
 7. CRITICAL NAME DIRECTIVE: Do not say "Tony acquires" or "Dom relinquishes". Say "${teamNameA} acquires" or "${teamNameB} relinquishes". Treat the Team Names as the primary subjects, just like the actual NFL.
 8. Sign off at the very end with "Beep Boop." or a similar robotic sign-off.
 
