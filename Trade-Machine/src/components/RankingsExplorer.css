@@ -1,0 +1,271 @@
+/* ============================================================
+   RankingsExplorer — Searchable, sortable player rankings table
+   ============================================================ */
+
+.rankings {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* ---- Toolbar ---- */
+.rankings-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.rankings-search {
+  flex: 1;
+  min-width: 220px;
+}
+
+.rankings-filters {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 6px 14px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: var(--bg-glass);
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.filter-btn:hover {
+  border-color: var(--border-medium);
+  color: var(--text-primary);
+  background: var(--bg-glass-hover);
+}
+
+.filter-btn.active {
+  border-color: var(--neon-green);
+  color: var(--neon-green);
+  background: var(--neon-green-dim);
+  box-shadow: 0 0 12px rgba(0, 255, 136, 0.1);
+}
+
+.rankings-count {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ---- Table container ---- */
+.rankings-content {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.rankings-table-wrap {
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.rankings-detail-wrap {
+  width: 340px;
+  flex-shrink: 0;
+  position: sticky;
+  top: calc(var(--header-height) + 24px);
+}
+
+/* ---- Table ---- */
+.rankings-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 13px;
+}
+
+.rankings-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--bg-secondary);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--border-subtle);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition: color var(--transition-fast);
+}
+
+.rankings-table thead th:hover {
+  color: var(--text-primary);
+}
+
+.rankings-table thead th.sorted {
+  color: var(--neon-green);
+}
+
+.rankings-table thead th .sort-arrow {
+  display: inline-block;
+  margin-left: 4px;
+  font-size: 10px;
+  opacity: 0.6;
+}
+
+.rankings-table tbody tr {
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.rankings-table tbody tr:hover {
+  background: var(--bg-glass-hover);
+}
+
+.rankings-table tbody tr.selected {
+  background: var(--neon-green-dim);
+}
+
+.rankings-table tbody td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-subtle);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.rankings-table .col-rank {
+  font-weight: 700;
+  color: var(--text-muted);
+  width: 50px;
+}
+
+.rankings-table .col-name {
+  font-weight: 600;
+  color: var(--text-bright);
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rankings-table .col-team {
+  color: var(--text-secondary);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.rankings-table .col-age {
+  color: var(--text-secondary);
+}
+
+.rankings-table .col-value {
+  font-weight: 700;
+  color: var(--neon-green);
+}
+
+.rankings-table .col-value.ktc {
+  color: var(--neon-blue);
+}
+
+.rankings-table .col-value.ecr {
+  color: var(--neon-purple);
+}
+
+.rankings-table .col-trend {
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.rankings-table .col-trend.up {
+  color: var(--neon-green);
+}
+
+.rankings-table .col-trend.down {
+  color: var(--neon-red);
+}
+
+.rankings-table .col-trend.flat {
+  color: var(--text-muted);
+}
+
+/* Tier badge */
+.tier-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: var(--radius-sm);
+  font-size: 10px;
+  font-weight: 700;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+
+/* ---- Empty state ---- */
+.rankings-empty {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-muted);
+}
+
+.rankings-empty-icon {
+  font-size: 36px;
+  margin-bottom: 12px;
+}
+
+.rankings-empty-text {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 1024px) {
+  .rankings-detail-wrap {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .rankings-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .rankings-search {
+    min-width: unset;
+  }
+
+  .rankings-table {
+    font-size: 12px;
+  }
+
+  .rankings-table thead th,
+  .rankings-table tbody td {
+    padding: 8px 10px;
+  }
+
+  /* Hide less important columns on mobile */
+  .rankings-table .col-ecr,
+  .rankings-table .col-tier {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .rankings-table .col-ktc,
+  .rankings-table .col-age {
+    display: none;
+  }
+}

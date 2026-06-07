@@ -1,0 +1,72 @@
+name: Bill Bot Autopilot
+
+on:
+  schedule:
+    - cron: '*/30 * * * *' # Runs every 30 minutes
+  workflow_dispatch: # Allows manual trigger from the GitHub Actions tab
+
+permissions:
+  contents: write # Crucial: Allows the runner to push state files back to your repo
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: |
+            Dynasty-Evaluator/package-lock.json
+            BS-Pod/package-lock.json
+
+      - name: Install Dynasty-Evaluator dependencies
+        run: |
+          cd Dynasty-Evaluator
+          npm ci
+
+      - name: Install BS-Pod dependencies
+        run: |
+          cd BS-Pod
+          npm ci
+
+      - name: Start Dynasty-Evaluator API Server
+        run: |
+          cd Dynasty-Evaluator
+          nohup npm start > server.log 2>&1 &
+          echo "Waiting for server to spin up..."
+          sleep 5
+          curl -s http://localhost:5000/api/health || { echo "❌ Server failed to start"; cat server.log; exit 1; }
+
+      - name: Run Transaction Scanner & Auto-Post
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          SLEEPER_USER_TOKEN: ${{ secrets.SLEEPER_USER_TOKEN }}
+          SLEEPER_LEAGUE_ID: ${{ secrets.SLEEPER_LEAGUE_ID }}
+        run: |
+          cd BS-Pod
+          node index.js --check-transactions
+
+      - name: Commit and Push State Changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          # Add changes from data folder
+          git add BS-Pod/data/processed_transactions.json BS-Pod/data/prefix_state.json || true
+          
+          # Check if there are changes to commit
+          if git diff --cached --quiet; then
+            echo "No new transactions or prefix states to commit."
+          else
+            git commit -m "chore: update transaction and prefix history [skip ci]"
+            git push
+            echo "State files pushed successfully."
+          fi
