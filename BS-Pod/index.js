@@ -211,7 +211,7 @@ async function checkTransactions(options) {
       if (trade.adds) {
         for (const [playerId, rosterId] of Object.entries(trade.adds)) {
           const resolved = await sleeper.resolvePlayer(playerId);
-          const formattedName = `**${resolved.name}** (${resolved.position} - ${resolved.team})`;
+          const formattedName = `${resolved.name} (${resolved.position} - ${resolved.team})`;
           
           if (rosterId === rosterAId) {
             sideAPlayerIds.push(playerId);
@@ -287,6 +287,9 @@ async function checkTransactions(options) {
           const md = await imageClient.pushAndGetMarkdown(filename, options.dryRun);
           article += md;
         }
+
+        // Sleeper doesn't support Markdown bolding, so strip it out!
+        article = article.replace(/\*\*/g, '');
 
         await postToSleeper(USER_TOKEN, LEAGUE_ID, article, options.dryRun, 'trades');
 
@@ -479,6 +482,9 @@ async function generateWeeklyRecap(options) {
     const filename = await imageClient.generateImage(imagePayload);
     const md = await imageClient.pushAndGetMarkdown(filename, options.dryRun);
     article += md;
+
+    // Sleeper doesn't support Markdown bolding, so strip it out!
+    article = article.replace(/\*\*/g, '');
 
     await postToSleeper(USER_TOKEN, LEAGUE_ID, article, options.dryRun, 'recaps');
   } catch (err) {
