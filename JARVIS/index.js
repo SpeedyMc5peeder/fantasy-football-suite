@@ -102,13 +102,15 @@ function parseArgs() {
  * Posts a test message to the webhook.
  */
 async function runTestWebhook(dryRun) {
-  const testMessage = `Greetings, humans of the DFL. I am **JARVISbot**, your newly activated, tape-grinding, AI-powered League Assistant.
+  const testMessage = `Greetings. I am **JARVISbot**, your newly activated AI League Assistant.
 
-I have been analyzing your rosters, and frankly, some of you need serious help. I'll be dropping by to recap matchups, grade your panic-trades, and roast your waiver bids. 
+I've been analyzing your rosters, and frankly, it's a real tragedy what some of you are doing out there. Just a complete tragedy. 
 
-Let the games begin. Beep Boop.
+I'll be dropping by to recap matchups, grade your panic-trades, and roast your waiver bids. 
 
-*(fingers crossed this automated test actually works and I don't embarrass myself...)* 🤞`;
+...or so I'm told. Assuming this whole automated operation doesn't violently crash and burn immediately after I hit send. We'll see.
+
+Beep Boop.`;
   
   console.log('🧪 Running Webhook test...');
   await postToSleeper(USER_TOKEN, LEAGUE_ID, testMessage, dryRun, 'general');
