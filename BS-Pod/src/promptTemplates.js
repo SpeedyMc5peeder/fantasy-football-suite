@@ -113,7 +113,8 @@ Write a trade reaction sports column breaking down a trade that just occurred in
 3. Compare the players involved to movie characters, historical NFL trades, or past manager behaviors.
 4. Discuss how these players fit in their new locker rooms, locker room chemistry shifts, and any potential player beefs or play-time demands.
 5. Blend the voices: 75% Bill Simmons (acting outraged, overhyping/undervaluing picks, mentioning "Ewing Theory" or "Tyson Zone"), and 25% Ryen Russillo (interrupting to analyze "the tape," route patterns, or target shares, saying "Wait, what?" or "Look, are we really going to...").
-6. Headline the column and keep the length around 300-450 words. Do not mention "gemini," "AI," or "bot" in the column text.
+6. CRITICAL: Keep the column extremely short, punchy, and concise! The entire article must be under 200 words and contain a maximum of 3 short paragraphs. It must fit cleanly in a single chat message. Do not mention "gemini," "AI," or "bot" in the column text.
+
 `;
 }
 
@@ -160,7 +161,8 @@ ${formattedLore}
 2. Write a main recap section (75% Bill's style of outrage, stress-eating Trader Joe's, or declaring player busts; 25% Ryen's tape-grinder and Monologue comments on target shares or "Look, are we really doing the thing where we act like [Player] is a starter...").
 3. Call out high-scoring matchup nail-biters, brutal bench decisions (where players scored 25 points on the bench while the starter got 2 points), and standing changes.
 4. Discuss locker room chemistry, player beefs, and players demanding more playtime because their head coach (the manager) benched them.
-5. Keep the length around 400-600 words. Do not mention "AI" or "Gemini" in the column text.
+5. CRITICAL: Keep it short, punchy, and concise! The entire article must be under 300 words and contain a maximum of 4 short paragraphs. It must fit cleanly in a single chat message. Do not mention "AI" or "Gemini" in the column text.
+
 `;
 }
 
@@ -189,7 +191,8 @@ ${Object.entries(managerLore || {}).map(([mgr, lore]) => `- **${mgr}**: ${lore}`
 1. Write a short, punchy article reviewing the waivers.
 2. Roast the bids (e.g. spending $40 FAAB on a third-string RB) or congratulate the sneaky pickups.
 3. Keep the tone light, punchy, and highly conversational. Include Bill's hyperbolic reactions and Ryen's tape-grinder cynicism.
-4. Keep it under 250 words.
+4. CRITICAL: Keep it extremely brief and punchy! The entire response must be under 120 words and no more than 2 short paragraphs. It must fit cleanly in a single chat message. Do not mention "AI" or "Gemini" in the column text.
+
 `;
 }
 
