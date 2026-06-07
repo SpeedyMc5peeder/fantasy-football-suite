@@ -37,6 +37,7 @@ const dflConfig = config.leagues.find(l => l.name === 'DFL') || {};
 const LEAGUE_ID = process.env.SLEEPER_LEAGUE_ID || dflConfig.sleeper_league_id;
 const USER_TOKEN = process.env.SLEEPER_USER_TOKEN || config.sleeper_user_token;
 const MANAGER_LORE = dflConfig.manager_lore || {};
+const MANAGER_MASCOTS = dflConfig.manager_mascots || {};
 const GEMINI_KEY = process.env.GEMINI_API_KEY || config.gemini_api_key;
 
 if (!LEAGUE_ID || !USER_TOKEN || !GEMINI_KEY) {
@@ -272,8 +273,10 @@ async function checkTransactions(options) {
         // Generate a trade comic ~10% of the time (lowered from 30%)
         if (Math.random() < 0.1) {
           console.log(`   🎨 Generating trade cartoon...`);
+          const mascotA = MANAGER_MASCOTS[managerA] || MANAGER_MASCOTS[teamNameA] || "a cunning fantasy football manager";
+          const mascotB = MANAGER_MASCOTS[managerB] || MANAGER_MASCOTS[teamNameB] || "a desperate fantasy football manager";
           const imagePayload = {
-            prompt: "a cartoon robber running away with a bag of gold, fantasy football meme style",
+            prompt: `A dramatic retro comic book panel showing a tense negotiation between ${mascotA} and ${mascotB}, pop-art comic style`,
             style: "retro-comic",
             overlayText: {
               title: "TRADE ALERT",
@@ -285,7 +288,7 @@ async function checkTransactions(options) {
           };
           const filename = await imageClient.generateImage(imagePayload);
           const md = await imageClient.pushAndGetMarkdown(filename, options.dryRun);
-          article += md;
+          article = md + '\n\n' + article; // Prepend so it acts as a header image!
         }
 
         // Sleeper doesn't support Markdown bolding, so strip it out!
@@ -343,6 +346,8 @@ async function generateWeeklyRecap(options) {
   }
 
   const mappedMatchups = [];
+  let highestScoringOwner = null;
+  let highestScore = -1;
 
   for (const [matchupId, pair] of Object.entries(matchupPairs)) {
     if (pair.length < 2) continue; // Safety
@@ -395,6 +400,9 @@ async function generateWeeklyRecap(options) {
 
     const score1 = team1.points || 0;
     const score2 = team2.points || 0;
+
+    if (score1 > highestScore) { highestScore = score1; highestScoringOwner = owner1; }
+    if (score2 > highestScore) { highestScore = score2; highestScoringOwner = owner2; }
 
     mappedMatchups.push({
       homeOwner: owner1,
@@ -467,8 +475,11 @@ async function generateWeeklyRecap(options) {
     const styles = ['sports-illustrated', 'sports-illustrated', 'sports-illustrated', 'ringer', 'ringer', 'retro-comic'];
     const style = styles[Math.floor(Math.random() * styles.length)];
     
+    // Put the highest scoring manager's mascot on the cover!
+    const coverMascot = MANAGER_MASCOTS[highestScoringOwner] || "a heroic fantasy football player";
+    
     const imagePayload = {
-      prompt: "A dramatic sports photography shot representing fantasy football victory, cinematic lighting",
+      prompt: `A dramatic, cinematic photography shot of ${coverMascot} celebrating a massive victory on the football field, high quality sports magazine cover`,
       style: style,
       overlayText: {
         title: style === 'ringer' ? "THE RINGER" : style === 'retro-comic' ? "DFL COMICS" : "SPORTS ILLUSTRATED",
@@ -481,7 +492,7 @@ async function generateWeeklyRecap(options) {
 
     const filename = await imageClient.generateImage(imagePayload);
     const md = await imageClient.pushAndGetMarkdown(filename, options.dryRun);
-    article += md;
+    article = md + '\n\n' + article; // Prepend to the top of the post!
 
     // Sleeper doesn't support Markdown bolding, so strip it out!
     article = article.replace(/\*\*/g, '');
