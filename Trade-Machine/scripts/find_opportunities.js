@@ -184,10 +184,30 @@ function analyzeMatchups(teams) {
           const bHasSurplusA = teamB.posTotals[posA] > leagueAverages[posA] * 1.2;
 
           if (aNeedsA && aHasSurplusB && bNeedsB && bHasSurplusA) {
-            const aTradeBait = teamA.playersInfo[posB][0];
-            const bTradeBait = teamB.playersInfo[posA][0];
             
-            if (aTradeBait && bTradeBait) {
+            // We found a positional match. Now find a 1-for-1 player swap within a 15% value margin
+            let bestMatch = null;
+            let bestRatio = 0;
+
+            // Look at the top 3 players in their respective surplus positions
+            for (const aPlayer of teamA.playersInfo[posB].slice(0, 3)) {
+              for (const bPlayer of teamB.playersInfo[posA].slice(0, 3)) {
+                const aVal = aPlayer.composite_value;
+                const bVal = bPlayer.composite_value;
+                if (aVal === 0 || bVal === 0) continue;
+                
+                // Calculate fairness ratio (closer to 1.0 is better)
+                const ratio = Math.min(aVal, bVal) / Math.max(aVal, bVal);
+                
+                // Enforce a strict 15% margin (ratio >= 0.85)
+                if (ratio >= 0.85 && ratio > bestRatio) {
+                  bestRatio = ratio;
+                  bestMatch = { aPlayer, bPlayer };
+                }
+              }
+            }
+            
+            if (bestMatch) {
               // Create a unique key for this matchup so we don't spam the same pair
               const key = [teamA.username, teamB.username].sort().join('-');
               
@@ -198,8 +218,8 @@ function analyzeMatchups(teams) {
                   teamB: teamB.username,
                   rationale: `${teamA.username} is weak at ${posA} but loaded at ${posB}. ${teamB.username} is weak at ${posB} but loaded at ${posA}.`,
                   suggestedTrade: {
-                    teamAGives: aTradeBait,
-                    teamBGives: bTradeBait
+                    teamAGives: bestMatch.aPlayer,
+                    teamBGives: bestMatch.bPlayer
                   }
                 });
               }

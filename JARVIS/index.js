@@ -242,9 +242,9 @@ async function checkTransactions(options) {
           const originalOwnerName = originalOwnerUser ? originalOwnerUser.display_name : `Roster ${pick.roster_id}`;
           
           const pickName = `${pick.season} Round ${pick.round} (${originalOwnerName})`;
-          // Map to Dynasty-Evaluator pick nomenclature (e.g. "2027_1st_mid")
+          // Map to Dynasty-Evaluator pick nomenclature (e.g. "2027 Mid 1st")
           const roundSuffix = pick.round === 1 ? '1st' : pick.round === 2 ? '2nd' : pick.round === 3 ? '3rd' : '4th';
-          const evalPickId = `${pick.season}_${roundSuffix}_mid`;
+          const evalPickId = `${pick.season} Mid ${roundSuffix}`;
 
           // pick.owner_id represents the NEW roster_id receiving the pick
           if (pick.owner_id === rosterAId) {
