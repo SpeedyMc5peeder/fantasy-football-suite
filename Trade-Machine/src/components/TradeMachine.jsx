@@ -153,52 +153,57 @@ export default function TradeMachine() {
 - TEs: ${tes || 'None'}`;
       }).join('\n\n');
 
-      const prompt = `You are a fantasy football AI trade assistant. 
+      const prompt = `You are a personal fantasy football AI trade assistant exclusively for the manager: "${userManagerName}". 
 User Request: "${aiQuery}"
-The user's manager name in this league is: "${userManagerName}". When the user uses first-person pronouns like "I", "me", "my team", "my roster", "my picks", "who should I trade", they are referring to this manager.
+When the user uses first-person pronouns like "I", "me", "my team", "my roster", "my picks", "who should I trade", they are referring to this manager.
 
 League Teams & Roster Lists (contains player age and dynasty values from our rankings database):
 ${context}
 
 Instructions:
-1. IDENTIFY USER INTENT:
-   - Target Teams: If the user requests to trade with a specific manager (e.g., "Find a trade with NickkkHIGH" or "Trade between Rhymenoceros and doesntfleeze"), restrict your trade partners ONLY to those specified managers.
-   - Sell Candidates: If the user wants to trade away, sell, or get rid of specific players (e.g. "sell McCaffrey"), those players MUST be in the "assetsA_sent" list (assuming Team A is the user's team).
-   - Buy Targets: If the user wants to trade for or acquire specific players (e.g. "trade for Bijan"), those players MUST be received by the user's team.
-   - Do Not Sell List: If the user specifies they want to keep certain players or "not trade away X", do NOT include them in any trade packages. Exception: If the user adds "unless it makes more sense" or "unless it's a fleece", you may include them ONLY if the return package is a massive value win for them.
+1. ONLY SUGGEST TRADES FOR THE USER:
+   - EVERY trade you suggest MUST include the user ("${userManagerName}") as one of the primary trading partners (e.g. as Team A). Do NOT suggest trades between two other teams.
+   - Target Teams: If the user requests to trade with a specific manager, focus on finding deals with that manager.
+   - Sell Candidates/Buy Targets: Follow user directions to trade away or acquire specific players.
 
 2. BUILD SMART, MATHEMATICALLY BALANCED WIN-WIN TRADES:
    - ALWAYS look at the "Value" field for each player. These are active dynasty player values from our database.
    - A standard fair trade means the total value sent by Team A should be roughly equal to the total value sent by Team B (within 10-15% difference).
-   - Do not propose highly lopsided trades (e.g., sending a player worth 8000 for a player worth 2000) unless the user explicitly requests to "fleece", "steal", or get a "lopsided" trade.
-   - Contenders (strong, veteran-heavy teams) want to buy active high-scoring veterans (e.g. age >= 27).
-   - Rebuilders (young or struggling teams) want to sell old veterans for young players (under 24) and draft picks.
+   - Do not propose highly lopsided trades unless the user explicitly requests to "fleece" or steal a player.
    - Identify positional surpluses and deficits (e.g., a team with 5 QBs has a surplus; a team with 1 QB has a deficit) to find the perfect trade partner.
 
-3. STRICT CONSTRAINTS:
+3. PROVIDE MULTIPLE OPTIONS & DEEP ANALYSIS:
+   - Provide exactly 3 different trade options for the user. These could be with different teams or different packages with the same team.
+   - For each trade, provide a deep, multi-faceted explanation ("rationale"). Explain why it makes sense strategically for BOTH sides, highlighting the database values, age profiles, and positional needs. Don't just say "it's fair", explain the dynasty implications.
+
+4. STRICT CONSTRAINTS:
    - Do not invent players. Every player in the trade must exist on the respective roster in the list above.
-   - Do not confuse Manager Names (like "NickkkHIGH", "doesntfleeze", "Rhymenoceros") with Player Names. Manager Names are the trading entities, Player Names are the assets.
+   - Do not confuse Manager Names with Player Names.
    - Maintain the manager names exactly as written in the list.
 
-4. RESPONSE FORMAT:
+5. RESPONSE FORMAT:
    You must return your response ONLY as a JSON object matching this schema:
    {
-     "teamA_name": "Name of Manager/Team A (Must match the list exactly)",
-     "teamB_name": "Name of Manager/Team B (Must match the list exactly)",
-     "teamC_name": "Name of Manager/Team C (Must match the list exactly, or null if it's a 2-way trade)",
-     "isThreeWay": false,
-     "assetsA_sent": [
-       { "name": "Player Name", "dest_team_name": "Name of Manager receiving this player" }
-     ],
-     "assetsB_sent": [
-       { "name": "Player Name", "dest_team_name": "Name of Manager receiving this player" }
-     ],
-     "assetsC_sent": [
-       { "name": "Player Name", "dest_team_name": "Name of Manager receiving this player" }
-     ],
-     "rationale": "A short, witty Bill Simmons style paragraph explaining why the trade makes sense for both/all sides and highlighting the database values involved (e.g., 'Who says no?', 'The apex mountain of...')."
+     "trades": [
+       {
+         "teamA_name": "Name of Manager/Team A (Must be ${userManagerName})",
+         "teamB_name": "Name of Manager/Team B (Must match the list exactly)",
+         "teamC_name": "Name of Manager/Team C (Must match the list exactly, or null if it's a 2-way trade)",
+         "isThreeWay": false,
+         "assetsA_sent": [
+           { "name": "Player Name", "dest_team_name": "Name of Manager receiving this player" }
+         ],
+         "assetsB_sent": [
+           { "name": "Player Name", "dest_team_name": "Name of Manager receiving this player" }
+         ],
+         "assetsC_sent": [
+           { "name": "Player Name", "dest_team_name": "Name of Manager receiving this player" }
+         ],
+         "rationale": "A detailed, insightful explanation of why this trade makes strategic sense for all sides, referencing specific player values, age dynamics, and roster needs."
+       }
+     ]
    }
-   Ensure the team names match the "Manager Name" values in the list exactly. Ensure the player names match the actual players on their rosters. Return ONLY the JSON object.`;
+   Return ONLY the JSON object.`;
 
       let result;
       try {
@@ -238,18 +243,18 @@ Instructions:
     }
   };
 
-  const applyAiTrade = () => {
-    if (!parsedAiSuggestion) return;
+  const applyAiTrade = (tradeObj) => {
+    if (!tradeObj) return;
 
     // Find the teams involved
-    const tA = rosterData.find(t => t.name.toLowerCase() === parsedAiSuggestion.teamA_name.toLowerCase());
-    const tB = rosterData.find(t => t.name.toLowerCase() === parsedAiSuggestion.teamB_name.toLowerCase());
-    const tC = parsedAiSuggestion.isThreeWay && parsedAiSuggestion.teamC_name
-      ? rosterData.find(t => t.name.toLowerCase() === parsedAiSuggestion.teamC_name.toLowerCase())
+    const tA = rosterData.find(t => t.name.toLowerCase() === tradeObj.teamA_name.toLowerCase());
+    const tB = rosterData.find(t => t.name.toLowerCase() === tradeObj.teamB_name.toLowerCase());
+    const tC = tradeObj.isThreeWay && tradeObj.teamC_name
+      ? rosterData.find(t => t.name.toLowerCase() === tradeObj.teamC_name.toLowerCase())
       : null;
 
     if (!tA || !tB) {
-      alert(`Could not find matching teams in this league. AI suggested: "${parsedAiSuggestion.teamA_name}" and "${parsedAiSuggestion.teamB_name}".`);
+      alert(`Could not find matching teams in this league. AI suggested: "${tradeObj.teamA_name}" and "${tradeObj.teamB_name}".`);
       return;
     }
 
@@ -307,9 +312,9 @@ Instructions:
       return resolved;
     };
 
-    const resolvedA = resolveAssets(parsedAiSuggestion.assetsA_sent, tA.roster_id);
-    const resolvedB = resolveAssets(parsedAiSuggestion.assetsB_sent, tB.roster_id);
-    const resolvedC = tC ? resolveAssets(parsedAiSuggestion.assetsC_sent, tC.roster_id) : [];
+    const resolvedA = resolveAssets(tradeObj.assetsA_sent, tA.roster_id);
+    const resolvedB = resolveAssets(tradeObj.assetsB_sent, tB.roster_id);
+    const resolvedC = tC ? resolveAssets(tradeObj.assetsC_sent, tC.roster_id) : [];
 
     setAssetsA(resolvedA);
     setAssetsB(resolvedB);
@@ -338,8 +343,8 @@ Instructions:
     const valB = evaluation.final_sideB_total || 0;
     const diff = Math.abs(valA - valB);
     
-    // If the difference is minor (less than 400), the trade is already balanced
-    if (diff < 400) return null;
+    // If the difference is minor (less than 50), the trade is already perfectly balanced
+    if (diff < 50) return null;
 
     // If valA > valB: Side A total sent is greater than Side B total sent.
     // That means Side A is sending more value. Side B is winning.
@@ -623,60 +628,66 @@ Instructions:
             {isAiLoading ? 'Thinking...' : '✨ Generate'}
           </button>
         </div>
-        {parsedAiSuggestion ? (
+        {parsedAiSuggestion?.trades ? (
           <div className="ai-suggestions-drawer">
-            <h3 style={{color:'#00ff88', marginBottom:'0.75rem'}}>AI Trade Suggestion</h3>
-            
-            <div className="ai-trade-framework">
-              <div className="ai-trade-path">
-                <strong>{parsedAiSuggestion.teamA_name} sends:</strong>
-                {parsedAiSuggestion.assetsA_sent.length === 0 ? (
-                  <div style={{opacity:0.5, fontSize:'0.9rem'}}>No players</div>
-                ) : (
-                  <ul>
-                    {parsedAiSuggestion.assetsA_sent.map((a, idx) => (
-                      <li key={idx}>{a.name} ➔ {a.dest_team_name}</li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-              
-              <div className="ai-trade-path">
-                <strong>{parsedAiSuggestion.teamB_name} sends:</strong>
-                {parsedAiSuggestion.assetsB_sent.length === 0 ? (
-                  <div style={{opacity:0.5, fontSize:'0.9rem'}}>No players</div>
-                ) : (
-                  <ul>
-                    {parsedAiSuggestion.assetsB_sent.map((a, idx) => (
-                      <li key={idx}>{a.name} ➔ {a.dest_team_name}</li>
-                    ))}
-                  </ul>
-                )}
-              </div>
+            <h3 style={{color:'#00ff88', marginBottom:'1rem'}}>AI Trade Suggestions</h3>
+            <div style={{display:'flex', flexDirection:'column', gap:'2rem'}}>
+              {parsedAiSuggestion.trades.map((trade, tIdx) => (
+                <div key={tIdx} className="ai-trade-option" style={{ background: 'rgba(0,0,0,0.3)', padding: '1.5rem', borderRadius: '12px', border: '1px solid #333' }}>
+                  <h4 style={{marginTop:0, marginBottom:'1rem', color:'#fff'}}>Option {tIdx + 1}</h4>
+                  <div className="ai-trade-framework">
+                    <div className="ai-trade-path">
+                      <strong>{trade.teamA_name} sends:</strong>
+                      {trade.assetsA_sent.length === 0 ? (
+                        <div style={{opacity:0.5, fontSize:'0.9rem'}}>No players</div>
+                      ) : (
+                        <ul>
+                          {trade.assetsA_sent.map((a, idx) => (
+                            <li key={idx}>{a.name} ➔ {a.dest_team_name}</li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                    
+                    <div className="ai-trade-path">
+                      <strong>{trade.teamB_name} sends:</strong>
+                      {trade.assetsB_sent.length === 0 ? (
+                        <div style={{opacity:0.5, fontSize:'0.9rem'}}>No players</div>
+                      ) : (
+                        <ul>
+                          {trade.assetsB_sent.map((a, idx) => (
+                            <li key={idx}>{a.name} ➔ {a.dest_team_name}</li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
 
-              {parsedAiSuggestion.isThreeWay && parsedAiSuggestion.teamC_name && (
-                <div className="ai-trade-path">
-                  <strong>{parsedAiSuggestion.teamC_name} sends:</strong>
-                  {parsedAiSuggestion.assetsC_sent.length === 0 ? (
-                    <div style={{opacity:0.5, fontSize:'0.9rem'}}>No players</div>
-                  ) : (
-                    <ul>
-                      {parsedAiSuggestion.assetsC_sent.map((a, idx) => (
-                        <li key={idx}>{a.name} ➔ {a.dest_team_name}</li>
-                      ))}
-                    </ul>
-                  )}
+                    {trade.isThreeWay && trade.teamC_name && (
+                      <div className="ai-trade-path">
+                        <strong>{trade.teamC_name} sends:</strong>
+                        {trade.assetsC_sent.length === 0 ? (
+                          <div style={{opacity:0.5, fontSize:'0.9rem'}}>No players</div>
+                        ) : (
+                          <ul>
+                            {trade.assetsC_sent.map((a, idx) => (
+                              <li key={idx}>{a.name} ➔ {a.dest_team_name}</li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="ai-rationale" style={{ marginTop: '1rem', fontStyle: 'italic', color: '#ccc', lineHeight: '1.6' }}>
+                    <strong>Rationale: </strong>{trade.rationale}
+                  </div>
+
+                  <button className="apply-trade-btn" style={{ marginTop: '1rem' }} onClick={() => applyAiTrade(trade)}>
+                    ⚡ Apply Option {tIdx + 1} to Machine
+                  </button>
                 </div>
-              )}
+              ))}
             </div>
-
-            <div className="ai-rationale">
-              {parsedAiSuggestion.rationale}
-            </div>
-
-            <button className="apply-trade-btn" onClick={applyAiTrade}>
-              ⚡ Apply Trade to Machine
-            </button>
           </div>
         ) : aiSuggestion ? (
           <div className="ai-suggestions-drawer">

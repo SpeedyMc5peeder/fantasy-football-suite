@@ -42,33 +42,44 @@ async function pushAndGetMarkdown(filename, dryRun) {
   let publicUrl = `${RAW_GITHUB_BASE}${filename}`;
 
   // If we have a Discord Webhook, upload it there to get a true public CDN URL!
-  if (process.env.PERSONAL_DISCORD_WEBHOOK && fs.existsSync(imagePath) && !dryRun) {
-    try {
-      console.log(`🚀 Uploading image to Discord CDN for public hosting...`);
-      const fileBuffer = fs.readFileSync(imagePath);
-      const blob = new Blob([fileBuffer], { type: 'image/jpeg' });
-      
-      const formData = new FormData();
-      formData.append('file', blob, filename);
+  if (process.env.PERSONAL_DISCORD_WEBHOOK) {
+    if (fs.existsSync(imagePath) && !dryRun) {
+      try {
+        console.log(`🚀 Uploading image to Discord CDN for public hosting...`);
+        const fileBuffer = fs.readFileSync(imagePath);
+        const blob = new Blob([fileBuffer], { type: 'image/jpeg' });
+        
+        const formData = new FormData();
+        formData.append('file', blob, filename);
 
-      const webhookUrl = process.env.PERSONAL_DISCORD_WEBHOOK + '?wait=true';
-      const response = await fetch(webhookUrl, {
-        method: 'POST',
-        body: formData
-      });
+        const webhookUrl = process.env.PERSONAL_DISCORD_WEBHOOK + '?wait=true';
+        const response = await fetch(webhookUrl, {
+          method: 'POST',
+          body: formData
+        });
 
-      if (response.ok) {
-        const data = await response.json();
-        if (data.attachments && data.attachments.length > 0) {
-          publicUrl = data.attachments[0].url;
-          console.log(`✅ Hosted on Discord CDN successfully: ${publicUrl}`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.attachments && data.attachments.length > 0) {
+            publicUrl = data.attachments[0].url;
+            console.log(`✅ Hosted on Discord CDN successfully: ${publicUrl}`);
+          } else {
+            publicUrl += ` (Discord Success but no attachments returned)`;
+          }
+        } else {
+          const errText = await response.text();
+          console.warn(`⚠️ Failed to upload to Discord: ${response.status} ${errText}`);
+          publicUrl += ` (Discord HTTP Error: ${response.status} ${errText})`;
         }
-      } else {
-        console.warn(`⚠️ Failed to upload to Discord: ${response.status} ${response.statusText}`);
+      } catch (err) {
+        console.error(`⚠️ Discord upload error:`, err.message);
+        publicUrl += ` (Discord Upload Exception: ${err.message})`;
       }
-    } catch (err) {
-      console.error(`⚠️ Discord upload error:`, err.message);
+    } else if (!fs.existsSync(imagePath)) {
+      publicUrl += ` (Error: Image file not found locally before upload)`;
     }
+  } else {
+    publicUrl += ` (Error: PERSONAL_DISCORD_WEBHOOK secret is missing or empty in the action environment)`;
   }
 
   const markdownStr = `\n\n${publicUrl}`;
