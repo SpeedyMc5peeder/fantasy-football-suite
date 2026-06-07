@@ -69,6 +69,32 @@ class CommentaryGenerator {
   }
 
   /**
+   * Helper to execute Gemini call with 503 fallback to gemini-2.5-pro
+   */
+  async executeWithFallback(prompt, context) {
+    try {
+      console.log(`🤖 Generating ${context} via Gemini API (${this.modelName})...`);
+      const model = this.genAI.getGenerativeModel({
+        model: this.modelName,
+        systemInstruction: SYSTEM_INSTRUCTIONS
+      });
+      const result = await model.generateContent(prompt);
+      return result.response.text();
+    } catch (err) {
+      if (err.message && err.message.includes('503') && this.modelName !== 'gemini-2.5-pro') {
+        console.warn(`⚠️ 503 Service Unavailable with ${this.modelName}. Auto-falling back to gemini-2.5-pro...`);
+        const fallbackModel = this.genAI.getGenerativeModel({
+          model: 'gemini-2.5-pro',
+          systemInstruction: SYSTEM_INSTRUCTIONS
+        });
+        const result = await fallbackModel.generateContent(prompt);
+        return result.response.text();
+      }
+      throw err;
+    }
+  }
+
+  /**
    * Generates a column reacting to a trade transaction.
    */
   async generateTradeCommentary(tradeData) {
@@ -115,14 +141,7 @@ class CommentaryGenerator {
     });
 
     // 3. Call Gemini
-    console.log(`🤖 Generating Trade column via Gemini API (${this.modelName})...`);
-    const model = this.genAI.getGenerativeModel({
-      model: this.modelName,
-      systemInstruction: SYSTEM_INSTRUCTIONS
-    });
-
-    const result = await model.generateContent(prompt);
-    return result.response.text();
+    return this.executeWithFallback(prompt, 'Trade column');
   }
 
   /**
@@ -130,15 +149,7 @@ class CommentaryGenerator {
    */
   async generateWeeklyRecap(recapData) {
     const prompt = getRecapPrompt(recapData);
-
-    console.log(`🤖 Generating Weekly Recap column via Gemini API (${this.modelName})...`);
-    const model = this.genAI.getGenerativeModel({
-      model: this.modelName,
-      systemInstruction: SYSTEM_INSTRUCTIONS
-    });
-
-    const result = await model.generateContent(prompt);
-    return result.response.text();
+    return this.executeWithFallback(prompt, 'Weekly Recap column');
   }
 
   /**
@@ -146,15 +157,7 @@ class CommentaryGenerator {
    */
   async generateWaiverCommentary(waiverData) {
     const prompt = getWaiverPrompt(waiverData);
-
-    console.log(`🤖 Generating Waiver review column via Gemini API (${this.modelName})...`);
-    const model = this.genAI.getGenerativeModel({
-      model: this.modelName,
-      systemInstruction: SYSTEM_INSTRUCTIONS
-    });
-
-    const result = await model.generateContent(prompt);
-    return result.response.text();
+    return this.executeWithFallback(prompt, 'Waiver review column');
   }
 }
 
