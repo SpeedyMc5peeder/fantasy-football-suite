@@ -75,6 +75,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           SLEEPER_USER_TOKEN: ${{ secrets.SLEEPER_USER_TOKEN }}
           SLEEPER_LEAGUE_ID: ${{ secrets.SLEEPER_LEAGUE_ID }}
+          PERSONAL_DISCORD_WEBHOOK: ${{ secrets.PERSONAL_DISCORD_WEBHOOK }}
         run: |
           cd BS-Pod
           CMD="${{ inputs.command || '--check-transactions' }}"

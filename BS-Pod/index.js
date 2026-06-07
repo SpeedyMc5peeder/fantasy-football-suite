@@ -284,7 +284,7 @@ async function checkTransactions(options) {
             filename: `trade_${tradeId}`
           };
           const filename = await imageClient.generateImage(imagePayload);
-          const md = imageClient.pushAndGetMarkdown(filename, options.dryRun);
+          const md = await imageClient.pushAndGetMarkdown(filename, options.dryRun);
           article += md;
         }
 
@@ -477,7 +477,7 @@ async function generateWeeklyRecap(options) {
     };
 
     const filename = await imageClient.generateImage(imagePayload);
-    const md = imageClient.pushAndGetMarkdown(filename, options.dryRun);
+    const md = await imageClient.pushAndGetMarkdown(filename, options.dryRun);
     article += md;
 
     await postToSleeper(USER_TOKEN, LEAGUE_ID, article, options.dryRun, 'recaps');

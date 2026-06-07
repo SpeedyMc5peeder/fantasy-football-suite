@@ -9,6 +9,8 @@ const path = require('path');
 const IMAGE_GEN_URL = 'http://localhost:5001/api/generate';
 const RAW_GITHUB_BASE = 'https://raw.githubusercontent.com/SpeedyMc5peeder/fantasy-football-suite/main/Image-Gen/images/';
 
+const fs = require('fs');
+
 /**
  * Requests an image from the local Image-Gen server.
  * @param {Object} payload 
@@ -28,15 +30,48 @@ async function generateImage(payload) {
 }
 
 /**
- * Commits and pushes the generated image to GitHub, then returns the markdown URL string.
+ * Commits and pushes the generated image to GitHub, then returns a public URL string.
  * @param {string} filename 
  * @param {boolean} dryRun 
- * @returns {string} Markdown image string
+ * @returns {string} Public image URL
  */
-function pushAndGetMarkdown(filename, dryRun) {
+async function pushAndGetMarkdown(filename, dryRun) {
   if (!filename) return '';
 
-  const markdownStr = `\n\n${RAW_GITHUB_BASE}${filename}`;
+  const imagePath = path.join(__dirname, '..', '..', 'Image-Gen', 'images', filename);
+  let publicUrl = `${RAW_GITHUB_BASE}${filename}`;
+
+  // If we have a Discord Webhook, upload it there to get a true public CDN URL!
+  if (process.env.PERSONAL_DISCORD_WEBHOOK && fs.existsSync(imagePath) && !dryRun) {
+    try {
+      console.log(`🚀 Uploading image to Discord CDN for public hosting...`);
+      const fileBuffer = fs.readFileSync(imagePath);
+      const blob = new Blob([fileBuffer], { type: 'image/jpeg' });
+      
+      const formData = new FormData();
+      formData.append('file', blob, filename);
+
+      const webhookUrl = process.env.PERSONAL_DISCORD_WEBHOOK + '?wait=true';
+      const response = await fetch(webhookUrl, {
+        method: 'POST',
+        body: formData
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.attachments && data.attachments.length > 0) {
+          publicUrl = data.attachments[0].url;
+          console.log(`✅ Hosted on Discord CDN successfully: ${publicUrl}`);
+        }
+      } else {
+        console.warn(`⚠️ Failed to upload to Discord: ${response.status} ${response.statusText}`);
+      }
+    } catch (err) {
+      console.error(`⚠️ Discord upload error:`, err.message);
+    }
+  }
+
+  const markdownStr = `\n\n${publicUrl}`;
 
   if (dryRun) {
     console.log(`🚫 [DRY RUN] Bypassing git push for image: ${filename}`);
