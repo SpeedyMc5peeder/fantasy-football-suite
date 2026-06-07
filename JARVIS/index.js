@@ -236,20 +236,21 @@ async function checkTransactions(options) {
 
       if (trade.draft_picks) {
         for (const pick of trade.draft_picks) {
-          // roster_id in Sleeper draft_picks represents the receiving roster_id
-          const originalOwnerRoster = rosters.find(r => r.roster_id === pick.original_owner_id);
+          // pick.roster_id in Sleeper draft_picks represents the original roster's ID
+          const originalOwnerRoster = rosters.find(r => r.roster_id === pick.roster_id);
           const originalOwnerUser = originalOwnerRoster ? users.find(u => u.user_id === originalOwnerRoster.owner_id) : null;
-          const originalOwnerName = originalOwnerUser ? originalOwnerUser.display_name : `Roster ${pick.original_owner_id}`;
+          const originalOwnerName = originalOwnerUser ? originalOwnerUser.display_name : `Roster ${pick.roster_id}`;
           
           const pickName = `${pick.season} Round ${pick.round} (${originalOwnerName})`;
           // Map to Dynasty-Evaluator pick nomenclature (e.g. "2027_1st_mid")
           const roundSuffix = pick.round === 1 ? '1st' : pick.round === 2 ? '2nd' : pick.round === 3 ? '3rd' : '4th';
           const evalPickId = `${pick.season}_${roundSuffix}_mid`;
 
-          if (pick.roster_id === rosterAId) {
+          // pick.owner_id represents the NEW roster_id receiving the pick
+          if (pick.owner_id === rosterAId) {
             sideAPicks.push(pickName);
             sideAPlayerIds.push(evalPickId); // Feed to Dynasty-Evaluator picks list
-          } else if (pick.roster_id === rosterBId) {
+          } else if (pick.owner_id === rosterBId) {
             sideBPicks.push(pickName);
             sideBPlayerIds.push(evalPickId);
           }
