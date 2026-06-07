@@ -136,10 +136,6 @@ export default function TradeMachine() {
 
     try {
       const genAI = new GoogleGenerativeAI(config.gemini_api_key);
-      const model = genAI.getGenerativeModel({ 
-        model: "gemini-2.5-flash",
-        generationConfig: { responseMimeType: "application/json" }
-      });
 
       // Find user's manager name in the current active league
       const activeLeague = leagues.find(l => String(l.sleeper_league_id) === String(selectedLeagueId));
@@ -202,7 +198,23 @@ Instructions:
    }
    Ensure the team names match the "Manager Name" values in the list exactly. Ensure the player names match the actual players on their rosters. Return ONLY the JSON object.`;
 
-      const result = await model.generateContent(prompt);
+      let result;
+      try {
+        console.log("Attempting generation with gemini-2.5-flash...");
+        const model = genAI.getGenerativeModel({ 
+          model: "gemini-2.5-flash",
+          generationConfig: { responseMimeType: "application/json" }
+        });
+        result = await model.generateContent(prompt);
+      } catch (firstErr) {
+        console.warn("Flash model failed (possibly 503). Retrying with gemini-2.5-pro...", firstErr);
+        const model = genAI.getGenerativeModel({ 
+          model: "gemini-2.5-pro",
+          generationConfig: { responseMimeType: "application/json" }
+        });
+        result = await model.generateContent(prompt);
+      }
+
       const text = result.response.text();
       try {
         const parsed = JSON.parse(text);

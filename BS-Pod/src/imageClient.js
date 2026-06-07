@@ -36,7 +36,7 @@ async function generateImage(payload) {
 function pushAndGetMarkdown(filename, dryRun) {
   if (!filename) return '';
 
-  const markdownStr = `\n\n![Image](${RAW_GITHUB_BASE}${filename})`;
+  const markdownStr = `\n\n${RAW_GITHUB_BASE}${filename}`;
 
   if (dryRun) {
     console.log(`🚫 [DRY RUN] Bypassing git push for image: ${filename}`);
