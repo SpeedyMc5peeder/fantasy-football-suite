@@ -32,3 +32,9 @@ yarn-error.log*
 *.sw?
 .DS_Store
 Thumbs.db
+
+# Video files
+*.mp4
+*.mov
+*.avi
+*.mkv

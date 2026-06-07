@@ -280,7 +280,6 @@ async function checkTransactions(options) {
           break;
         }
       }
-    }
   }
   console.log('✅ Finished checking transactions.');
 }
