@@ -1,0 +1,15 @@
+{
+  "name": "image-gen",
+  "version": "1.0.0",
+  "description": "Imagen 3 API wrapper & canvas overlay tool",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js"
+  },
+  "dependencies": {
+    "@google/genai": "latest",
+    "express": "^4.21.1",
+    "sharp": "^0.33.5"
+  }
+}

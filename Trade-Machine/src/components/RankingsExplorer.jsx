@@ -53,8 +53,10 @@ export default function RankingsExplorer() {
       setSortDir((d) => (d === 'asc' ? 'desc' : 'asc'))
     } else {
       setSortKey(key)
-      // Default sort direction based on column type
-      setSortDir(key === 'name' || key === 'team' || key === 'position' ? 'asc' : 'asc')
+      // Default sort direction: Value and trend columns should default to 'desc' (highest first)
+      // Rank, Age, and string columns should default to 'asc'
+      const isDescDefault = ['composite_value', 'ktc_value', 'ecr_value', 'ktc_trend'].includes(key)
+      setSortDir(isDescDefault ? 'desc' : 'asc')
     }
   }
 

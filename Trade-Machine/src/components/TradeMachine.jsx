@@ -3,7 +3,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import './TradeMachine.css';
 
 const MODES = ['contender', 'neutral', 'rebuilder'];
-const API_BASE = 'http://localhost:5000'; // Dynasty Evaluator Backend
+const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5000'; // Dynasty Evaluator Backend
 
 export default function TradeMachine() {
   const [leagues, setLeagues] = useState([]);
@@ -34,6 +34,7 @@ export default function TradeMachine() {
   const [aiQuery, setAiQuery] = useState('');
   const [isAiLoading, setIsAiLoading] = useState(false);
   const [aiSuggestion, setAiSuggestion] = useState('');
+  const [parsedAiSuggestion, setParsedAiSuggestion] = useState(null);
   
   // Evaluation Result
   const [evaluation, setEvaluation] = useState(null);
@@ -123,36 +124,185 @@ export default function TradeMachine() {
 
   // 3. AI Assistant
   const handleAiSearch = async () => {
-    if (!aiQuery || !config?.gemini_api_key) return;
+    if (!aiQuery) return;
+    if (!config?.gemini_api_key || config.gemini_api_key.includes("YOUR_GEMINI_API_KEY") || config.gemini_api_key === '') {
+      setAiSuggestion("Error: Gemini API Key is missing. Please set a valid `gemini_api_key` in config.json.");
+      return;
+    }
+    
     setIsAiLoading(true);
     setAiSuggestion('');
+    setParsedAiSuggestion(null);
 
     try {
       const genAI = new GoogleGenerativeAI(config.gemini_api_key);
-      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+      const model = genAI.getGenerativeModel({ 
+        model: "gemini-2.5-flash",
+        generationConfig: { responseMimeType: "application/json" }
+      });
+
+      // Find user's manager name in the current active league
+      const activeLeague = leagues.find(l => String(l.sleeper_league_id) === String(selectedLeagueId));
+      const userManagerName = activeLeague?.user_team_username || config?.user_team_username || '';
 
       const context = rosterData.map(t => {
-        const tops = [...t.players.QB, ...t.players.RB, ...t.players.WR, ...t.players.TE]
-                     .sort((a,b) => b.composite_value - a.composite_value)
-                     .slice(0, 8).map(p => p.name).join(', ');
-        return `Team: ${t.name}\nTop Players: ${tops}`;
+        const qbs = t.players.QB.map(p => p.name).join(', ');
+        const rbs = t.players.RB.map(p => p.name).join(', ');
+        const wrs = t.players.WR.map(p => p.name).join(', ');
+        const tes = t.players.TE.map(p => p.name).join(', ');
+        return `Manager Name: "${t.name}" (Roster ID: ${t.roster_id})
+- QBs: ${qbs || 'None'}
+- RBs: ${rbs || 'None'}
+- WRs: ${wrs || 'None'}
+- TEs: ${tes || 'None'}`;
       }).join('\n\n');
 
       const prompt = `You are a fantasy football AI trade assistant. 
 User Request: "${aiQuery}"
+The user's manager name in this league is: "${userManagerName}". When the user uses first-person pronouns like "I", "me", "my team", "my roster", "my picks", "who should I trade", they are referring to this manager.
 
-League Teams & Top Assets:
+League Teams & Roster Lists:
 ${context}
 
-Find a creative trade that satisfies the user's request using the available teams. Explain why it works in a short, witty paragraph.`;
+Instructions:
+1. IDENTIFY USER INTENT:
+   - Target Teams: If the user requests to trade with a specific manager (e.g., "Find a trade with NickkkHIGH" or "Trade between Rhymenoceros and doesntfleeze"), restrict your trade partners ONLY to those specified managers.
+   - Sell Candidates: If the user wants to trade away, sell, or get rid of specific players (e.g. "sell McCaffrey"), those players MUST be in the "assetsA_sent" list (assuming Team A is the user's team).
+   - Buy Targets: If the user wants to trade for or acquire specific players (e.g. "trade for Bijan"), those players MUST be received by the user's team.
+   - Do Not Sell List: If the user specifies they want to keep certain players or "not trade away X", do NOT include them in any trade packages. Exception: If the user adds "unless it makes more sense" or "unless it's a fleece", you may include them ONLY if the return package is a massive value win for them.
+
+2. BUILD SMART WIN-WIN TRADES:
+   - Identify positional surpluses and deficits (e.g., a team with 5 QBs has a surplus; a team with 1 QB has a deficit).
+   - Contenders (strong, veteran-heavy teams) want to buy active high-scoring veterans.
+   - Rebuilders (young or struggling teams) want to sell old veterans for young players (under 24) and draft picks.
+   - Create a balanced, realistic trade. Do not propose lopsided trades unless the user explicitly asks for a "steal" or "fleece".
+
+3. STRICT CONSTRAINTS:
+   - Do not invent players. Every player in the trade must exist on the respective roster in the list above.
+   - Do not confuse Manager Names (like "NickkkHIGH", "doesntfleeze", "Rhymenoceros") with Player Names. Manager Names are the trading entities, Player Names are the assets.
+   - Maintain the manager names exactly as written in the list.
+
+4. RESPONSE FORMAT:
+   You must return your response ONLY as a JSON object matching this schema:
+   {
+     "teamA_name": "Name of Manager/Team A (Must match the list exactly)",
+     "teamB_name": "Name of Manager/Team B (Must match the list exactly)",
+     "teamC_name": "Name of Manager/Team C (Must match the list exactly, or null if it's a 2-way trade)",
+     "isThreeWay": false,
+     "assetsA_sent": [
+       { "name": "Player Name", "dest_team_name": "Name of Manager receiving this player" }
+     ],
+     "assetsB_sent": [
+       { "name": "Player Name", "dest_team_name": "Name of Manager receiving this player" }
+     ],
+     "assetsC_sent": [
+       { "name": "Player Name", "dest_team_name": "Name of Manager receiving this player" }
+     ],
+     "rationale": "A short, witty Bill Simmons style paragraph explaining why the trade makes sense for both/all sides (e.g., 'Who says no?', 'The apex mountain of...')."
+   }
+   Ensure the team names match the "Manager Name" values in the list exactly. Ensure the player names match the actual players on their rosters. Return ONLY the JSON object.`;
 
       const result = await model.generateContent(prompt);
-      setAiSuggestion(result.response.text());
+      const text = result.response.text();
+      try {
+        const parsed = JSON.parse(text);
+        setParsedAiSuggestion(parsed);
+      } catch (jsonErr) {
+        console.error("Failed to parse AI JSON:", jsonErr);
+        setAiSuggestion(text);
+      }
     } catch (err) {
       console.error(err);
-      setAiSuggestion("Error: Failed to fetch AI suggestion.");
+      const errMsg = err?.message || '';
+      if (errMsg.includes('429') || errMsg.toLowerCase().includes('quota') || errMsg.includes('RESOURCE_EXHAUSTED')) {
+        setAiSuggestion("Error: Gemini API key has exceeded its free tier quota (429 Rate/Quota Limit reached). Please try again in a few minutes, or check if the background scripts are running too frequently.");
+      } else {
+        setAiSuggestion(`Error: Failed to fetch AI suggestion. (${errMsg || 'Unknown error'})`);
+      }
     } finally {
       setIsAiLoading(false);
+    }
+  };
+
+  const applyAiTrade = () => {
+    if (!parsedAiSuggestion) return;
+
+    // Find the teams involved
+    const tA = rosterData.find(t => t.name.toLowerCase() === parsedAiSuggestion.teamA_name.toLowerCase());
+    const tB = rosterData.find(t => t.name.toLowerCase() === parsedAiSuggestion.teamB_name.toLowerCase());
+    const tC = parsedAiSuggestion.isThreeWay && parsedAiSuggestion.teamC_name
+      ? rosterData.find(t => t.name.toLowerCase() === parsedAiSuggestion.teamC_name.toLowerCase())
+      : null;
+
+    if (!tA || !tB) {
+      alert(`Could not find matching teams in this league. AI suggested: "${parsedAiSuggestion.teamA_name}" and "${parsedAiSuggestion.teamB_name}".`);
+      return;
+    }
+
+    // Set active teams
+    setTeamA(String(tA.roster_id));
+    setTeamB(String(tB.roster_id));
+    if (tC) {
+      setIsThreeWay(true);
+      setTeamC(String(tC.roster_id));
+    } else {
+      setIsThreeWay(false);
+      setTeamC('');
+    }
+
+    // Look up assets
+    const resolveAssets = (assetsSent, sourceTeamId) => {
+      const resolved = [];
+      assetsSent.forEach(a => {
+        // Find player by name in rankingsMap
+        let player = rankingsMap.get(a.name);
+        
+        // If not found, do a case-insensitive name lookup across all rankingsMap keys
+        if (!player) {
+          for (let [nameKey, p] of rankingsMap.entries()) {
+            if (nameKey.toLowerCase() === a.name.toLowerCase()) {
+              player = p;
+              break;
+            }
+          }
+        }
+
+        // If still not found, search in the source team's actual roster
+        if (!player) {
+          const sourceTeam = rosterData.find(t => String(t.roster_id) === String(sourceTeamId));
+          if (sourceTeam) {
+            const allPlayers = [
+              ...(sourceTeam.players.QB || []),
+              ...(sourceTeam.players.RB || []),
+              ...(sourceTeam.players.WR || []),
+              ...(sourceTeam.players.TE || [])
+            ];
+            player = allPlayers.find(p => p.name.toLowerCase().includes(a.name.toLowerCase()));
+          }
+        }
+
+        if (player) {
+          // Find destId
+          const destTeam = rosterData.find(t => t.name.toLowerCase() === a.dest_team_name.toLowerCase());
+          resolved.push({
+            ...player,
+            destId: destTeam ? String(destTeam.roster_id) : String(sourceTeamId === tA.roster_id ? tB.roster_id : tA.roster_id)
+          });
+        }
+      });
+      return resolved;
+    };
+
+    const resolvedA = resolveAssets(parsedAiSuggestion.assetsA_sent, tA.roster_id);
+    const resolvedB = resolveAssets(parsedAiSuggestion.assetsB_sent, tB.roster_id);
+    const resolvedC = tC ? resolveAssets(parsedAiSuggestion.assetsC_sent, tC.roster_id) : [];
+
+    setAssetsA(resolvedA);
+    setAssetsB(resolvedB);
+    if (tC) {
+      setAssetsC(resolvedC);
+    } else {
+      setAssetsC([]);
     }
   };
 
@@ -356,12 +506,67 @@ Find a creative trade that satisfies the user's request using the available team
             {isAiLoading ? 'Thinking...' : '✨ Generate'}
           </button>
         </div>
-        {aiSuggestion && (
+        {parsedAiSuggestion ? (
+          <div className="ai-suggestions-drawer">
+            <h3 style={{color:'#00ff88', marginBottom:'0.75rem'}}>AI Trade Suggestion</h3>
+            
+            <div className="ai-trade-framework">
+              <div className="ai-trade-path">
+                <strong>{parsedAiSuggestion.teamA_name} sends:</strong>
+                {parsedAiSuggestion.assetsA_sent.length === 0 ? (
+                  <div style={{opacity:0.5, fontSize:'0.9rem'}}>No players</div>
+                ) : (
+                  <ul>
+                    {parsedAiSuggestion.assetsA_sent.map((a, idx) => (
+                      <li key={idx}>{a.name} ➔ {a.dest_team_name}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+              
+              <div className="ai-trade-path">
+                <strong>{parsedAiSuggestion.teamB_name} sends:</strong>
+                {parsedAiSuggestion.assetsB_sent.length === 0 ? (
+                  <div style={{opacity:0.5, fontSize:'0.9rem'}}>No players</div>
+                ) : (
+                  <ul>
+                    {parsedAiSuggestion.assetsB_sent.map((a, idx) => (
+                      <li key={idx}>{a.name} ➔ {a.dest_team_name}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+
+              {parsedAiSuggestion.isThreeWay && parsedAiSuggestion.teamC_name && (
+                <div className="ai-trade-path">
+                  <strong>{parsedAiSuggestion.teamC_name} sends:</strong>
+                  {parsedAiSuggestion.assetsC_sent.length === 0 ? (
+                    <div style={{opacity:0.5, fontSize:'0.9rem'}}>No players</div>
+                  ) : (
+                    <ul>
+                      {parsedAiSuggestion.assetsC_sent.map((a, idx) => (
+                        <li key={idx}>{a.name} ➔ {a.dest_team_name}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )}
+            </div>
+
+            <div className="ai-rationale">
+              {parsedAiSuggestion.rationale}
+            </div>
+
+            <button className="apply-trade-btn" onClick={applyAiTrade}>
+              ⚡ Apply Trade to Machine
+            </button>
+          </div>
+        ) : aiSuggestion ? (
           <div className="ai-suggestions-drawer">
             <h3 style={{color:'#00ff88', marginBottom:'0.5rem'}}>AI Suggestion</h3>
             <div style={{lineHeight:'1.6', color:'#ddd'}}>{aiSuggestion}</div>
           </div>
-        )}
+        ) : null}
       </div>
 
       {/* Trade Panels Grid */}

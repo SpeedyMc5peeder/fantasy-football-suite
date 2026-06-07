@@ -16,6 +16,7 @@ const path = require('path');
 const sleeper = require('./src/sleeperClient');
 const CommentaryGenerator = require('./src/generator');
 const { postToSleeper } = require('./src/poster');
+const imageClient = require('./src/imageClient');
 
 const CONFIG_PATH = path.join(__dirname, '..', 'config.json');
 const HISTORY_FILE = path.join(__dirname, 'data', 'processed_transactions.json');
@@ -266,7 +267,27 @@ async function checkTransactions(options) {
       };
 
       try {
-        const article = await generator.generateTradeCommentary(tradeData);
+        let article = await generator.generateTradeCommentary(tradeData);
+
+        // Generate a trade comic ~30% of the time
+        if (Math.random() < 0.3) {
+          console.log(`   🎨 Generating trade cartoon...`);
+          const imagePayload = {
+            prompt: "a cartoon robber running away with a bag of gold, fantasy football meme style",
+            style: "retro-comic",
+            overlayText: {
+              title: "TRADE ALERT",
+              mainHeadline: "BLOCKBUSTER",
+              subHeadline: `${managerA} and ${managerB} strike a deal!`,
+              badgeText: "DEAL"
+            },
+            filename: `trade_${tradeId}`
+          };
+          const filename = await imageClient.generateImage(imagePayload);
+          const md = imageClient.pushAndGetMarkdown(filename, options.dryRun);
+          article += md;
+        }
+
         await postToSleeper(USER_TOKEN, LEAGUE_ID, article, options.dryRun, 'trades');
 
         if (!options.dryRun) {
@@ -436,7 +457,29 @@ async function generateWeeklyRecap(options) {
   };
 
   try {
-    const article = await generator.generateWeeklyRecap(recapPayload);
+    let article = await generator.generateWeeklyRecap(recapPayload);
+    
+    // Generate Magazine Cover
+    console.log(`   🎨 Generating weekly recap magazine cover...`);
+    const styles = ['sports-illustrated', 'sports-illustrated', 'ringer', 'retro-comic'];
+    const style = styles[Math.floor(Math.random() * styles.length)];
+    
+    const imagePayload = {
+      prompt: "A dramatic sports photography shot representing fantasy football victory, cinematic lighting",
+      style: style,
+      overlayText: {
+        title: style === 'ringer' ? "THE RINGER" : style === 'retro-comic' ? "DFL COMICS" : "SPORTS ILLUSTRATED",
+        mainHeadline: `WEEK ${week} RECAP`,
+        subHeadline: "The highest highs and lowest lows of the DFL",
+        badgeText: `ISSUE ${week}`
+      },
+      filename: `week_${week}_recap_${Date.now()}`
+    };
+
+    const filename = await imageClient.generateImage(imagePayload);
+    const md = imageClient.pushAndGetMarkdown(filename, options.dryRun);
+    article += md;
+
     await postToSleeper(USER_TOKEN, LEAGUE_ID, article, options.dryRun, 'recaps');
   } catch (err) {
     console.error('❌ Failed to generate or post weekly recap:', err.message);

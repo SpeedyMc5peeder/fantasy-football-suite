@@ -8,6 +8,7 @@ const __dirname = path.dirname(__filename);
 const ROOT_DIR = path.resolve(__dirname, '..', '..');
 const CONFIG_PATH = path.join(ROOT_DIR, 'config.json');
 const OPPS_DIR = path.join(__dirname, '..', 'opportunities');
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 // Ensure output directory exists
 if (!fs.existsSync(OPPS_DIR)) {
@@ -20,6 +21,11 @@ if (!fs.existsSync(PUBLIC_DIR)) {
   fs.mkdirSync(PUBLIC_DIR, { recursive: true });
 }
 const config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf-8'));
+
+// Environment variable fallbacks for GitHub Actions / production
+if (process.env.GEMINI_API_KEY) config.gemini_api_key = process.env.GEMINI_API_KEY;
+if (process.env.SLEEPER_USER_TOKEN) config.sleeper_user_token = process.env.SLEEPER_USER_TOKEN;
+if (process.env.PERSONAL_DISCORD_WEBHOOK) config.personal_webhook_url = process.env.PERSONAL_DISCORD_WEBHOOK;
 
 // Export full config with keys (git-ignored)
 fs.writeFileSync(path.join(PUBLIC_DIR, 'config.json'), JSON.stringify(config, null, 2));
@@ -36,6 +42,42 @@ fs.writeFileSync(path.join(PUBLIC_DIR, 'leagues.json'), JSON.stringify(publicLea
 // ─── 1. Load Config ────────────────────────────────────────────────────────
 const gemini = new GoogleGenerativeAI(config.gemini_api_key);
 const model = gemini.getGenerativeModel({ model: "gemini-2.5-flash" });
+
+// ─── Discord Webhook Sender ──────────────────────────────────────────────────
+async function sendToDiscordWebhook(markdownOutput, leagueName) {
+  const webhookUrl = config.personal_webhook_url;
+  if (!webhookUrl || webhookUrl.includes("YOUR_")) return;
+
+  console.log(`   📤 Sending opportunities for ${leagueName} to personal webhook...`);
+
+  // Split markdown by trade sections
+  const sections = markdownOutput.split('## 🤝');
+  if (sections.length <= 1) return;
+
+  for (let i = 1; i < sections.length; i++) {
+    const tradeBlock = '## 🤝' + sections[i];
+    const cleanBlock = tradeBlock
+      .replace(/## 🤝 (.*)/, '🤝 **$1**')
+      .replace(/\*\*The Framework:\*\*/, '📦 **The Framework:**')
+      .replace(/\*\*Trade Machine Analysis:\*\*/, '🎙️ **Bill Simmons Bot:**');
+
+    try {
+      await fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: "Dynasty Trade Machine",
+          avatar_url: "https://keeptradecut.com/public/images/logo.png",
+          content: cleanBlock
+        })
+      });
+      // Sleep to respect Discord rate limits
+      await sleep(1000);
+    } catch (err) {
+      console.error("Error sending trade block to Discord:", err);
+    }
+  }
+}
 
 // ─── 2. Fetch Helper ───────────────────────────────────────────────────────
 async function fetchRankings() {
@@ -231,12 +273,18 @@ async function run() {
           markdownOutput += `- **${opp.teamA}** receives: ${opp.suggestedTrade.teamBGives.name} (${opp.suggestedTrade.teamBGives.position})\n`;
           markdownOutput += `- **${opp.teamB}** receives: ${opp.suggestedTrade.teamAGives.name} (${opp.suggestedTrade.teamAGives.position})\n\n`;
           markdownOutput += `**Trade Machine Analysis:**\n${blurb}\n\n---\n\n`;
+
+          // Sleep 4 seconds to respect the Gemini Free Tier Rate Limit
+          await sleep(4000);
         }
       }
 
       const outPath = path.join(OPPS_DIR, `${league.name}_opportunities.md`);
       fs.writeFileSync(outPath, markdownOutput);
       console.log(`✅ Wrote opportunities to ${outPath}`);
+
+      // Send to personal Discord webhook if configured
+      await sendToDiscordWebhook(markdownOutput, league.name);
     }
     
     console.log('\n🎉 Finished finding opportunities.');

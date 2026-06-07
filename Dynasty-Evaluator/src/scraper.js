@@ -117,9 +117,10 @@ async function fetchDPIds() {
   const byName = {};
   for (const r of records) {
     const ktcId = Number(r.ktc_id) || 0;
+    const sId = (r.sleeper_id && r.sleeper_id !== 'NA') ? r.sleeper_id : '';
     if (ktcId > 0) {
       byKtcId[ktcId] = {
-        sleeper_id: r.sleeper_id || '',
+        sleeper_id: sId,
         mfl_id: r.mfl_id || '',
         fp_id: r.fantasypros_id || '',
       };
@@ -127,7 +128,7 @@ async function fetchDPIds() {
     const key = (r.name || '').toLowerCase().trim();
     if (key) {
       byName[key] = {
-        sleeper_id: r.sleeper_id || '',
+        sleeper_id: sId,
         mfl_id: r.mfl_id || '',
         fp_id: r.fantasypros_id || '',
       };
