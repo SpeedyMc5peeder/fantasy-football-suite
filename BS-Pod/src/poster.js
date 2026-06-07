@@ -60,9 +60,9 @@ function chunkMessage(text, maxLen = SAFE_LIMIT) {
  * @param {boolean} dryRun - If true, just log to console and do not make the HTTP request
  * @param {string} trigger - The trigger category (trades, recaps, waivers, injuries, etc.)
  */
-async function postToSleeper(userToken, leagueId, content, dryRun = false, trigger = 'general') {
-  // Prepend the randomized bot identification header
-  const header = getFormattedPrefix(trigger);
+async function postToSleeper(userToken, leagueId, content, dryRun = false, trigger = 'general', useHeader = true) {
+  // Prepend the randomized bot identification header if requested
+  const header = useHeader ? getFormattedPrefix(trigger) : '';
   const fullContent = header + content;
 
   // Split into chunks if it exceeds the limit

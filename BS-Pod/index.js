@@ -276,7 +276,7 @@ async function checkTransactions(options) {
           const mascotA = MANAGER_MASCOTS[managerA] || MANAGER_MASCOTS[teamNameA] || "a cunning fantasy football manager";
           const mascotB = MANAGER_MASCOTS[managerB] || MANAGER_MASCOTS[teamNameB] || "a desperate fantasy football manager";
           const imagePayload = {
-            prompt: `A dramatic retro comic book panel showing a tense negotiation between ${mascotA} and ${mascotB}, pop-art comic style`,
+            prompt: `A dramatic retro comic book panel showing a tense negotiation between ${mascotA} and ${mascotB}, pop-art comic style, do not include any text or words in the image`,
             style: "retro-comic",
             overlayText: {
               title: "TRADE ALERT",
@@ -288,13 +288,17 @@ async function checkTransactions(options) {
           };
           const filename = await imageClient.generateImage(imagePayload);
           const md = await imageClient.pushAndGetMarkdown(filename, options.dryRun);
-          article = md + '\n\n' + article; // Prepend so it acts as a header image!
+          
+          if (md) {
+            // Post image cleanly as a standalone header message FIRST
+            await postToSleeper(USER_TOKEN, LEAGUE_ID, md.trim(), options.dryRun, 'trades', false);
+          }
         }
 
         // Sleeper doesn't support Markdown bolding, so strip it out!
         article = article.replace(/\*\*/g, '');
 
-        await postToSleeper(USER_TOKEN, LEAGUE_ID, article, options.dryRun, 'trades');
+        await postToSleeper(USER_TOKEN, LEAGUE_ID, article, options.dryRun, 'trades', true);
 
         if (!options.dryRun) {
           processedTransactions.push(tradeId);
@@ -479,7 +483,7 @@ async function generateWeeklyRecap(options) {
     const coverMascot = MANAGER_MASCOTS[highestScoringOwner] || "a heroic fantasy football player";
     
     const imagePayload = {
-      prompt: `A dramatic, cinematic photography shot of ${coverMascot} celebrating a massive victory on the football field, high quality sports magazine cover`,
+      prompt: `A dramatic, cinematic photography shot of ${coverMascot} celebrating a massive victory on the football field, high quality sports magazine cover, do not include any text or words in the image`,
       style: style,
       overlayText: {
         title: style === 'ringer' ? "THE RINGER" : style === 'retro-comic' ? "DFL COMICS" : "SPORTS ILLUSTRATED",
@@ -492,12 +496,16 @@ async function generateWeeklyRecap(options) {
 
     const filename = await imageClient.generateImage(imagePayload);
     const md = await imageClient.pushAndGetMarkdown(filename, options.dryRun);
-    article = md + '\n\n' + article; // Prepend to the top of the post!
+    
+    if (md) {
+      // Post image cleanly as a standalone header message FIRST
+      await postToSleeper(USER_TOKEN, LEAGUE_ID, md.trim(), options.dryRun, 'recaps', false);
+    }
 
     // Sleeper doesn't support Markdown bolding, so strip it out!
     article = article.replace(/\*\*/g, '');
 
-    await postToSleeper(USER_TOKEN, LEAGUE_ID, article, options.dryRun, 'recaps');
+    await postToSleeper(USER_TOKEN, LEAGUE_ID, article, options.dryRun, 'recaps', true);
   } catch (err) {
     console.error('❌ Failed to generate or post weekly recap:', err.message);
   }
