@@ -57,18 +57,19 @@ function parsePrefixFile() {
       line = line.trim();
       if (!line) continue;
 
-      // Detect trigger block, e.g., "# TRIGGER: recaps — Weekly Matchup Recaps (Tuesdays)"
-      const triggerMatch = line.match(/^#\s*TRIGGER:\s*([a-zA-Z0-9_-]+)/i);
+      // Detect trigger block, e.g., "TRIGGER: recaps — Weekly Matchup Recaps" or "# TRIGGER: recaps"
+      const triggerMatch = line.match(/^(?:#\s*)?TRIGGER:\s*([a-zA-Z0-9_-]+)/i);
       if (triggerMatch) {
         currentTrigger = triggerMatch[1].toLowerCase();
         categories[currentTrigger] = [];
         continue;
       }
 
-      // If we are inside a trigger block, parse lines starting with a number and dot, e.g. "1. (fired up after...)"
+      // If we are inside a trigger block, parse lines starting with a number or just a parenthesis
       if (currentTrigger) {
-        const itemMatch = line.match(/^\d+\.\s*(.*)/);
-        if (itemMatch) {
+        // Matches "1. (text)", "1. text", "(text)"
+        const itemMatch = line.match(/^(?:\d+\.\s*)?(\(?.*)/);
+        if (itemMatch && itemMatch[1].trim() && !itemMatch[1].startsWith('===')) {
           let text = itemMatch[1].trim();
           
           // Strip outer parentheses if they exist, e.g. "(staring at a wall)" -> "staring at a wall"
