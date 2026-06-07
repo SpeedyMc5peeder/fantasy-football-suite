@@ -1,15 +1,9 @@
-/**
- * imageClient.js — Utility to call Image-Gen and handle Git Auto-Commits
- */
-
 const axios = require('axios');
-const { execSync } = require('child_process');
+const FormData = require('form-data');
 const path = require('path');
+const fs = require('fs');
 
 const IMAGE_GEN_URL = 'http://localhost:5001/api/generate';
-const RAW_GITHUB_BASE = 'https://raw.githubusercontent.com/SpeedyMc5peeder/fantasy-football-suite/main/Image-Gen/images/';
-
-const fs = require('fs');
 
 /**
  * Requests an image from the local Image-Gen server.
@@ -30,7 +24,7 @@ async function generateImage(payload) {
 }
 
 /**
- * Commits and pushes the generated image to GitHub, then returns a public URL string.
+ * Uploads the generated image to catbox.moe, then returns a public URL string.
  * @param {string} filename 
  * @param {boolean} dryRun 
  * @returns {string} Public image URL
@@ -39,30 +33,30 @@ async function pushAndGetMarkdown(filename, dryRun) {
   if (!filename) return '';
 
   const imagePath = path.join(__dirname, '..', '..', 'Image-Gen', 'images', filename);
-  let publicUrl = `${RAW_GITHUB_BASE}${filename}`;
-
-  const markdownStr = `\n\n${publicUrl}`;
 
   if (dryRun) {
-    console.log(`🚫 [DRY RUN] Bypassing git push for image: ${filename}`);
-    return markdownStr;
+    console.log(`🚫 [DRY RUN] Bypassing upload for image: ${filename}`);
+    return `\n\nhttps://files.catbox.moe/dummy.jpg`;
   }
 
   try {
-    console.log(`📡 Auto-committing generated image to GitHub...`);
-    const imageRelPath = `../Image-Gen/images/${filename}`;
+    console.log(`📡 Uploading generated image to catbox.moe...`);
+    const form = new FormData();
+    form.append('reqtype', 'fileupload');
+    form.append('fileToUpload', fs.createReadStream(imagePath));
+
+    const response = await axios.post('https://catbox.moe/user/api.php', form, {
+      headers: form.getHeaders()
+    });
     
-    execSync(`git config --global user.name "github-actions[bot]"`);
-    execSync(`git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"`);
-    execSync(`git add ${imageRelPath}`);
-    execSync(`git commit -m "feat: generate image ${filename} [skip ci]"`);
-    execSync(`git push`);
-    console.log(`✅ Image pushed to GitHub successfully.`);
+    const publicUrl = response.data;
+    console.log(`✅ Image uploaded successfully: ${publicUrl}`);
+    return `\n\n${publicUrl}`;
   } catch (err) {
-    console.error(`⚠️ Failed to push image to GitHub:`, err.message);
+    console.error(`⚠️ Failed to upload image to catbox.moe:`, err.message);
   }
 
-  return markdownStr;
+  return '';
 }
 
 module.exports = {

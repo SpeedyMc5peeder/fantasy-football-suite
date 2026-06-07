@@ -168,8 +168,8 @@ Instructions:
 
 2. BUILD SMART, MATHEMATICALLY BALANCED WIN-WIN TRADES:
    - ALWAYS look at the "Value" field for each player. These are active dynasty player values from our database.
-   - A standard fair trade means the total value sent by Team A should be roughly equal to the total value sent by Team B (within 10-15% difference).
-   - Do not propose highly lopsided trades unless the user explicitly requests to "fleece" or steal a player.
+   - The trade MUST lean 10-20% in the user's favor. Ensure the total value RECEIVED by the user ("${userManagerName}") is roughly 10-20% higher than the total value SENT by the user.
+   - Do not propose highly lopsided trades (e.g. >30% win) unless the user explicitly requests to "fleece" or steal a player.
    - Identify positional surpluses and deficits (e.g., a team with 5 QBs has a surplus; a team with 1 QB has a deficit) to find the perfect trade partner.
 
 3. PROVIDE MULTIPLE OPTIONS & DEEP ANALYSIS:
