@@ -5,6 +5,9 @@ on:
     - cron: '*/30 * * * *' # Runs every 30 minutes
   workflow_dispatch: # Allows manual trigger from the GitHub Actions tab
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 permissions:
   contents: write # Crucial: Allows the runner to push state files back to your repo
 
@@ -21,7 +24,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
           cache-dependency-path: |
             Dynasty-Evaluator/package-lock.json
