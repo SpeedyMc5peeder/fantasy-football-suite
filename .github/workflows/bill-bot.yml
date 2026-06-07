@@ -1,8 +1,5 @@
 name: Bill Bot Autopilot
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 on:
   schedule:
     - cron: '*/30 * * * *' # Runs every 30 minutes
@@ -80,7 +77,7 @@ jobs:
           SLEEPER_LEAGUE_ID: ${{ secrets.SLEEPER_LEAGUE_ID }}
         run: |
           cd BS-Pod
-          CMD="${{ github.event.inputs.command || '--check-transactions' }}"
+          CMD="${{ inputs.command || '--check-transactions' }}"
           echo "Running command: node index.js $CMD"
           node index.js $CMD
 

@@ -1,8 +1,5 @@
 name: Weekly Trade Opportunity Finder
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 on:
   schedule:
     - cron: '0 13 * * 2' # Runs every Tuesday at 13:00 UTC (8:00 AM Central Time)

@@ -231,8 +231,16 @@ Write a short, engaging blurb (1-2 paragraphs) pitching this trade to both manag
 `;
 
   try {
-    const result = await model.generateContent(prompt);
-    return result.response.text();
+    try {
+      console.log(`     Attempting generation with gemini-2.5-flash...`);
+      const result = await model.generateContent(prompt);
+      return result.response.text();
+    } catch (firstErr) {
+      console.warn(`     Flash model failed (503/overload). Retrying with gemini-2.5-pro...`, firstErr.message || firstErr);
+      const proModel = gemini.getGenerativeModel({ model: "gemini-2.5-pro" });
+      const result = await proModel.generateContent(prompt);
+      return result.response.text();
+    }
   } catch (error) {
     console.error("Gemini AI generation failed:", error);
     return "AI generation failed. But you guys should really consider trading these players!";

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import './TradeMachine.css';
 
@@ -142,10 +142,10 @@ export default function TradeMachine() {
       const userManagerName = activeLeague?.user_team_username || config?.user_team_username || '';
 
       const context = rosterData.map(t => {
-        const qbs = t.players.QB.map(p => p.name).join(', ');
-        const rbs = t.players.RB.map(p => p.name).join(', ');
-        const wrs = t.players.WR.map(p => p.name).join(', ');
-        const tes = t.players.TE.map(p => p.name).join(', ');
+        const qbs = t.players.QB.map(p => `${p.name} (Age: ${p.age}, Value: ${p.composite_value})`).join(', ');
+        const rbs = t.players.RB.map(p => `${p.name} (Age: ${p.age}, Value: ${p.composite_value})`).join(', ');
+        const wrs = t.players.WR.map(p => `${p.name} (Age: ${p.age}, Value: ${p.composite_value})`).join(', ');
+        const tes = t.players.TE.map(p => `${p.name} (Age: ${p.age}, Value: ${p.composite_value})`).join(', ');
         return `Manager Name: "${t.name}" (Roster ID: ${t.roster_id})
 - QBs: ${qbs || 'None'}
 - RBs: ${rbs || 'None'}
@@ -157,7 +157,7 @@ export default function TradeMachine() {
 User Request: "${aiQuery}"
 The user's manager name in this league is: "${userManagerName}". When the user uses first-person pronouns like "I", "me", "my team", "my roster", "my picks", "who should I trade", they are referring to this manager.
 
-League Teams & Roster Lists:
+League Teams & Roster Lists (contains player age and dynasty values from our rankings database):
 ${context}
 
 Instructions:
@@ -167,11 +167,13 @@ Instructions:
    - Buy Targets: If the user wants to trade for or acquire specific players (e.g. "trade for Bijan"), those players MUST be received by the user's team.
    - Do Not Sell List: If the user specifies they want to keep certain players or "not trade away X", do NOT include them in any trade packages. Exception: If the user adds "unless it makes more sense" or "unless it's a fleece", you may include them ONLY if the return package is a massive value win for them.
 
-2. BUILD SMART WIN-WIN TRADES:
-   - Identify positional surpluses and deficits (e.g., a team with 5 QBs has a surplus; a team with 1 QB has a deficit).
-   - Contenders (strong, veteran-heavy teams) want to buy active high-scoring veterans.
+2. BUILD SMART, MATHEMATICALLY BALANCED WIN-WIN TRADES:
+   - ALWAYS look at the "Value" field for each player. These are active dynasty player values from our database.
+   - A standard fair trade means the total value sent by Team A should be roughly equal to the total value sent by Team B (within 10-15% difference).
+   - Do not propose highly lopsided trades (e.g., sending a player worth 8000 for a player worth 2000) unless the user explicitly requests to "fleece", "steal", or get a "lopsided" trade.
+   - Contenders (strong, veteran-heavy teams) want to buy active high-scoring veterans (e.g. age >= 27).
    - Rebuilders (young or struggling teams) want to sell old veterans for young players (under 24) and draft picks.
-   - Create a balanced, realistic trade. Do not propose lopsided trades unless the user explicitly asks for a "steal" or "fleece".
+   - Identify positional surpluses and deficits (e.g., a team with 5 QBs has a surplus; a team with 1 QB has a deficit) to find the perfect trade partner.
 
 3. STRICT CONSTRAINTS:
    - Do not invent players. Every player in the trade must exist on the respective roster in the list above.
@@ -194,7 +196,7 @@ Instructions:
      "assetsC_sent": [
        { "name": "Player Name", "dest_team_name": "Name of Manager receiving this player" }
      ],
-     "rationale": "A short, witty Bill Simmons style paragraph explaining why the trade makes sense for both/all sides (e.g., 'Who says no?', 'The apex mountain of...')."
+     "rationale": "A short, witty Bill Simmons style paragraph explaining why the trade makes sense for both/all sides and highlighting the database values involved (e.g., 'Who says no?', 'The apex mountain of...')."
    }
    Ensure the team names match the "Manager Name" values in the list exactly. Ensure the player names match the actual players on their rosters. Return ONLY the JSON object.`;
 
@@ -316,6 +318,95 @@ Instructions:
     } else {
       setAssetsC([]);
     }
+
+    // Trigger evaluation automatically!
+    calculateTrade(
+      resolvedA,
+      resolvedB,
+      resolvedC,
+      !!tC,
+      String(tA.roster_id),
+      String(tB.roster_id),
+      tC ? String(tC.roster_id) : ''
+    );
+  };
+
+  const balanceSuggestion = useMemo(() => {
+    if (!evaluation || evaluation.isThreeWay || !teamA || !teamB) return null;
+    
+    const valA = evaluation.final_sideA_total || 0;
+    const valB = evaluation.final_sideB_total || 0;
+    const diff = Math.abs(valA - valB);
+    
+    // If the difference is minor (less than 400), the trade is already balanced
+    if (diff < 400) return null;
+
+    // If valA > valB: Side A total sent is greater than Side B total sent.
+    // That means Side A is sending more value. Side B is winning.
+    // To balance: Side B needs to add a player to send to Side A.
+    // If valB > valA: Side B is sending more value. Side A is winning.
+    // To balance: Side A needs to add a player to send to Side B.
+    const winningId = valA > valB ? teamB : teamA; // The team receiving more value (gets more, sends less)
+    const losingId = valA > valB ? teamA : teamB;  // The team receiving less value (sends more, gets less)
+    
+    const winningRoster = rosterData.find(t => String(t.roster_id) === String(winningId));
+    if (!winningRoster) return null;
+    
+    const winningAssets = winningId === teamA ? assetsA : winningId === teamB ? assetsB : assetsC;
+    
+    // Gather all players on the winning manager's roster not currently in the trade
+    const candidatePlayers = [
+      ...winningRoster.players.QB,
+      ...winningRoster.players.RB,
+      ...winningRoster.players.WR,
+      ...winningRoster.players.TE
+    ].filter(p => !winningAssets.some(a => a.id === p.id));
+    
+    // Find the player whose value is closest to the difference
+    let bestPlayer = null;
+    let minDiff = Infinity;
+    
+    candidatePlayers.forEach(p => {
+      const d = Math.abs(p.composite_value - diff);
+      if (d < minDiff) {
+        minDiff = d;
+        bestPlayer = p;
+      }
+    });
+    
+    if (bestPlayer && bestPlayer.composite_value > 0) {
+      return {
+        player: bestPlayer,
+        sourceTeamId: winningId,
+        destTeamId: losingId,
+        sourceTeamName: winningRoster.name,
+        targetTeamName: rosterData.find(t => String(t.roster_id) === String(losingId))?.name || 'the other side'
+      };
+    }
+    
+    return null;
+  }, [evaluation, teamA, teamB, assetsA, assetsB, rosterData]);
+
+  const applyBalance = () => {
+    if (!balanceSuggestion) return;
+    const { sourceTeamId, player, destTeamId } = balanceSuggestion;
+    
+    const listMap = { [teamA]: setAssetsA, [teamB]: setAssetsB, [teamC]: setAssetsC };
+    const curMap = { [teamA]: assetsA, [teamB]: assetsB, [teamC]: assetsC };
+    
+    const curList = curMap[sourceTeamId];
+    const setList = listMap[sourceTeamId];
+    if (setList) {
+      const updatedAsset = { ...player, destId: destTeamId };
+      const updatedList = [...curList, updatedAsset];
+      setList(updatedList);
+      
+      const nextA = sourceTeamId === teamA ? updatedList : assetsA;
+      const nextB = sourceTeamId === teamB ? updatedList : assetsB;
+      const nextC = sourceTeamId === teamC ? updatedList : assetsC;
+      
+      calculateTrade(nextA, nextB, nextC, isThreeWay, teamA, teamB, teamC);
+    }
   };
 
   // 4. Trade Asset Selection & Evaluation
@@ -334,17 +425,33 @@ Instructions:
     }
   };
 
-  const calculateTrade = async () => {
+  const calculateTrade = async (
+    overrideA,
+    overrideB,
+    overrideC,
+    forceThreeWay,
+    overrideTeamA,
+    overrideTeamB,
+    overrideTeamC
+  ) => {
+    const finalA = overrideA || assetsA;
+    const finalB = overrideB || assetsB;
+    const finalC = overrideC || assetsC;
+    const finalThreeWay = forceThreeWay !== undefined ? forceThreeWay : isThreeWay;
+    const finalTeamA = overrideTeamA || teamA;
+    const finalTeamB = overrideTeamB || teamB;
+    const finalTeamC = overrideTeamC || teamC;
+
     setIsEvaluating(true);
     try {
-      if (!isThreeWay) {
+      if (!finalThreeWay) {
         // Standard 2-way call to evaluator
         const res = await fetch(`${API_BASE}/api/evaluate`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            sideA: { players: assetsA.map(a => a.id), picks: [] },
-            sideB: { players: assetsB.map(a => a.id), picks: [] },
+            sideA: { players: finalA.map(a => a.id), picks: [] },
+            sideB: { players: finalB.map(a => a.id), picks: [] },
             settings: { team_1_mode: modeA, team_2_mode: modeB }
           })
         });
@@ -352,9 +459,7 @@ Instructions:
         setEvaluation(data);
       } else {
         // 3-way offline calculation
-        // TBD: Net sum of assets received vs sent
         const getAdjusted = (asset, mode) => {
-           // simple fallback modifier
            if (mode === 'contender') return asset.composite_value * (asset.age > 27 ? 1.1 : 0.95);
            if (mode === 'rebuilder') return asset.composite_value * (asset.age < 24 ? 1.15 : 0.8);
            return asset.composite_value;
@@ -363,7 +468,7 @@ Instructions:
         const calcNet = (teamId, sentAssets, mode) => {
           let sentValue = sentAssets.reduce((s, a) => s + getAdjusted(a, mode), 0);
           let receivedValue = 0;
-          [assetsA, assetsB, assetsC].forEach(list => {
+          [finalA, finalB, finalC].forEach(list => {
             list.forEach(a => {
               if (a.destId === teamId) receivedValue += getAdjusted(a, mode);
             });
@@ -371,9 +476,9 @@ Instructions:
           return receivedValue - sentValue;
         };
 
-        const netA = calcNet(teamA, assetsA, modeA);
-        const netB = calcNet(teamB, assetsB, modeB);
-        const netC = calcNet(teamC, assetsC, modeC);
+        const netA = calcNet(finalTeamA, finalA, modeA);
+        const netB = calcNet(finalTeamB, finalB, modeB);
+        const netC = calcNet(finalTeamC, finalC, modeC);
         
         setEvaluation({ isThreeWay: true, netA, netB, netC });
       }
@@ -632,6 +737,17 @@ Instructions:
                 <span>Side A: {evaluation.final_sideA_total}</span>
                 <span>Side B: {evaluation.final_sideB_total}</span>
               </div>
+
+              {balanceSuggestion && (
+                <div className="balance-suggestion glass-panel" style={{ marginTop: '1.5rem', border: '1px dashed #00ff88', background: 'rgba(0, 255, 136, 0.05)', padding: '1.5rem', borderRadius: '12px', textAlign: 'left' }}>
+                  <p style={{ margin: 0, color: '#ddd', fontSize: '1rem', lineHeight: '1.5' }}>
+                    ⚖️ **Auto-Balance Suggestion**: Add **{balanceSuggestion.player.name}** (Value: {balanceSuggestion.player.composite_value}) from **{balanceSuggestion.sourceTeamName}** to balance this trade.
+                  </p>
+                  <button className="apply-balance-btn" onClick={applyBalance} style={{ marginTop: '0.75rem', background: '#00ff88', color: '#000', border: 'none', padding: '0.6rem 1.2rem', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', transition: 'all 0.2s', fontSize: '0.95rem' }}>
+                    Add {balanceSuggestion.player.name}
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>
