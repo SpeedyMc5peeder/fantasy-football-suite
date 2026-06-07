@@ -158,8 +158,26 @@ async function getTeamDetailsByRosterId(leagueId, rosterId) {
   const user = users.find(u => u.user_id === roster.owner_id);
   if (!user) return { ownerName: `Roster ${rosterId}`, teamName: `Team ${rosterId}` };
 
-  const ownerName = user.display_name;
-  const teamName = user.metadata && user.metadata.team_name ? user.metadata.team_name : ownerName;
+  const REAL_NAMES_MAP = {
+    'DukeofWales': 'David',
+    'MaffuJames': 'Matt',
+    'Rhymenoceros': 'Dom',
+    'LMcVicker': 'Lauren',
+    'SamBaugh': 'Sam',
+    'JayZone13': 'Jason',
+    'PoppinChunkies': 'Tyler',
+    'Doesntfleeze': 'Trent',
+    'Tklumb86': 'Tony',
+    'MattyIcer': 'Matt'
+  };
+
+  let ownerName = user.display_name;
+  const match = Object.keys(REAL_NAMES_MAP).find(k => k.toLowerCase() === ownerName.toLowerCase());
+  if (match) {
+    ownerName = REAL_NAMES_MAP[match];
+  }
+
+  const teamName = user.metadata && user.metadata.team_name ? user.metadata.team_name : user.display_name;
 
   return { ownerName, teamName };
 }
