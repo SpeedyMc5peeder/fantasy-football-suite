@@ -8,7 +8,7 @@ This document serves as the **Master Architectural Specification** and **Single 
 
 ## 🏗️ System Architecture & Data Flow
 
-The system is split into three core applications and a central configuration file:
+The system is split into four core applications and a central configuration file:
 
 1. **`Dynasty-Evaluator` (Valuation & REST API)**
    - Runs a scraper to ingest KeepTradeCut (KTC) rankings.
@@ -16,17 +16,23 @@ The system is split into three core applications and a central configuration fil
    - Calculates contender/rebuilder value shifts, package adjustments, and roster taxes.
    - Exposes a local REST API (default port `5000`).
 
-2. **`Trade-Machine` (UI Dashboard & Opportunity Finder)**
+2. **`Image-Gen` (Image Generation API)**
+   - Connects to Google's Imagen 3 API using your shared Gemini key.
+   - Exposes a local REST API (default port `5001`) to generate JPG graphics.
+   - Includes overlay canvas scripts to draw Ringer-style titles onto images.
+
+3. **`Trade-Machine` (UI Dashboard & Opportunity Finder)**
    - Runs a React web dashboard (Vite, default port `3000`) for visual drag-and-drop trade evaluation.
    - Runs a background worker that scans your Sleeper leagues, discovers win-win trade opportunities, and writes them with AI blurbs to `/Trade-Machine/opportunities/`.
 
-3. **`BS-Pod` (AI Commentary & Automation)**
+4. **`BS-Pod` (AI Commentary & Automation)**
    - Connects to Sleeper API to read matchups, standings, waivers, injuries, and trades.
    - Queries `Dynasty-Evaluator` for trade and player values.
+   - Requests custom illustrations from `Image-Gen`.
    - Utilizes the Gemini API to write articles in the voice of Bill Simmons (75%) and Ryen Russillo (25%).
-   - Posts articles directly to Sleeper league chat rooms using incoming webhooks.
+   - Posts articles directly to Sleeper league chat rooms using incoming webhooks or user token mutations.
 
-4. **`config.json` (Central Config)**
+5. **`config.json` (Central Config)**
    - A single, centralized JSON configuration file at the root of the workspace managing all API keys, Sleeper league IDs, roles, webhooks, and custom league lore.
 
 ### System Diagram
@@ -42,6 +48,10 @@ graph TD
         DE_DB --> DE_API[REST API Server]
     end
 
+    subgraph "Image-Gen (Port 5001)"
+        IG_API[Imagen 3 API Server] -->|Generates JPGs| IG_Files[images/ output/]
+    end
+
     subgraph "Trade-Machine (Port 3000)"
         TM_UI[Vite + React UI Dashboard] <-->|Queries API| DE_API
         TM_Worker[Trade Opportunity Scanner] -->|Fetches Rosters| Sleeper_API[Sleeper API]
@@ -53,6 +63,7 @@ graph TD
     subgraph "BS-Pod (Cron / CLI Runner)"
         BS_Worker[Transaction & Weekly Cron] -->|Fetches Matchups & Logs| Sleeper_API
         BS_Worker -->|Queries values| DE_API
+        BS_Worker -->|Requests cover image| IG_API
         BS_Worker -->|Custom Lore & Mappings| RootConfig
         BS_Worker -->|Prompts| BS_Gen[Gemini AI Generator]
         BS_Gen -->|Prefixes '[Bill Simmons Bot]' & Webhook| Sleeper_Chat[Sleeper League Chat]
@@ -60,6 +71,7 @@ graph TD
 
     RootConfig -.->|Configs & Keys| BS_Worker
     RootConfig -.->|Configs & Keys| TM_Worker
+    RootConfig -.->|Configs & Keys| IG_API
 ```
 
 ---
@@ -69,6 +81,7 @@ graph TD
 ```
 / (Workspace Root)
 ├── config.json                     # Centralized configurations, webhooks, keys, and lore
+├── config.template.json            # Safe configuration template committed to git
 ├── README.md                       # This master blueprint file
 ├── /Dynasty-Evaluator              # Backend rankings scraper & local REST API
 │   ├── /data
@@ -78,6 +91,12 @@ graph TD
 │   │   ├── scraper.js              # HTML/KTC parsing script
 │   │   ├── formulas.js             # Composite value, Stud Premium, & Roster Tax math
 │   │   └── server.js               # Express REST API (port 5000)
+│   └── package.json
+├── /Image-Gen                      # Imagen 3 API wrapper & canvas overlay tool
+│   ├── /src
+│   │   ├── server.js               # Express API (port 5001)
+│   │   └── overlay.js              # Overlay script to draw magazine text on images
+│   ├── /images                     # Folder for generated JPGs
 │   └── package.json
 ├── /Trade-Machine                  # React UI & background opportunity script
 │   ├── /src                        # React frontend components (Vite)
@@ -96,6 +115,7 @@ graph TD
     ├── index.js                    # Cron / CLI entrypoint
     └── package.json
 ```
+
 
 ---
 
@@ -307,6 +327,10 @@ The `config.json` file at the root of the workspace holds your configuration key
       "manager_lore": {
         "Tklumb86": "Took over the franchise formerly owned by TakethecakeJake. Known for aggressive rebuild moves and late-night trade negotiations.",
         "manager_username_2": "Describe their style, past beefs, or trade habits here..."
+      },
+      "manager_mascots": {
+        "Tklumb86": "a robotic grey wolf running through a futuristic snowstorm, photorealistic 3D rendering",
+        "Rhymenoceros": "a massive iron-clad war rhinoceros charging down an NFL gridiron, cinematic action shot"
       }
     },
     {
