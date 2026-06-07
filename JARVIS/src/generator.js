@@ -100,9 +100,11 @@ class CommentaryGenerator {
   async generateTradeCommentary(tradeData) {
     const {
       managerA,
+      teamNameA,
       managerALore,
       managerAMode,
       managerB,
+      teamNameB,
       managerBLore,
       managerBMode,
       sideAPlayerIds,
@@ -130,9 +132,11 @@ class CommentaryGenerator {
     // 2. Build trade prompt
     const prompt = getTradePrompt({
       managerA,
+      teamNameA,
       managerALore,
       managerAMode,
       managerB,
+      teamNameB,
       managerBLore,
       managerBMode,
       sideAAssets,

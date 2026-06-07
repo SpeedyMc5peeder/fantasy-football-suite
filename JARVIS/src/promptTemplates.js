@@ -89,10 +89,10 @@ ${STYLE_SAMPLES}
 Write a trade reaction sports column breaking down a trade that just occurred in our DFL professional league.
 
 ### LEAGUE TRANSACTION DATA ###
-- **Team A (Primary Entity):** ${teamNameA} (Head Coach/GM: ${managerA}, Roster Mode: ${managerAMode})
+- **Team A (Primary Entity):** ${teamNameA} (Roster Mode: ${managerAMode})
   * Lore/Traits/Beefs: ${managerALore || 'No specific history.'}
   * Assets Received by ${teamNameA}: ${sideAAssets.join(', ')}
-- **Team B (Primary Entity):** ${teamNameB} (Head Coach/GM: ${managerB}, Roster Mode: ${managerBMode})
+- **Team B (Primary Entity):** ${teamNameB} (Roster Mode: ${managerBMode})
   * Lore/Traits/Beefs: ${managerBLore || 'No specific history.'}
   * Assets Received by ${teamNameB}: ${sideBAssets.join(', ')}
 

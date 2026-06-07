@@ -61,6 +61,7 @@ export default function TradeMachine() {
             if (p.sleeper_id) rMap.set(p.sleeper_id, p);
             // Also map by name and KTC ID for draft picks
             rMap.set(p.name, p);
+            rMap.set(p.id, p);
           });
           setRankingsMap(rMap);
         }
@@ -78,13 +79,39 @@ export default function TradeMachine() {
     async function fetchLeague() {
       setIsLoadingLeague(true);
       try {
-        const [uRes, rRes] = await Promise.all([
+        const [uRes, rRes, pRes] = await Promise.all([
           fetch(`https://api.sleeper.app/v1/league/${selectedLeagueId}/users`),
-          fetch(`https://api.sleeper.app/v1/league/${selectedLeagueId}/rosters`)
+          fetch(`https://api.sleeper.app/v1/league/${selectedLeagueId}/rosters`),
+          fetch(`https://api.sleeper.app/v1/league/${selectedLeagueId}/traded_picks`)
         ]);
         
         const users = await uRes.json();
         const rosters = await rRes.json();
+        const tradedPicks = await pRes.json();
+        
+        const allPicks = [];
+        const seasons = [2026, 2027, 2028];
+        const rounds = [1, 2, 3, 4];
+        
+        rosters.forEach(r => {
+           seasons.forEach(season => {
+             rounds.forEach(round => {
+                allPicks.push({
+                   season,
+                   round,
+                   original_owner_id: r.roster_id,
+                   owner_id: r.roster_id 
+                });
+             });
+           });
+        });
+
+        tradedPicks.forEach(tp => {
+             const pick = allPicks.find(p => p.season === parseInt(tp.season) && p.round === tp.round && p.original_owner_id === tp.original_owner_id);
+             if (pick) {
+                 pick.owner_id = tp.roster_id;
+             }
+        });
         
         const formatted = rosters.map(r => {
           const user = users.find(u => u.user_id === r.owner_id);
@@ -100,6 +127,27 @@ export default function TradeMachine() {
               }
             });
           }
+
+          const teamPicks = allPicks.filter(p => p.owner_id === r.roster_id);
+          teamPicks.forEach(pick => {
+             const suffix = pick.round === 1 ? '1st' : pick.round === 2 ? '2nd' : pick.round === 3 ? '3rd' : '4th';
+             const pickName = `${pick.season} Mid ${suffix}`;
+             const pickData = rankingsMap.get(pickName);
+             
+             const origRoster = rosters.find(or => or.roster_id === pick.original_owner_id);
+             const origUser = users.find(u => u.user_id === origRoster?.owner_id);
+             const origName = origUser?.display_name || `Team ${pick.original_owner_id}`;
+             
+             if (pickData) {
+                 players.Picks.push({
+                     ...pickData,
+                     id: `${pickName}_${pick.original_owner_id}`.replace(/\s+/g, '_'),
+                     eval_id: pickData.id,
+                     name: `${pick.season} ${suffix} (${origName})`
+                 });
+             }
+          });
+
           // Sort each position group
           Object.keys(players).forEach(pos => {
             players[pos].sort((a, b) => b.composite_value - a.composite_value);
@@ -137,98 +185,100 @@ export default function TradeMachine() {
     try {
       const genAI = new GoogleGenerativeAI(config.gemini_api_key);
 
-      // Find user's manager name in the current active league
+      // 1. Resolve User Name
       const activeLeague = leagues.find(l => String(l.sleeper_league_id) === String(selectedLeagueId));
-      const userManagerName = activeLeague?.user_team_username || config?.user_team_username || '';
+      let userManagerName = activeLeague?.user_team_username || config?.user_team_username || '';
+      if (!userManagerName && rosterData.length > 0) {
+        userManagerName = rosterData[0].name; // Fallback to prevent hallucination
+      }
 
-      const context = rosterData.map(t => {
-        const qbs = t.players.QB.map(p => `${p.name} (Age: ${p.age}, Value: ${p.composite_value})`).join(', ');
-        const rbs = t.players.RB.map(p => `${p.name} (Age: ${p.age}, Value: ${p.composite_value})`).join(', ');
-        const wrs = t.players.WR.map(p => `${p.name} (Age: ${p.age}, Value: ${p.composite_value})`).join(', ');
-        const tes = t.players.TE.map(p => `${p.name} (Age: ${p.age}, Value: ${p.composite_value})`).join(', ');
+      // 2. Targeted Context Check
+      let targetTeams = [];
+      const queryLower = aiQuery.toLowerCase();
+      rosterData.forEach(t => {
+        if (t.name !== userManagerName && queryLower.includes(t.name.toLowerCase())) {
+          targetTeams.push(t.name);
+        }
+      });
+      
+      const contextTeams = rosterData.filter(t => {
+        if (targetTeams.length === 0) return true; // Include all if no targets specified
+        return t.name === userManagerName || targetTeams.includes(t.name);
+      });
+
+      // 3. Information Density / Trimming
+      const MIN_VALUE = 800;
+      const context = contextTeams.map(t => {
+        const qbs = t.players.QB.filter(p => p.composite_value >= MIN_VALUE).map(p => `${p.name} (Age: ${p.age}, Value: ${p.composite_value})`).join(', ');
+        const rbs = t.players.RB.filter(p => p.composite_value >= MIN_VALUE).map(p => `${p.name} (Age: ${p.age}, Value: ${p.composite_value})`).join(', ');
+        const wrs = t.players.WR.filter(p => p.composite_value >= MIN_VALUE).map(p => `${p.name} (Age: ${p.age}, Value: ${p.composite_value})`).join(', ');
+        const tes = t.players.TE.filter(p => p.composite_value >= MIN_VALUE).map(p => `${p.name} (Age: ${p.age}, Value: ${p.composite_value})`).join(', ');
+        const picks = t.players.Picks.filter(p => p.composite_value >= MIN_VALUE).map(p => `${p.name} (Value: ${p.composite_value})`).join(', ');
         return `Manager Name: "${t.name}" (Roster ID: ${t.roster_id})
 - QBs: ${qbs || 'None'}
 - RBs: ${rbs || 'None'}
 - WRs: ${wrs || 'None'}
-- TEs: ${tes || 'None'}`;
+- TEs: ${tes || 'None'}
+- Picks: ${picks || 'None'}`;
       }).join('\n\n');
 
-      const prompt = `You are a personal fantasy football AI trade assistant exclusively for the manager: "${userManagerName}". 
-User Request: "${aiQuery}"
+      // 4. Parallel Generation
+      const model = genAI.getGenerativeModel({ 
+        model: "gemini-2.5-flash",
+        generationConfig: { responseMimeType: "application/json" }
+      });
+      
+      const fetchTrade = async (seedIndex) => {
+        const promptTemplate = `You are a personal fantasy football AI trade assistant exclusively for the manager: "${userManagerName}". 
+User Request: "${aiQuery}" (Please generate trade option #${seedIndex})
 When the user uses first-person pronouns like "I", "me", "my team", "my roster", "my picks", "who should I trade", they are referring to this manager.
 
-League Teams & Roster Lists (contains player age and dynasty values from our rankings database):
+League Teams & Roster Lists (Note: Players valued under ${MIN_VALUE} have been hidden for brevity):
 ${context}
 
 Instructions:
 1. ONLY SUGGEST TRADES FOR THE USER:
    - EVERY trade you suggest MUST include the user ("${userManagerName}") as one of the primary trading partners (e.g. as Team A). Do NOT suggest trades between two other teams.
-   - Target Teams: If the user requests to trade with a specific manager, focus on finding deals with that manager.
-   - Sell Candidates/Buy Targets: Follow user directions to trade away or acquire specific players.
 
 2. BUILD SMART, MATHEMATICALLY BALANCED WIN-WIN TRADES:
-   - ALWAYS look at the "Value" field for each player. These are active dynasty player values from our database.
+   - ALWAYS look at the "Value" field for each player.
    - The trade MUST lean 10-20% in the user's favor. Ensure the total value RECEIVED by the user ("${userManagerName}") is roughly 10-20% higher than the total value SENT by the user.
-   - Do not propose highly lopsided trades (e.g. >30% win) unless the user explicitly requests to "fleece" or steal a player.
-   - Identify positional surpluses and deficits (e.g., a team with 5 QBs has a surplus; a team with 1 QB has a deficit) to find the perfect trade partner.
 
-3. PROVIDE MULTIPLE OPTIONS & DEEP ANALYSIS:
-   - Provide exactly 3 different trade options for the user. These could be with different teams or different packages with the same team.
-   - For each trade, provide a deep, multi-faceted explanation ("rationale"). Explain why it makes sense strategically for BOTH sides, highlighting the database values, age profiles, and positional needs. Don't just say "it's fair", explain the dynasty implications.
-
-4. STRICT CONSTRAINTS:
+3. STRICT CONSTRAINTS:
    - Do not invent players. Every player in the trade must exist on the respective roster in the list above.
-   - Do not confuse Manager Names with Player Names.
    - Maintain the manager names exactly as written in the list.
 
-5. RESPONSE FORMAT:
-   You must return your response ONLY as a JSON object matching this schema:
+4. RESPONSE FORMAT:
+   You must return your response ONLY as a JSON object containing EXACTLY 1 trade option matching this schema:
    {
-     "trades": [
-       {
-         "teamA_name": "Name of Manager/Team A (Must be ${userManagerName})",
-         "teamB_name": "Name of Manager/Team B (Must match the list exactly)",
-         "teamC_name": "Name of Manager/Team C (Must match the list exactly, or null if it's a 2-way trade)",
-         "isThreeWay": false,
-         "assetsA_sent": [
-           { "name": "Player Name", "dest_team_name": "Name of Manager receiving this player" }
-         ],
-         "assetsB_sent": [
-           { "name": "Player Name", "dest_team_name": "Name of Manager receiving this player" }
-         ],
-         "assetsC_sent": [
-           { "name": "Player Name", "dest_team_name": "Name of Manager receiving this player" }
-         ],
-         "rationale": "A detailed, insightful explanation of why this trade makes strategic sense for all sides, referencing specific player values, age dynamics, and roster needs."
-       }
-     ]
+     "teamA_name": "Name of Manager/Team A (Must be ${userManagerName})",
+     "teamB_name": "Name of Manager/Team B (Must match the list exactly)",
+     "teamC_name": "Name of Manager/Team C (Must match the list exactly, or null if it's a 2-way trade)",
+     "isThreeWay": false,
+     "assetsA_sent": [ { "name": "Player Name", "dest_team_name": "Name of Manager receiving this player" } ],
+     "assetsB_sent": [ { "name": "Player Name", "dest_team_name": "Name of Manager receiving this player" } ],
+     "assetsC_sent": [ { "name": "Player Name", "dest_team_name": "Name of Manager receiving this player" } ],
+     "rationale": "A brief, punchy 2-sentence explanation of why this trade makes strategic sense."
    }
-   Return ONLY the JSON object.`;
+   Return ONLY the JSON object for a single trade.`;
 
-      let result;
-      try {
-        console.log("Attempting generation with gemini-2.5-flash...");
-        const model = genAI.getGenerativeModel({ 
-          model: "gemini-2.5-flash",
-          generationConfig: { responseMimeType: "application/json" }
-        });
-        result = await model.generateContent(prompt);
-      } catch (firstErr) {
-        console.warn("Flash model failed (possibly 503). Retrying with gemini-2.5-pro...", firstErr);
-        const model = genAI.getGenerativeModel({ 
-          model: "gemini-2.5-pro",
-          generationConfig: { responseMimeType: "application/json" }
-        });
-        result = await model.generateContent(prompt);
-      }
+        try {
+           const res = await model.generateContent(promptTemplate);
+           return JSON.parse(res.response.text());
+        } catch (e) {
+           console.warn(`Failed parallel branch #${seedIndex}:`, e);
+           return null;
+        }
+      };
 
-      const text = result.response.text();
-      try {
-        const parsed = JSON.parse(text);
-        setParsedAiSuggestion(parsed);
-      } catch (jsonErr) {
-        console.error("Failed to parse AI JSON:", jsonErr);
-        setAiSuggestion(text);
+      console.log("Attempting parallel generation of 3 trades with gemini-2.5-flash...");
+      const results = await Promise.all([fetchTrade(1), fetchTrade(2), fetchTrade(3)]);
+      const validTrades = results.filter(t => t !== null && t.teamA_name);
+      
+      if (validTrades.length === 0) {
+         setAiSuggestion("Error: The AI failed to generate any valid trades. Please try adjusting your query.");
+      } else {
+         setParsedAiSuggestion({ trades: validTrades });
       }
     } catch (err) {
       console.error(err);
@@ -337,8 +387,64 @@ Instructions:
   };
 
   const balanceSuggestion = useMemo(() => {
-    if (!evaluation || evaluation.isThreeWay || !teamA || !teamB) return null;
+    if (!evaluation || !teamA || !teamB) return null;
     
+    if (evaluation.isThreeWay) {
+      if (!teamC) return null;
+      
+      const nets = [
+        { id: teamA, net: evaluation.netA || 0 },
+        { id: teamB, net: evaluation.netB || 0 },
+        { id: teamC, net: evaluation.netC || 0 }
+      ];
+      
+      // Sort by net descending (biggest winner first, biggest loser last)
+      nets.sort((a, b) => b.net - a.net);
+      const winner = nets[0];
+      const loser = nets[2];
+      
+      // If the difference between winner and loser is minor, it's balanced
+      if (winner.net - loser.net < 50) return null;
+      if (winner.net <= 0 || loser.net >= 0) return null; // Edge case safety
+      
+      const targetValue = Math.min(winner.net, Math.abs(loser.net));
+      
+      const winningRoster = rosterData.find(t => String(t.roster_id) === String(winner.id));
+      if (!winningRoster) return null;
+      
+      const winningAssets = winner.id === teamA ? assetsA : winner.id === teamB ? assetsB : assetsC;
+      
+      const candidatePlayers = [
+        ...winningRoster.players.QB,
+        ...winningRoster.players.RB,
+        ...winningRoster.players.WR,
+        ...winningRoster.players.TE,
+        ...winningRoster.players.Picks
+      ].filter(p => !winningAssets.some(a => a.id === p.id));
+      
+      let bestPlayer = null;
+      let minDiff = Infinity;
+      
+      candidatePlayers.forEach(p => {
+        const d = Math.abs(p.composite_value - targetValue);
+        if (d < minDiff) {
+          minDiff = d;
+          bestPlayer = p;
+        }
+      });
+      
+      if (bestPlayer && bestPlayer.composite_value > 0) {
+        return {
+          player: bestPlayer,
+          sourceTeamId: winner.id,
+          destTeamId: loser.id,
+          sourceTeamName: winningRoster.name,
+          targetTeamName: rosterData.find(t => String(t.roster_id) === String(loser.id))?.name || 'the other side'
+        };
+      }
+      return null;
+    }
+
     const valA = evaluation.final_sideA_total || 0;
     const valB = evaluation.final_sideB_total || 0;
     const diff = Math.abs(valA - valB);
@@ -364,7 +470,8 @@ Instructions:
       ...winningRoster.players.QB,
       ...winningRoster.players.RB,
       ...winningRoster.players.WR,
-      ...winningRoster.players.TE
+      ...winningRoster.players.TE,
+      ...winningRoster.players.Picks
     ].filter(p => !winningAssets.some(a => a.id === p.id));
     
     // Find the player whose value is closest to the difference
@@ -390,7 +497,7 @@ Instructions:
     }
     
     return null;
-  }, [evaluation, teamA, teamB, assetsA, assetsB, rosterData]);
+  }, [evaluation, teamA, teamB, teamC, assetsA, assetsB, assetsC, rosterData]);
 
   const applyBalance = () => {
     if (!balanceSuggestion) return;
@@ -455,8 +562,8 @@ Instructions:
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            sideA: { players: finalA.map(a => a.id), picks: [] },
-            sideB: { players: finalB.map(a => a.id), picks: [] },
+            sideA: { players: finalA.map(a => a.eval_id || a.id), picks: [] },
+            sideB: { players: finalB.map(a => a.eval_id || a.id), picks: [] },
             settings: { team_1_mode: modeA, team_2_mode: modeB }
           })
         });
@@ -503,7 +610,7 @@ Instructions:
 
     return (
       <div className="roster-picker">
-        {['QB', 'RB', 'WR', 'TE'].map(pos => {
+        {['QB', 'RB', 'WR', 'TE', 'Picks'].map(pos => {
           const players = team.players[pos];
           if (!players || players.length === 0) return null;
           return (
