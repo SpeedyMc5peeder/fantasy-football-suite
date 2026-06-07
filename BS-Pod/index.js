@@ -127,23 +127,47 @@ async function checkTransactions(options) {
   const rosters = await sleeper.getRosters(LEAGUE_ID);
   const users = await sleeper.getUsers(LEAGUE_ID);
 
+  // Gather all trades across the checked weeks
+  let allTrades = [];
   for (const week of weeksToCheck) {
-    console.log(`🔍 Checking transactions for Week ${week}...`);
+    console.log(`🔍 Fetching transactions for Week ${week}...`);
     const transactions = await sleeper.getTransactions(LEAGUE_ID, week);
-    
-    // Filter to complete trades
     const trades = transactions.filter(t => t.type === 'trade' && t.status === 'complete');
-    console.log(`   Found ${trades.length} completed trade(s) in Week ${week}.`);
+    allTrades = allTrades.concat(trades.map(t => ({ ...t, week })));
+  }
 
-    for (const trade of trades) {
-      const tradeId = trade.transaction_id;
-      
-      if (processedTransactions.includes(tradeId) && !options.force) {
-        console.log(`   ⏭️ Trade ${tradeId} has already been processed. Skipping.`);
-        continue;
-      }
+  console.log(`   Found a total of ${allTrades.length} completed trade(s) in the active window.`);
 
-      console.log(`   📝 Processing Trade ${tradeId}...`);
+  // If this is a cold start (empty history) and we're not forcing, initialize history and exit
+  if (processedTransactions.length === 0 && !options.force) {
+    console.log('🏁 Cold start detected: Initializing processed transactions database with existing trades to prevent historical spam...');
+    processedTransactions = allTrades.map(t => t.transaction_id);
+    saveHistory();
+    console.log(`✅ Processed transactions database initialized with ${processedTransactions.length} trades. Exiting.`);
+    return;
+  }
+
+  let processedCount = 0;
+  const MAX_TRADES_PER_RUN = 1; // Process at most 1 trade per run to prevent chat flooding
+
+  // Sort trades so that the oldest unprocessed trade is processed first
+  allTrades.sort((a, b) => a.status_updated - b.status_updated);
+
+  for (const trade of allTrades) {
+    const tradeId = trade.transaction_id;
+    
+    if (processedTransactions.includes(tradeId) && !options.force) {
+      console.log(`   ⏭️ Trade ${tradeId} has already been processed. Skipping.`);
+      continue;
+    }
+
+    if (processedCount >= MAX_TRADES_PER_RUN) {
+      console.log(`   ⏳ Reached maximum trades per run limit (${MAX_TRADES_PER_RUN}). Remaining trades will be processed in subsequent runs.`);
+      break;
+    }
+
+    console.log(`   📝 Processing Trade ${tradeId} (Week ${trade.week})...`);
+    processedCount++;
 
       // Determine owners and assets
       const rosterIds = trade.roster_ids;
