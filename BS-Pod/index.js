@@ -269,8 +269,8 @@ async function checkTransactions(options) {
       try {
         let article = await generator.generateTradeCommentary(tradeData);
 
-        // Generate a trade comic ~30% of the time
-        if (Math.random() < 0.3) {
+        // Generate a trade comic ~10% of the time (lowered from 30%)
+        if (Math.random() < 0.1) {
           console.log(`   🎨 Generating trade cartoon...`);
           const imagePayload = {
             prompt: "a cartoon robber running away with a bag of gold, fantasy football meme style",
@@ -462,9 +462,9 @@ async function generateWeeklyRecap(options) {
   try {
     let article = await generator.generateWeeklyRecap(recapPayload);
     
-    // Generate Magazine Cover
+    // Generate Magazine Cover (Comic is now rare: 1 in 6)
     console.log(`   🎨 Generating weekly recap magazine cover...`);
-    const styles = ['sports-illustrated', 'sports-illustrated', 'ringer', 'retro-comic'];
+    const styles = ['sports-illustrated', 'sports-illustrated', 'sports-illustrated', 'ringer', 'ringer', 'retro-comic'];
     const style = styles[Math.floor(Math.random() * styles.length)];
     
     const imagePayload = {
