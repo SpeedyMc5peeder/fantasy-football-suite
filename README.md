@@ -231,7 +231,7 @@ Since Sleeper lacks official incoming webhooks, the bot will post messages direc
 *   **Headers:**
     *   `Content-Type: application/json`
     *   `authorization: <YOUR_SLEEPER_USER_TOKEN>`
-*   **JSON Request Payload:**
+*   **JSON Request Payload (League Chat):**
     ```json
     {
       "operationName": "create_message",
@@ -239,6 +239,17 @@ Since Sleeper lacks official incoming webhooks, the bot will post messages direc
         "text": "🎙️ | BS POD BOT: Your article goes here"
       },
       "query": "mutation create_message($text: String) {\n  create_message(parent_id: \"<SLEEPER_LEAGUE_ID>\", client_id: \"<GENERATE_RANDOM_UUID>\", parent_type: \"league\", text: $text) {\n    message_id\n    parent_id\n    text\n  }\n}"
+    }
+    ```
+*   **JSON Request Payload (Direct Messages DM):**
+    To reply to DMs, the exact same mutation is used but the `parent_type` is changed to `"direct"` and the `parent_id` is set to the DM's `channel_id`:
+    ```json
+    {
+      "operationName": "create_message",
+      "variables": {
+        "text": "🎙️ | BS POD BOT: Here is your trade evaluation..."
+      },
+      "query": "mutation create_message($text: String) {\n  create_message(parent_id: \"<DM_CHANNEL_ID>\", client_id: \"<GENERATE_RANDOM_UUID>\", parent_type: \"direct\", text: $text) {\n    message_id\n    parent_id\n    text\n  }\n}"
     }
     ```
 
@@ -362,4 +373,30 @@ The `config.json` file at the root of the workspace holds your configuration key
   ]
 }
 ```
+
+---
+
+## 🚀 Local Background Hosting (PM2)
+
+If you run the bot locally on your laptop to get instant trade scans and DM evaluations without waiting 15 minutes, you can use **PM2** (a free process manager for Node.js) to keep the scripts running silently in the background:
+
+1. **Install PM2 globally:**
+   ```bash
+   npm install -g pm2
+   ```
+2. **Start the BS-Pod daemon:**
+   Open a terminal, navigate to the `BS-Pod` directory, and run:
+   ```bash
+   pm2 start index.js --name "sleeper-bot" -- --check-transactions --watch
+   ```
+   *(Note: The `--watch` flag tells the orchestrator to run continuously, checking Sleeper transactions and DMs every 2 minutes).*
+3. **Monitor the logs in real-time:**
+   ```bash
+   pm2 logs sleeper-bot
+   ```
+4. **Stop or Restart the daemon:**
+   ```bash
+   pm2 stop sleeper-bot
+   pm2 restart sleeper-bot
+   ```
 
