@@ -90,7 +90,8 @@ async function resolvePlayer(playerId) {
     name,
     position: player.position || 'UNKNOWN',
     team: player.team || 'FA',
-    age: player.age || 0
+    age: player.age || 0,
+    years_exp: player.years_exp || 0
   };
 }
 

@@ -135,21 +135,24 @@ async function checkTransactions(options) {
   const rosters = await sleeper.getRosters(LEAGUE_ID);
   const users = await sleeper.getUsers(LEAGUE_ID);
 
-  // Gather all trades across the checked weeks
+  // Gather all trades and drops across the checked weeks
   let allTrades = [];
+  let allDrops = [];
   for (const week of weeksToCheck) {
     console.log(`🔍 Fetching transactions for Week ${week}...`);
     const transactions = await sleeper.getTransactions(LEAGUE_ID, week);
     const trades = transactions.filter(t => t.type === 'trade' && t.status === 'complete');
+    const drops = transactions.filter(t => (t.type === 'free_agent' || t.type === 'waiver') && t.status === 'complete' && t.drops);
     allTrades = allTrades.concat(trades.map(t => ({ ...t, week })));
+    allDrops = allDrops.concat(drops.map(t => ({ ...t, week })));
   }
 
-  console.log(`   Found a total of ${allTrades.length} completed trade(s) in the active window.`);
+  console.log(`   Found a total of ${allTrades.length} completed trade(s) and ${allDrops.length} drops in the active window.`);
 
   // If this is a cold start (empty history) and we're not forcing, initialize history and exit
   if (processedTransactions.length === 0 && !options.force) {
-    console.log('🏁 Cold start detected: Initializing processed transactions database with existing trades to prevent historical spam...');
-    processedTransactions = allTrades.map(t => t.transaction_id);
+    console.log('🏁 Cold start detected: Initializing processed transactions database with existing transactions to prevent historical spam...');
+    processedTransactions = allTrades.map(t => t.transaction_id).concat(allDrops.map(t => t.transaction_id));
     saveHistory();
     console.log(`✅ Processed transactions database initialized with ${processedTransactions.length} trades. Exiting.`);
     return;
@@ -319,6 +322,69 @@ async function checkTransactions(options) {
         }
       }
   }
+
+  // --- FALLEN LEGENDS PROTOCOL (Waivers & Free Agents) ---
+  let processedDropCount = 0;
+  const MAX_DROPS_PER_RUN = 2;
+
+  allDrops.sort((a, b) => a.status_updated - b.status_updated);
+
+  for (const dropTx of allDrops) {
+    const dropId = dropTx.transaction_id;
+    if (processedTransactions.includes(dropId) && !options.force) continue;
+    if (processedDropCount >= MAX_DROPS_PER_RUN) break;
+
+    if (!dropTx.drops) {
+      if (!options.dryRun) {
+        processedTransactions.push(dropId);
+        saveHistory();
+      }
+      continue;
+    }
+
+    try {
+      let postedTribute = false;
+      // Evaluate each dropped player
+      for (const [playerId, rosterId] of Object.entries(dropTx.drops)) {
+        const resolved = await sleeper.resolvePlayer(playerId);
+        
+        // Phase 1: Veteran Check
+        if (resolved.years_exp >= 7 || resolved.age >= 28) {
+          console.log(`   🕵️  Checking if dropped veteran ${resolved.name} is a Fallen Legend...`);
+          // Phase 2: AI Bouncer
+          const isLegend = await generator.checkIsFallenLegend(resolved.name);
+          if (isLegend) {
+            console.log(`   🚨 FALLEN LEGEND DETECTED: ${resolved.name}! Generating Celebration of Life...`);
+            const details = await sleeper.getTeamDetailsByRosterId(LEAGUE_ID, rosterId);
+            const data = {
+              playerName: resolved.name,
+              position: resolved.position,
+              age: resolved.age,
+              yearsExp: resolved.years_exp,
+              teamName: details.teamName,
+              ownerName: details.ownerName
+            };
+            
+            let article = await generator.generateFallenLegendCommentary(data);
+            article = article.replace(/\*/g, ''); // strip markdown
+            await postToSleeper(USER_TOKEN, LEAGUE_ID, article, options.dryRun, 'waivers', true);
+            postedTribute = true;
+          } else {
+            console.log(`   ❌ AI Bouncer rejected ${resolved.name}. Just a veteran, not a legend.`);
+          }
+        }
+      }
+
+      processedDropCount++;
+      if (!options.dryRun) {
+        processedTransactions.push(dropId);
+        saveHistory();
+      }
+    } catch (err) {
+      console.error(`❌ Failed to process drop transaction ${dropId}:`, err.message);
+    }
+  }
+
   console.log('✅ Finished checking transactions.');
 }
 

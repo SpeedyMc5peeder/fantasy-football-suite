@@ -213,5 +213,36 @@ module.exports = {
   SYSTEM_INSTRUCTIONS,
   getTradePrompt,
   getRecapPrompt,
-  getWaiverPrompt
+  getWaiverPrompt,
+  getFallenLegendPrompt
 };
+
+/**
+ * Builds the prompt for a 'Fallen Legend' Celebration of Life tribute.
+ */
+function getFallenLegendPrompt(data) {
+  const { playerName, teamName, ownerName, yearsExp, age, position } = data;
+  const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(playerName + ' career highlights')}`;
+
+  return `
+${STYLE_SAMPLES}
+
+Write a comedic, dramatic, and celebratory 'Celebration of Life' (Irish Wake / The Wire Cop Funeral style) tribute post for our DFL league.
+
+### FALLEN LEGEND DATA ###
+- **Player Dropped**: ${playerName} (${position})
+- **Age**: ${age} | **Years Experience**: ${yearsExp}
+- **Dropping Team**: ${teamName} (Coached by ${ownerName})
+- **Highlight Reel Link to include**: ${searchUrl}
+
+### WRITING INSTRUCTIONS ###
+1. This player is a certified fantasy football legend who has just been unceremoniously dropped to the waiver wire by their manager.
+2. Write this like a loud, boisterous, slightly drunken Irish Wake or a Cop Funeral from The Wire. We are celebrating the glory years of this player, while also throwing some shade at the GM (${ownerName}) for dropping them.
+3. Pull in REAL stats, accolades, or historical context about this player's actual NFL career (e.g., peak fantasy seasons, real-life awards).
+4. **CRITICAL: Include one completely FAKE, highly specific, funny fantasy football award** that fits their heyday (e.g., '2019 Winner of the Went Off on Dom's Bench in a Playoff Game Award').
+5. Include the provided YouTube highlight link directly in the text like this: [Click here to pour one out to the highlight reel](${searchUrl}).
+6. Keep it punchy, around 150-200 words max.
+7. CRITICAL NAME DIRECTIVE: You must refer to teams by their Team Name (e.g. ${teamName}), NOT by the owner's username or name.
+8. Sign off with a robotic yet slightly drunk/emotional sign-off (e.g. 'Beep Boop. Pouring one out.').
+`;
+}

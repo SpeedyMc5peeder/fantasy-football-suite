@@ -160,6 +160,31 @@ class CommentaryGenerator {
     const prompt = getWaiverPrompt(waiverData);
     return this.executeWithFallback(prompt, 'Waiver review column');
   }
+
+  /**
+   * AI Bouncer: Checks if a dropped player is a true fantasy legend.
+   */
+  async checkIsFallenLegend(playerName) {
+    try {
+      const prompt = `Is the NFL player ${playerName} considered a widely recognized former fantasy football stud/legend (like Nick Chubb, Julio Jones, Derrick Henry, etc.)? Answer ONLY with the word YES or NO. Do not include any other text.`;
+      console.log(`🤖 AI Bouncer: Checking if ${playerName} is a Fallen Legend...`);
+      const model = this.genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+      const result = await model.generateContent(prompt);
+      const answer = result.response.text().trim().toUpperCase();
+      return answer.includes('YES');
+    } catch (err) {
+      console.error('⚠️ AI Bouncer failed:', err.message);
+      return false;
+    }
+  }
+
+  /**
+   * Generates a Celebration of Life tribute for a fallen legend.
+   */
+  async generateFallenLegendCommentary(data) {
+    const prompt = require('./promptTemplates').getFallenLegendPrompt(data);
+    return this.executeWithFallback(prompt, 'Fallen Legend Tribute');
+  }
 }
 
 module.exports = CommentaryGenerator;
