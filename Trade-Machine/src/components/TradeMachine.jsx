@@ -186,8 +186,9 @@ export default function TradeMachine() {
   // 3. AI Assistant
   const handleAiSearch = async () => {
     if (!aiQuery) return;
-    if (!config?.gemini_api_key || config.gemini_api_key.includes("YOUR_GEMINI_API_KEY") || config.gemini_api_key === '') {
-      setAiSuggestion("Error: Gemini API Key is missing. Please set a valid `gemini_api_key` in config.json.");
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY || config?.gemini_api_key;
+    if (!apiKey || apiKey.includes("YOUR_GEMINI_API_KEY") || apiKey === '') {
+      setAiSuggestion("Error: Gemini API Key is missing. Please set VITE_GEMINI_API_KEY in Vercel or in config.json.");
       return;
     }
     
@@ -196,7 +197,7 @@ export default function TradeMachine() {
     setParsedAiSuggestion(null);
 
     try {
-      const genAI = new GoogleGenerativeAI(config.gemini_api_key);
+      const genAI = new GoogleGenerativeAI(apiKey);
 
       // 1. Resolve User Name
       const activeLeague = leagues.find(l => String(l.sleeper_league_id) === String(selectedLeagueId));
