@@ -259,7 +259,7 @@ Instructions:
 
 2. BUILD SMART, MATHEMATICALLY BALANCED WIN-WIN TRADES:
    - ALWAYS look at the "Value" field for each player.
-   - The trade MUST lean 10-20% in the user's favor. Ensure the total value RECEIVED by the user ("${userManagerName}") is roughly 10-20% higher than the total value SENT by the user.
+   - The trade should be as mathematically even as possible. Focus on highly realistic, mutually beneficial trades that both managers would actually consider accepting.
 
 3. STRICT CONSTRAINTS:
    - Do not invent players. Every player in the trade must exist on the respective roster in the list above.
@@ -275,7 +275,7 @@ Instructions:
      "assetsA_sent": [ { "name": "Player Name", "dest_team_name": "Name of Manager receiving this player" } ],
      "assetsB_sent": [ { "name": "Player Name", "dest_team_name": "Name of Manager receiving this player" } ],
      "assetsC_sent": [ { "name": "Player Name", "dest_team_name": "Name of Manager receiving this player" } ],
-     "rationale": "A brief, punchy 2-sentence explanation of why this trade makes strategic sense."
+     "rationale": "An enthusiastic 'Bill Simmons fake trade' style explanation. Lay out why it makes sense for both sides, act like a podcast host pitching a brilliant idea, and end it with a rhetorical hook like 'why wouldn't they do that!?' or 'who says no!?'"
    }
    Return ONLY the JSON object for a single trade.`;
 
