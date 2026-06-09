@@ -3,7 +3,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import './TradeMachine.css';
 
 const MODES = ['contender', 'neutral', 'rebuilder'];
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5000'; // Dynasty Evaluator Backend
+const API_BASE = import.meta.env.PROD ? '' : (import.meta.env.VITE_API_BASE || 'http://localhost:5000');
 
 export default function TradeMachine() {
   const [leagues, setLeagues] = useState([]);
@@ -235,9 +235,12 @@ export default function TradeMachine() {
 - Picks: ${picks || 'None'}`;
       }).join('\n\n');
 
-      // 4. Parallel Generation
-      const model = genAI.getGenerativeModel({ 
+      const modelFlash = genAI.getGenerativeModel({ 
         model: "gemini-2.5-flash",
+        generationConfig: { responseMimeType: "application/json" }
+      });
+      const modelPro = genAI.getGenerativeModel({ 
+        model: "gemini-2.5-pro",
         generationConfig: { responseMimeType: "application/json" }
       });
       
@@ -275,21 +278,38 @@ Instructions:
    }
    Return ONLY the JSON object for a single trade.`;
 
+        let rawText = '';
+        
+        const tryModel = async (m) => {
+            const res = await m.generateContent(promptTemplate);
+            rawText = res.response.text();
+            return JSON.parse(rawText);
+        };
+
         try {
-           const res = await model.generateContent(promptTemplate);
-           return JSON.parse(res.response.text());
+           return await tryModel(modelFlash);
         } catch (e) {
+           if (e.message?.includes('503') || e.message?.includes('overloaded')) {
+               console.warn(`Flash 503 on branch #${seedIndex}, falling back to Pro...`);
+               try {
+                  return await tryModel(modelPro);
+               } catch (e2) {
+                  return { raw_error: rawText || e2.message };
+               }
+           }
            console.warn(`Failed parallel branch #${seedIndex}:`, e);
-           return null;
+           return { raw_error: rawText || e.message };
         }
       };
 
       console.log("Attempting parallel generation of 3 trades with gemini-2.5-flash...");
       const results = await Promise.all([fetchTrade(1), fetchTrade(2), fetchTrade(3)]);
-      const validTrades = results.filter(t => t !== null && t.teamA_name);
+      const validTrades = results.filter(t => t && t.teamA_name);
       
       if (validTrades.length === 0) {
-         setAiSuggestion("Error: The AI failed to generate any valid trades. Please try adjusting your query.");
+         const rawLogs = results.map(r => r?.raw_error).filter(Boolean);
+         const displayLog = rawLogs.length > 0 ? rawLogs[0] : "Please try adjusting your query.";
+         setAiSuggestion(`Error: The AI failed to generate any valid trades. AI Response: ${displayLog}`);
       } else {
          setParsedAiSuggestion({ trades: validTrades });
       }

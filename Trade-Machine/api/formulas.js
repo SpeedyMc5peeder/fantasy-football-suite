@@ -202,7 +202,7 @@ function normalizeECR(dpValue, maxDP) {
 
 // ─── Exports ─────────────────────────────────────────────────────────────────
 
-module.exports = {
+export {
   compositeValue,
   applyTeamMode,
   studAdjust,

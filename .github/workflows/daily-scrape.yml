@@ -1,0 +1,32 @@
+name: Daily Scraper Sync
+
+on:
+  schedule:
+    - cron: '0 10 * * *' # Runs every day at 10:00 AM UTC (6:00 AM Eastern)
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  scrape-and-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies
+        working-directory: ./Trade-Machine
+        run: npm install
+
+      - name: Run Scraper
+        working-directory: ./Trade-Machine
+        run: node scripts/scraper.js
+
+      - name: Commit and Push Changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Auto-sync daily dynasty rankings"
+          file_pattern: "Trade-Machine/data/rankings.json"

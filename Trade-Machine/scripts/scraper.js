@@ -10,23 +10,23 @@
  * Run standalone:  node src/scraper.js
  */
 
-const fs = require('fs');
-const path = require('path');
-const { parse } = require('csv-parse/sync');
-const { compositeValue, normalizeECR, applyTeamMode } = require('./formulas');
+import fs from 'fs';
+import path from 'path';
+import { parse } from 'csv-parse/sync';
+import { compositeValue, normalizeECR, applyTeamMode } from '../api/formulas.js';
 
 // ─── Configuration ───────────────────────────────────────────────────────────
 
 const KTC_URL = 'https://keeptradecut.com/dynasty-rankings';
 const DP_VALUES_URL = 'https://raw.githubusercontent.com/dynastyprocess/data/master/files/values.csv';
 const DP_IDS_URL = 'https://raw.githubusercontent.com/dynastyprocess/data/master/files/db_playerids.csv';
-const DATA_DIR = path.join(__dirname, '..', 'data');
+const DATA_DIR = path.join(process.cwd(), 'data');
 const OUTPUT_FILE = path.join(DATA_DIR, 'rankings.json');
 
 // Read config weight from root config.json if available
 let marketWeight = 0.6;
 try {
-  const rootConfig = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'config.json'), 'utf8'));
+  const rootConfig = JSON.parse(fs.readFileSync(path.join(process.cwd(), '..', 'config.json'), 'utf8'));
   if (rootConfig.market_weight != null) marketWeight = rootConfig.market_weight;
 } catch (_) { /* use default */ }
 
@@ -247,9 +247,9 @@ async function run() {
   }
 }
 
-// Run if executed directly
-if (require.main === module) {
+import { fileURLToPath } from 'url';
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
   run();
 }
 
-module.exports = { run, buildRankings, scrapeKTC, fetchDPValues, fetchDPIds };
+export { run, buildRankings, scrapeKTC, fetchDPValues, fetchDPIds };
