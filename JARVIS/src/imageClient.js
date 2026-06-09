@@ -89,7 +89,7 @@ async function generateImage(payload) {
 }
 
 /**
- * Uploads the generated image to catbox.moe, then returns a public URL string.
+ * Commits the generated image to the public GitHub repository and returns the raw GitHub URL.
  * @param {string} filename 
  * @param {boolean} dryRun 
  * @returns {string} Public image URL
@@ -98,31 +98,30 @@ async function pushAndGetMarkdown(filename, dryRun) {
   if (!filename) return '';
 
   const imagePath = path.join(OUTPUT_DIR, filename);
+  const publicUrl = `https://raw.githubusercontent.com/SpeedyMc5peeder/fantasy-football-suite/main/JARVIS/images/${filename}`;
+  const markdownStr = `\n\n${publicUrl}`;
   
   if (dryRun) {
-    console.log(`🚫 [DRY RUN] Bypassing upload for image: ${filename}`);
-    return `\n\n![Image (Dry Run)](file://${imagePath})\n\n`;
+    console.log(`🚫 [DRY RUN] Bypassing git push for image: ${filename}`);
+    return markdownStr;
   }
 
   try {
-    console.log(`📡 Uploading generated image to catbox.moe...`);
-    const form = new FormData();
-    form.append('reqtype', 'fileupload');
-    form.append('fileToUpload', fs.createReadStream(imagePath));
-
-    const response = await axios.post('https://catbox.moe/user/api.php', form, {
-      headers: {
-        ...form.getHeaders()
-      }
-    });
-
-    const publicUrl = response.data.trim();
-    console.log(`✅ Image uploaded successfully: ${publicUrl}`);
-    return `\n\n${publicUrl}\n\n`;
-
+    console.log(`📡 Auto-committing generated image to GitHub...`);
+    const { execSync } = require('child_process');
+    
+    execSync(`git config --global user.name "github-actions[bot]"`);
+    execSync(`git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"`);
+    // Add the image file explicitly (using path relative to JARVIS dir)
+    execSync(`git add images/${filename}`);
+    execSync(`git commit -m "feat: generate image ${filename} [skip ci]"`);
+    execSync(`git push`);
+    console.log(`✅ Image pushed to GitHub successfully: ${publicUrl}`);
+    
+    return markdownStr;
   } catch (err) {
-    console.error(`⚠️ Failed to upload image to catbox.moe:`, err.message);
-    return '';
+    console.error(`⚠️ Failed to push image to GitHub:`, err.message);
+    return ''; // Return empty string so we don't post a broken link
   }
 }
 
