@@ -275,7 +275,7 @@ Instructions:
      "assetsA_sent": [ { "name": "Player Name", "dest_team_name": "Name of Manager receiving this player" } ],
      "assetsB_sent": [ { "name": "Player Name", "dest_team_name": "Name of Manager receiving this player" } ],
      "assetsC_sent": [ { "name": "Player Name", "dest_team_name": "Name of Manager receiving this player" } ],
-     "rationale": "An enthusiastic 'Bill Simmons fake trade' style explanation. Lay out why it makes sense for both sides, act like a podcast host pitching a brilliant idea, and end it with a rhetorical hook like 'why wouldn't they do that!?' or 'who says no!?'"
+     "rationale": "An enthusiastic 'Bill Simmons fake trade' style explanation. Act as a neutral, third-party observer or podcast host reviewing the trade from the outside. Lay out why it makes sense for both sides, pitch it as a brilliant idea, and end with a rhetorical hook like 'why wouldn't they do that!?' or 'who says no!?'"
    }
    Return ONLY the JSON object for a single trade.`;
 

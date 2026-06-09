@@ -427,3 +427,32 @@
 }
 .net-value.positive { color: #00ff88; }
 .net-value.negative { color: #ff4444; }
+
+
+/* --- Mobile Layout Optimizations --- */
+@media (max-width: 768px) {
+  .trade-grid.two-way,
+  .trade-grid.three-way {
+    grid-template-columns: 1fr;
+  }
+  
+  .trade-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .league-selector, 
+  .trade-type-toggle,
+  .ai-search-bar {
+    width: 100%;
+  }
+
+  .ai-search-bar {
+    flex-direction: column;
+  }
+  
+  .ai-search-bar button {
+    padding: 1rem;
+    width: 100%;
+  }
+}
