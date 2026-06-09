@@ -25,6 +25,5 @@ dist-ssr
 
 # Local configs and generated data
 public/config.json
-public/leagues.json
 opportunities/
 
