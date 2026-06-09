@@ -218,7 +218,7 @@ export default function TradeMachine() {
       });
 
       // 3. Information Density / Trimming
-      const MIN_VALUE = 800;
+      const MIN_VALUE = 400;
       const context = contextTeams.map(t => {
         const qbs = t.players.QB.filter(p => p.composite_value >= MIN_VALUE).map(p => `${p.name} (Age: ${p.age}, Value: ${p.composite_value})`).join(', ');
         const rbs = t.players.RB.filter(p => p.composite_value >= MIN_VALUE).map(p => `${p.name} (Age: ${p.age}, Value: ${p.composite_value})`).join(', ');
@@ -245,7 +245,7 @@ Instructions:
 
 2. BUILD SMART, MATHEMATICALLY BALANCED WIN-WIN TRADES:
    - ALWAYS look at the "Value" field for each player.
-   - The trade should be as mathematically even as possible. Focus on highly realistic, mutually beneficial trades.
+   - The trade MUST be mathematically even. You must literally sum the value of the players Team A sends, and sum the value of the players Team B sends, and ensure the difference is less than 5%.
 
 3. STRICT CONSTRAINTS:
    - Do not invent players. Every player in the trade must exist on the respective roster in the list above.
@@ -254,6 +254,7 @@ Instructions:
 4. RESPONSE FORMAT:
    You must return your response ONLY as a JSON object with a single root key called "trades". The value of "trades" MUST be an array containing EXACTLY 3 unique, diverse trade options. Each trade object in the array must match this schema:
    {
+     "value_math_check": "BEFORE doing anything else, write out a step-by-step mathematical proof that this trade is balanced. (e.g. Team A sends X(5000) + Y(1000) = 6000. Team B sends Z(5800). Difference is 200.)",
      "teamA_name": "Name of Manager/Team A (Must be ${userManagerName})",
      "teamB_name": "Name of Manager/Team B (Must match the list exactly)",
      "teamC_name": "Name of Manager/Team C (Must match the list exactly, or null if it's a 2-way trade)",
