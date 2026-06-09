@@ -197,6 +197,7 @@ async function getTeamDetailsByRosterId(leagueId, rosterId) {
     'MattyIcer': 'Matt'
   };
 
+  const username = user.display_name;
   let ownerName = user.display_name;
   const match = Object.keys(REAL_NAMES_MAP).find(k => k.toLowerCase() === ownerName.toLowerCase());
   if (match) {
@@ -205,7 +206,7 @@ async function getTeamDetailsByRosterId(leagueId, rosterId) {
 
   const teamName = user.metadata && user.metadata.team_name ? user.metadata.team_name : user.display_name;
 
-  return { ownerName, teamName };
+  return { ownerName, username, teamName };
 }
 
 /**

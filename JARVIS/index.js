@@ -231,8 +231,10 @@ async function checkTransactions(options) {
       const detailsB = await sleeper.getTeamDetailsByRosterId(LEAGUE_ID, rosterBId);
 
       const managerA = detailsA.ownerName;
+      const usernameA = detailsA.username;
       const teamNameA = detailsA.teamName;
       const managerB = detailsB.ownerName;
+      const usernameB = detailsB.username;
       const teamNameB = detailsB.teamName;
 
       // Note: check lore using either manager username or team name
@@ -302,10 +304,12 @@ async function checkTransactions(options) {
 
       const tradeData = {
         managerA,
+        usernameA,
         teamNameA,
         managerALore,
         managerAMode,
         managerB,
+        usernameB,
         teamNameB,
         managerBLore,
         managerBMode,
@@ -385,6 +389,7 @@ async function checkTransactions(options) {
           const data = {
             teamName: details.teamName,
             ownerName: details.ownerName,
+            username: details.username,
             playerName: resolved.name,
             bid: tx.settings.waiver_bid,
             remainingFaab: "Unknown" // Sleeper transaction endpoint doesn't contain current FAAB balances
@@ -436,7 +441,8 @@ async function checkTransactions(options) {
                 age: resolved.age,
                 yearsExp: resolved.years_exp,
                 teamName: details.teamName,
-                ownerName: details.ownerName
+                ownerName: details.ownerName,
+                username: details.username
               };
               
               let article = await generator.generateFallenLegendCommentary(data);
@@ -754,6 +760,7 @@ async function checkNews(options) {
         console.log(`   🔥 Player ${playerMatch} is owned by ${details.ownerName}! Generating detailed news commentary...`);
         data.teamName = details.teamName;
         data.ownerName = details.ownerName;
+        data.username = details.username;
       } else {
         console.log(`   🤷 Player ${playerMatch} is a free agent. Generating brief news commentary...`);
       }

@@ -156,10 +156,12 @@ JARVIS: Oh, fuck. Saquon just tore his ACL getting out of a car, apparently. [@D
 function getTradePrompt(data) {
   const {
     managerA,
+    usernameA,
     teamNameA,
     managerALore,
     managerAMode,
     managerB,
+    usernameB,
     teamNameB,
     managerBLore,
     managerBMode,
@@ -174,10 +176,10 @@ ${STYLE_SAMPLES}
 Write a trade reaction sports column breaking down a trade that just occurred in our DFL professional league.
 
 ### LEAGUE TRANSACTION DATA ###
-- **Team A (Primary Entity):** ${teamNameA} (Roster Mode: ${managerAMode})
+- **Team A (Primary Entity):** ${teamNameA} (Coached by ${managerA}, Sleeper Username: ${usernameA}) (Roster Mode: ${managerAMode})
   * Lore/Traits/Beefs: ${managerALore || 'No specific history.'}
   * Assets Received by ${teamNameA}: ${sideAAssets.join(', ')}
-- **Team B (Primary Entity):** ${teamNameB} (Roster Mode: ${managerBMode})
+- **Team B (Primary Entity):** ${teamNameB} (Coached by ${managerB}, Sleeper Username: ${usernameB}) (Roster Mode: ${managerBMode})
   * Lore/Traits/Beefs: ${managerBLore || 'No specific history.'}
   * Assets Received by ${teamNameB}: ${sideBAssets.join(', ')}
 
@@ -199,7 +201,8 @@ Write a trade reaction sports column breaking down a trade that just occurred in
 3. Keep the reaction exactly 2 short paragraphs. Fast, sharp, and punchy.
 4. CRITICAL NAME DIRECTIVE: You must refer to teams by their Team Name (e.g. "${teamNameA}" or "${teamNameB}"), NOT by the owner's username or name.
 5. Roast the loser or praise the winner using pub-level ribbing. Use swearing and 90s/2000s guy slang naturally.
-6. Do NOT use markdown formatting (no bold/italics in the output) because the chat app does not support it.
+6. If you address or tag the managers directly in the chat, you MUST use their Sleeper Usernames: @${usernameA} and @${usernameB}. Do not use @${managerA} or @${teamNameA}.
+7. Do NOT use markdown formatting (no bold/italics in the output) because the chat app does not support it.
 `;
 }
 
@@ -296,7 +299,7 @@ Write a comedic, dramatic, and celebratory 'Celebration of Life' (mock eulogy) t
 ### FALLEN LEGEND DATA ###
 - **Player Dropped**: ${playerName} (${position})
 - **Age**: ${age} | **Years Experience**: ${yearsExp}
-- **Dropping Team**: ${teamName} (Coached by ${ownerName})
+- **Dropping Team**: ${teamName} (Coached by ${ownerName}, Sleeper Username: ${data.username})
 - **Highlight Reel Link**: ${searchUrl}
 
 ### WRITING INSTRUCTIONS ###
@@ -306,7 +309,8 @@ Write a comedic, dramatic, and celebratory 'Celebration of Life' (mock eulogy) t
 4. CRITICAL: Include one completely FAKE, highly specific, funny fantasy football award that fits their heyday.
 5. Include the provided YouTube highlight link directly in the text as a RAW URL on its own line: "Pour one out to the highlight reel here: ${searchUrl}" (Do NOT use markdown link formatting).
 6. CRITICAL NAME DIRECTIVE: You must refer to teams by their Team Name, NOT by the owner's username or name.
-7. Do NOT use markdown formatting (no bold/italics in the output) because the chat app does not support it.
+7. If you decide to tag the manager who dropped them, you MUST use their Sleeper Username: @${data.username}.
+8. Do NOT use markdown formatting (no bold/italics in the output) because the chat app does not support it.
 `;
 }
 
@@ -314,15 +318,15 @@ Write a comedic, dramatic, and celebratory 'Celebration of Life' (mock eulogy) t
  * Builds the prompt for a breaking news reaction.
  */
 function getBreakingNewsPrompt(data) {
-  const { headline, description, playerName, teamName, ownerName, isInjury, isRostered } = data;
+  const { headline, description, playerName, teamName, ownerName, username, isInjury, isRostered } = data;
 
   let impactLine = isRostered 
-    ? `- **Manager Impacted**: ${teamName} (Coached by ${ownerName})` 
+    ? `- **Manager Impacted**: ${teamName} (Coached by ${ownerName}, Sleeper Username: ${username})` 
     : `- **Manager Impacted**: None (Free Agent)`;
 
   let injuryInstruction = isInjury
-    ? (isRostered ? `This is an injury alert. Offer fake, overly dramatic condolences to ${teamName}, acting as if their season is completely ruined. Tag ${ownerName} as [@${ownerName}].` : `This is an injury alert about a free agent. Warn the league that they shouldn't bother picking him up.`)
-    : (isRostered ? `This is a major NFL news alert. React to it with extreme sarcasm, and tell ${teamName} exactly why this either ruins their season or gives them false hope. Tag ${ownerName} as [@${ownerName}].` : `This is a major NFL news alert about a free agent. Drop a sarcastic comment about how he's still irrelevant to the league.`);
+    ? (isRostered ? `This is an injury alert. Offer fake, overly dramatic condolences to ${teamName}, acting as if their season is completely ruined. Tag the manager using their Sleeper Username: [@${username}].` : `This is an injury alert about a free agent. Warn the league that they shouldn't bother picking him up.`)
+    : (isRostered ? `This is a major NFL news alert. React to it with extreme sarcasm, and tell ${teamName} exactly why this either ruins their season or gives them false hope. Tag the manager using their Sleeper Username: [@${username}].` : `This is a major NFL news alert about a free agent. Drop a sarcastic comment about how he's still irrelevant to the league.`);
 
   let lengthInstruction = isRostered
     ? `Keep it to about 1 paragraph (around 100-150 words). Roast the manager specifically.`
@@ -344,14 +348,15 @@ ${impactLine}
 2. ${injuryInstruction}
 3. ${lengthInstruction}
 4. CRITICAL NAME DIRECTIVE: You must refer to teams by their Team Name, NOT by the owner's username or name.
-5. Do NOT use markdown formatting (no bold/italics in the output) because the chat app does not support it.
+5. If you address or tag the manager directly in the chat, you MUST use their Sleeper Username: @${username}. Do not use @${ownerName} or @${teamName}.
+6. Do NOT use markdown formatting (no bold/italics in the output) because the chat app does not support it.
 `;
 }
 /**
  * Builds the prompt for massive FAAB spends.
  */
 function getFAABPrompt(data) {
-  const { teamName, ownerName, playerName, bid, remainingFaab } = data;
+  const { teamName, ownerName, username, playerName, bid, remainingFaab } = data;
 
   return `
 ${STYLE_SAMPLES}
@@ -359,7 +364,7 @@ ${STYLE_SAMPLES}
 Write a comedic, sarcastic reaction to a manager spending a massive amount of FAAB budget on the waiver wire in our DFL league.
 
 ### FAAB SPEND DATA ###
-- **Manager**: ${teamName} (Coached by ${ownerName})
+- **Manager**: ${teamName} (Coached by ${ownerName}, Sleeper Username: ${username})
 - **Player Acquired**: ${playerName}
 - **Bid Amount**: $${bid}
 - **Remaining FAAB**: $${remainingFaab}
@@ -369,7 +374,8 @@ Write a comedic, sarcastic reaction to a manager spending a massive amount of FA
 2. Keep it to 1 to 2 short paragraphs.
 3. Roast the manager for spending so much fake money on someone who probably won't help them win.
 4. CRITICAL NAME DIRECTIVE: You must refer to the team by their Team Name, NOT by the owner's username or name.
-5. Do NOT use markdown formatting (no bold/italics).
+5. If you tag the manager who spent the money, you MUST use their Sleeper Username: @${username}.
+6. Do NOT use markdown formatting (no bold/italics).
 `;
 }
 
