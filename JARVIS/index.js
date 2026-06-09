@@ -646,34 +646,35 @@ async function checkNews(options) {
       
       const rosters = await sleeper.getRosters(LEAGUE_ID);
       const roster = rosters.find(r => r.players && r.players.includes(resolved.id));
+      const isInjury = article.headline.toLowerCase().includes('injur') || article.description.toLowerCase().includes('injur');
       
+      let data = {
+        headline: article.headline,
+        description: article.description,
+        playerName: resolved.name,
+        isInjury: isInjury,
+        isRostered: !!roster
+      };
+
       if (roster) {
         const details = await sleeper.getTeamDetailsByRosterId(LEAGUE_ID, roster.roster_id);
-        const isInjury = article.headline.toLowerCase().includes('injur') || article.description.toLowerCase().includes('injur');
-        
-        console.log(`   🔥 Player ${playerMatch} is owned by ${details.ownerName}! Generating news commentary...`);
-        const data = {
-          headline: article.headline,
-          description: article.description,
-          playerName: resolved.name,
-          teamName: details.teamName,
-          ownerName: details.ownerName,
-          isInjury: isInjury
-        };
-        
-        let commentary = await generator.generateNewsCommentary(data);
-        commentary = commentary.replace(/\*/g, ''); // strip markdown
-        
-        await postToSleeper(USER_TOKEN, LEAGUE_ID, commentary, options.dryRun, 'breaking_news', true);
-        
-        // Post the article link
-        const link = article.link && article.link.web ? article.link.web.href : null;
-        if (link) {
-          const ytMessage = `Read more about the impending disaster here: ${link}`;
-          await postToSleeper(USER_TOKEN, LEAGUE_ID, ytMessage, options.dryRun, 'breaking_news', false);
-        }
+        console.log(`   🔥 Player ${playerMatch} is owned by ${details.ownerName}! Generating detailed news commentary...`);
+        data.teamName = details.teamName;
+        data.ownerName = details.ownerName;
       } else {
-        console.log(`   🤷 Player ${playerMatch} is a free agent. Skipping commentary.`);
+        console.log(`   🤷 Player ${playerMatch} is a free agent. Generating brief news commentary...`);
+      }
+      
+      let commentary = await generator.generateNewsCommentary(data);
+      commentary = commentary.replace(/\*/g, ''); // strip markdown
+      
+      await postToSleeper(USER_TOKEN, LEAGUE_ID, commentary, options.dryRun, 'breaking_news', true);
+      
+      // Post the article link
+      const link = article.link && article.link.web ? article.link.web.href : null;
+      if (link) {
+        const ytMessage = `Read more here: ${link}`;
+        await postToSleeper(USER_TOKEN, LEAGUE_ID, ytMessage, options.dryRun, 'breaking_news', false);
       }
     }
   }

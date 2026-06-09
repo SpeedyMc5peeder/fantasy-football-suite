@@ -242,7 +242,19 @@ Write a comedic, dramatic, and celebratory 'Celebration of Life' (Irish Wake / T
  * Builds the prompt for a breaking news reaction.
  */
 function getBreakingNewsPrompt(data) {
-  const { headline, description, playerName, teamName, ownerName, isInjury } = data;
+  const { headline, description, playerName, teamName, ownerName, isInjury, isRostered } = data;
+
+  let impactLine = isRostered 
+    ? `- **Manager Impacted**: ${teamName} (Coached by ${ownerName})` 
+    : `- **Manager Impacted**: None (Free Agent)`;
+
+  let injuryInstruction = isInjury
+    ? (isRostered ? `This is an injury alert. Offer fake, overly dramatic condolences to ${teamName}, acting as if their season is completely ruined.` : `This is an injury alert about a free agent. Warn the league that they shouldn't bother picking him up.`)
+    : (isRostered ? `This is a major NFL news alert. React to it with extreme sarcasm, and tell ${teamName} exactly why this either ruins their season or gives them false hope.` : `This is a major NFL news alert about a free agent. Drop a sarcastic comment about how he's still irrelevant to the league.`);
+
+  let lengthInstruction = isRostered
+    ? `Keep it to about one paragraph (around 100 words).`
+    : `Keep it very short and punchy, around 20-40 words max. A quick one or two sentence reaction.`;
 
   return `
 ${STYLE_SAMPLES}
@@ -253,14 +265,14 @@ Write a comedic, dramatic, and sarcastic 'Breaking News' announcement for our DF
 - **Headline**: ${headline}
 - **Description**: ${description}
 - **Player Involved**: ${playerName}
-- **Manager Impacted**: ${teamName} (Coached by ${ownerName})
+${impactLine}
 
 ### WRITING INSTRUCTIONS ###
 1. Act like a breaking news anchor who has just received a catastrophic news bulletin.
-2. ${isInjury ? "This is an injury alert. Offer fake, overly dramatic condolences to " + teamName + ", acting as if their season is completely ruined. Remind them that fantasy football is a cruel, unforgiving game." : "This is a major NFL news alert. React to it with extreme sarcasm, and tell " + teamName + " exactly why this either ruins their season or gives them false hope."}
+2. ${injuryInstruction}
 3. Maintain your deadpan, robotic butler persona. 
-4. Keep it very short and punchy, around 20-40 words max. A quick one or two sentence reaction.
-5. CRITICAL NAME DIRECTIVE: You must refer to teams by their Team Name (e.g. ${teamName}), NOT by the owner's username or name.
+4. ${lengthInstruction}
+${isRostered ? `5. CRITICAL NAME DIRECTIVE: You must refer to teams by their Team Name (e.g. ${teamName}), NOT by the owner's username or name.` : ''}
 `;
 }
 
