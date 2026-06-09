@@ -18,10 +18,12 @@ const CommentaryGenerator = require('./src/generator');
 const { postToSleeper } = require('./src/poster');
 const imageClient = require('./src/imageClient');
 const newsScraper = require('./src/newsScraper');
+const promptHelpers = require('./src/imagePrompts');
 
 const CONFIG_PATH = path.join(__dirname, '..', 'config.json');
 const HISTORY_FILE = path.join(__dirname, 'data', 'processed_transactions.json');
 const NEWS_HISTORY_FILE = path.join(__dirname, 'data', 'processed_news.json');
+const EVENTS_HISTORY_FILE = path.join(__dirname, 'data', 'processed_events.json');
 
 // Load configurations
 let config = { leagues: [] };
@@ -74,6 +76,16 @@ try {
   console.warn('⚠️ Failed to load processed news history, starting fresh.', err.message);
 }
 
+// Load processed weekly events history
+let processedEvents = { matchupOfWeek: [], mondayMiracle: [] };
+try {
+  if (fs.existsSync(EVENTS_HISTORY_FILE)) {
+    processedEvents = JSON.parse(fs.readFileSync(EVENTS_HISTORY_FILE, 'utf8'));
+  }
+} catch (err) {
+  console.warn('⚠️ Failed to load processed events history, starting fresh.', err.message);
+}
+
 function saveHistory() {
   try {
     fs.writeFileSync(HISTORY_FILE, JSON.stringify(processedTransactions, null, 2));
@@ -87,6 +99,14 @@ function saveNewsHistory() {
     fs.writeFileSync(NEWS_HISTORY_FILE, JSON.stringify(processedNews, null, 2));
   } catch (err) {
     console.error('❌ Failed to save news history:', err.message);
+  }
+}
+
+function saveEventsHistory() {
+  try {
+    fs.writeFileSync(EVENTS_HISTORY_FILE, JSON.stringify(processedEvents, null, 2));
+  } catch (err) {
+    console.error('❌ Failed to save events history:', err.message);
   }
 }
 
@@ -303,15 +323,13 @@ async function checkTransactions(options) {
         // Generate a trade comic ~50% of the time (changed from 100%)
         if (Math.random() < 0.5) {
           console.log(`   🎨 Generating trade cartoon...`);
-          const mascotA = MANAGER_MASCOTS[managerA] || MANAGER_MASCOTS[teamNameA] || "a cunning fantasy football manager";
-          const mascotB = MANAGER_MASCOTS[managerB] || MANAGER_MASCOTS[teamNameB] || "a desperate fantasy football manager";
           const imagePayload = {
-            prompt: `A dramatic retro comic book panel showing a tense negotiation between ${mascotA} and ${mascotB}, pop-art comic style, do not include any text or words in the image`,
+            prompt: promptHelpers.getRandomPrompt('trades'),
             style: "retro-comic",
             overlayText: {
               title: "TRADE ALERT",
               mainHeadline: "BLOCKBUSTER",
-              subHeadline: `${managerA} and ${managerB} strike a deal!`,
+              subHeadline: `${teamNameA} and ${teamNameB} strike a deal!`,
               badgeText: "DEAL"
             },
             filename: `trade_${tradeId}`
@@ -343,74 +361,137 @@ async function checkTransactions(options) {
       }
   }
 
-  // --- FALLEN LEGENDS PROTOCOL (Waivers & Free Agents) ---
-  let processedDropCount = 0;
-  const MAX_DROPS_PER_RUN = 2;
+  // --- WAIVERS & FREE AGENTS (FAAB & Fallen Legends) ---
+  let processedEventCount = 0;
+  const MAX_EVENTS_PER_RUN = 2;
 
   allDrops.sort((a, b) => a.status_updated - b.status_updated);
 
-  for (const dropTx of allDrops) {
-    const dropId = dropTx.transaction_id;
-    if (processedTransactions.includes(dropId) && !options.force) continue;
-    if (processedDropCount >= MAX_DROPS_PER_RUN) break;
+  for (const tx of allDrops) {
+    const txId = tx.transaction_id;
+    if (processedTransactions.includes(txId) && !options.force) continue;
+    if (processedEventCount >= MAX_EVENTS_PER_RUN) break;
 
-    if (!dropTx.drops) {
-      if (!options.dryRun) {
-        processedTransactions.push(dropId);
-        saveHistory();
-      }
-      continue;
-    }
+    let eventPosted = false;
 
     try {
-      let postedTribute = false;
-      // Evaluate each dropped player
-      for (const [playerId, rosterId] of Object.entries(dropTx.drops)) {
-        const resolved = await sleeper.resolvePlayer(playerId);
-        
-        // Phase 1: Veteran Check
-        if (resolved.years_exp >= 7 || resolved.age >= 28) {
-          console.log(`   🕵️  Checking if dropped veteran ${resolved.name} is a Fallen Legend...`);
-          // Phase 2: AI Bouncer
-          const isLegend = await generator.checkIsFallenLegend(resolved.name);
-          if (isLegend) {
-            console.log(`   🚨 FALLEN LEGEND DETECTED: ${resolved.name}! Generating Celebration of Life...`);
-            const details = await sleeper.getTeamDetailsByRosterId(LEAGUE_ID, rosterId);
-            const data = {
-              playerName: resolved.name,
-              position: resolved.position,
-              age: resolved.age,
-              yearsExp: resolved.years_exp,
-              teamName: details.teamName,
-              ownerName: details.ownerName
+      // 1. FAAB WAIVER HEIST PROTOCOL
+      if (tx.type === 'waiver' && tx.settings && tx.settings.waiver_bid >= 15 && tx.adds) {
+        for (const [playerId, rosterId] of Object.entries(tx.adds)) {
+          const resolved = await sleeper.resolvePlayer(playerId);
+          const details = await sleeper.getTeamDetailsByRosterId(LEAGUE_ID, rosterId);
+          console.log(`   💰 MASSIVE FAAB DETECTED: ${details.teamName} spent $${tx.settings.waiver_bid} on ${resolved.name}!`);
+
+          const data = {
+            teamName: details.teamName,
+            ownerName: details.ownerName,
+            playerName: resolved.name,
+            bid: tx.settings.waiver_bid,
+            remainingFaab: "Unknown" // Sleeper transaction endpoint doesn't contain current FAAB balances
+          };
+
+          let article = await generator.generateFAABCommentary(data);
+          article = article.replace(/\*/g, '');
+
+          if (Math.random() < 0.5) {
+            console.log(`   🎨 Generating FAAB Vault image...`);
+            const imagePayload = {
+              prompt: promptHelpers.getRandomPrompt('faab'),
+              style: "faab-heist",
+              overlayText: {
+                title: "FAAB ALERT",
+                mainHeadline: "BANKRUPT",
+                subHeadline: `${details.teamName} spends $${tx.settings.waiver_bid}!`,
+                badgeText: "WAIVERS"
+              },
+              filename: `faab_${txId}`
             };
-            
-            let article = await generator.generateFallenLegendCommentary(data);
-            article = article.replace(/\*/g, ''); // strip markdown
-            await postToSleeper(USER_TOKEN, LEAGUE_ID, article, options.dryRun, 'waivers', true);
-            
-            // Post the YouTube highlight link separately
-            const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(resolved.name + ' career highlights')}`;
-            const ytMessage = `Pour one out to the highlight reel here: ${searchUrl}`;
-            await postToSleeper(USER_TOKEN, LEAGUE_ID, ytMessage, options.dryRun, 'waivers', false);
-            
-            postedTribute = true;
-          } else {
-            console.log(`   ❌ AI Bouncer rejected ${resolved.name}. Just a veteran, not a legend.`);
+            const filename = await imageClient.generateImage(imagePayload);
+            const md = await imageClient.pushAndGetMarkdown(filename, options.dryRun);
+            if (md) {
+              await postToSleeper(USER_TOKEN, LEAGUE_ID, md.trim(), options.dryRun, 'waivers', false);
+            }
+          }
+
+          await postToSleeper(USER_TOKEN, LEAGUE_ID, article, options.dryRun, 'waivers', true);
+          eventPosted = true;
+          break; // Only trigger one FAAB alert per transaction
+        }
+      }
+
+      // 2. FALLEN LEGENDS PROTOCOL
+      if (tx.drops) {
+        for (const [playerId, rosterId] of Object.entries(tx.drops)) {
+          const resolved = await sleeper.resolvePlayer(playerId);
+          
+          if (resolved.years_exp >= 7 || resolved.age >= 28) {
+            console.log(`   🕵️  Checking if dropped veteran ${resolved.name} is a Fallen Legend...`);
+            const isLegend = await generator.checkIsFallenLegend(resolved.name);
+            if (isLegend) {
+              console.log(`   🚨 FALLEN LEGEND DETECTED: ${resolved.name}! Generating Celebration of Life...`);
+              const details = await sleeper.getTeamDetailsByRosterId(LEAGUE_ID, rosterId);
+              const data = {
+                playerName: resolved.name,
+                position: resolved.position,
+                age: resolved.age,
+                yearsExp: resolved.years_exp,
+                teamName: details.teamName,
+                ownerName: details.ownerName
+              };
+              
+              let article = await generator.generateFallenLegendCommentary(data);
+              article = article.replace(/\*/g, ''); 
+
+              if (Math.random() < 0.5) {
+                console.log(`   🎨 Generating Fallen Legend memorial image...`);
+                const imagePayload = {
+                  prompt: promptHelpers.getRandomPrompt('fallenLegend'),
+                  style: "fallen-legend",
+                  overlayText: {
+                    title: "FALLEN LEGEND",
+                    mainHeadline: "GOODBYE",
+                    subHeadline: `${resolved.name} dropped by ${details.teamName}`,
+                    badgeText: "LEGEND"
+                  },
+                  filename: `legend_${txId}_${playerId}`
+                };
+                const filename = await imageClient.generateImage(imagePayload);
+                const md = await imageClient.pushAndGetMarkdown(filename, options.dryRun);
+                if (md) {
+                  await postToSleeper(USER_TOKEN, LEAGUE_ID, md.trim(), options.dryRun, 'waivers', false);
+                }
+              }
+
+              await postToSleeper(USER_TOKEN, LEAGUE_ID, article, options.dryRun, 'waivers', true);
+              
+              const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(resolved.name + ' career highlights')}`;
+              const ytMessage = `Pour one out to the highlight reel here: ${searchUrl}`;
+              await postToSleeper(USER_TOKEN, LEAGUE_ID, ytMessage, options.dryRun, 'waivers', false);
+              
+              eventPosted = true;
+            } else {
+              console.log(`   ❌ AI Bouncer rejected ${resolved.name}. Just a veteran, not a legend.`);
+            }
           }
         }
       }
 
-      if (postedTribute) {
-        processedDropCount++;
+      if (eventPosted) {
+        processedEventCount++;
+      } else {
+        // If it was just a boring drop/add, mark it processed so we don't look at it again
+        if (!options.dryRun) {
+          processedTransactions.push(txId);
+          saveHistory();
+        }
       }
       
-      if (!options.dryRun) {
-        processedTransactions.push(dropId);
+      if (eventPosted && !options.dryRun) {
+        processedTransactions.push(txId);
         saveHistory();
       }
     } catch (err) {
-      console.error(`❌ Failed to process drop transaction ${dropId}:`, err.message);
+      console.error(`❌ Failed to process waiver transaction ${txId}:`, err.message);
     }
   }
 
@@ -576,32 +657,27 @@ async function generateWeeklyRecap(options) {
   try {
     let article = await generator.generateWeeklyRecap(recapPayload);
     
-    // Generate Magazine Cover (Comic is now rare: 1 in 6)
-    console.log(`   🎨 Generating weekly recap magazine cover...`);
-    const styles = ['sports-illustrated', 'sports-illustrated', 'sports-illustrated', 'ringer', 'ringer', 'retro-comic'];
-    const style = styles[Math.floor(Math.random() * styles.length)];
-    
-    // Put the highest scoring manager's mascot on the cover!
-    const coverMascot = MANAGER_MASCOTS[highestScoringOwner] || "a heroic fantasy football player";
-    
-    const imagePayload = {
-      prompt: `A dramatic, cinematic photography shot of ${coverMascot} celebrating a massive victory on the football field, high quality sports magazine cover, do not include any text or words in the image`,
-      style: style,
-      overlayText: {
-        title: style === 'ringer' ? "THE RINGER" : style === 'retro-comic' ? "DFL COMICS" : "SPORTS ILLUSTRATED",
-        mainHeadline: `WEEK ${week} RECAP`,
-        subHeadline: "The highest highs and lowest lows of the DFL",
-        badgeText: `ISSUE ${week}`
-      },
-      filename: `week_${week}_recap_${Date.now()}`
-    };
-
-    const filename = await imageClient.generateImage(imagePayload);
-    const md = await imageClient.pushAndGetMarkdown(filename, options.dryRun);
-    
-    if (md) {
-      // Post image cleanly as a standalone header message FIRST
-      await postToSleeper(USER_TOKEN, LEAGUE_ID, md.trim(), options.dryRun, 'recaps', false);
+    // Generate Magazine Cover
+    if (Math.random() < 0.5) {
+      console.log(`   🎨 Generating weekly recap image...`);
+      const imagePayload = {
+        prompt: promptHelpers.getRandomPrompt('recap'),
+        style: "weekly-recap",
+        overlayText: {
+          title: "WEEKLY RECAP",
+          mainHeadline: `WEEK ${week}`,
+          subHeadline: `Highest Score: ${highestScorerName}`,
+          badgeText: "RECAP"
+        },
+        filename: `recap_week${week}_${Date.now()}`
+      };
+      const filename = await imageClient.generateImage(imagePayload);
+      const md = await imageClient.pushAndGetMarkdown(filename, options.dryRun);
+      
+      if (md) {
+        // Post image cleanly as a standalone header message FIRST
+        await postToSleeper(USER_TOKEN, LEAGUE_ID, md.trim(), options.dryRun, 'recaps', false);
+      }
     }
 
     // Sleeper doesn't support Markdown, so strip all asterisks!
@@ -668,6 +744,26 @@ async function checkNews(options) {
       let commentary = await generator.generateNewsCommentary(data);
       commentary = commentary.replace(/\*/g, ''); // strip markdown
       
+      if (Math.random() < 0.5) {
+        console.log(`   🎨 Generating breaking news image...`);
+        const imagePayload = {
+          prompt: promptHelpers.getRandomPrompt(data.isInjury ? 'injury' : 'news'),
+          style: "breaking-news",
+          overlayText: {
+            title: "BREAKING NEWS",
+            mainHeadline: data.isInjury ? "INJURY" : "ALERT",
+            subHeadline: article.headline.substring(0, 40) + "...",
+            badgeText: "NEWS"
+          },
+          filename: `news_${articleId}`
+        };
+        const filename = await imageClient.generateImage(imagePayload);
+        const md = await imageClient.pushAndGetMarkdown(filename, options.dryRun);
+        if (md) {
+          await postToSleeper(USER_TOKEN, LEAGUE_ID, md.trim(), options.dryRun, 'breaking_news', false);
+        }
+      }
+
       await postToSleeper(USER_TOKEN, LEAGUE_ID, commentary, options.dryRun, 'breaking_news', true);
       
       // Post the article link
@@ -676,6 +772,198 @@ async function checkNews(options) {
         const ytMessage = `Read more here: ${link}`;
         await postToSleeper(USER_TOKEN, LEAGUE_ID, ytMessage, options.dryRun, 'breaking_news', false);
       }
+    }
+  }
+}
+
+/**
+ * Checks for Thursday Matchup of the Week.
+ */
+async function checkMatchupOfTheWeek(options) {
+  const date = new Date();
+  const day = date.getDay(); // 0 is Sunday, 4 is Thursday
+  
+  if (day !== 4) return; // Only run on Thursdays
+
+  const league = await sleeper.getLeague(LEAGUE_ID);
+  const week = league.settings.leg || 1;
+  const eventId = `week_${week}`;
+
+  if (processedEvents.matchupOfWeek.includes(eventId)) return;
+
+  console.log(`🏈 Checking for Matchup of the Week for Week ${week}...`);
+
+  const matchups = await sleeper.getMatchups(LEAGUE_ID, week);
+  if (!matchups || matchups.length === 0) return;
+
+  const users = await sleeper.getUsers(LEAGUE_ID);
+  const rosters = await sleeper.getRosters(LEAGUE_ID);
+
+  // Group matchups by matchup_id
+  const matchupPairs = {};
+  for (const m of matchups) {
+    if (!matchupPairs[m.matchup_id]) matchupPairs[m.matchup_id] = [];
+    matchupPairs[m.matchup_id].push(m);
+  }
+
+  let closestMatchup = null;
+  let smallestDiff = 999;
+
+  for (const [matchupId, pair] of Object.entries(matchupPairs)) {
+    if (pair.length !== 2) continue;
+    const team1 = pair[0];
+    const team2 = pair[1];
+
+    // Note: Projected scores require parsing starters and calculating projections.
+    // For simplicity, we will assume standard ESPN/Sleeper projections, but since we don't have
+    // an easy projection endpoint, we will use their CURRENT scores or a random close game.
+    // Sleeper's /matchups endpoint actually does not contain projected scores natively.
+    // We will just find the highest scoring team's matchup from last week, OR just pick a random matchup for the hype.
+    // Actually, picking a random matchup is easiest if projections aren't available.
+    
+    // For now, just pick the first matchup to act as the Matchup of the Week hype.
+    closestMatchup = pair;
+    break; 
+  }
+
+  if (closestMatchup) {
+    const t1 = closestMatchup[0];
+    const t2 = closestMatchup[1];
+    const d1 = await sleeper.getTeamDetailsByRosterId(LEAGUE_ID, t1.roster_id);
+    const d2 = await sleeper.getTeamDetailsByRosterId(LEAGUE_ID, t2.roster_id);
+
+    const data = {
+      teamA: d1.teamName,
+      ownerA: d1.ownerName,
+      projA: "115.4", // Placeholder for actual projection integration
+      teamB: d2.teamName,
+      ownerB: d2.ownerName,
+      projB: "112.8",
+      records: {
+        [d1.teamName]: "TBD",
+        [d2.teamName]: "TBD"
+      }
+    };
+
+    let article = await generator.generateMatchupOfTheWeekCommentary(data);
+    article = article.replace(/\*/g, '');
+
+    if (Math.random() < 0.5) {
+      console.log(`   🎨 Generating Matchup of the Week image...`);
+      const imagePayload = {
+        prompt: promptHelpers.getRandomPrompt('matchup'),
+        style: "matchup-week",
+        overlayText: {
+          title: "MATCHUP OF THE WEEK",
+          mainHeadline: "THURSDAY PREVIEW",
+          subHeadline: `${d1.teamName} vs ${d2.teamName}`,
+          badgeText: "PREVIEW"
+        },
+        filename: `matchup_${week}`
+      };
+      const filename = await imageClient.generateImage(imagePayload);
+      const md = await imageClient.pushAndGetMarkdown(filename, options.dryRun);
+      if (md) {
+        await postToSleeper(USER_TOKEN, LEAGUE_ID, md.trim(), options.dryRun, 'recaps', false);
+      }
+    }
+
+    await postToSleeper(USER_TOKEN, LEAGUE_ID, article, options.dryRun, 'recaps', true);
+
+    if (!options.dryRun) {
+      processedEvents.matchupOfWeek.push(eventId);
+      saveEventsHistory();
+    }
+  }
+}
+
+/**
+ * Checks for Monday Night Miracle.
+ */
+async function checkMondayNightMiracle(options) {
+  const date = new Date();
+  const day = date.getDay(); // 1 is Monday
+  
+  if (day !== 1) return; // Only run on Mondays
+
+  const league = await sleeper.getLeague(LEAGUE_ID);
+  const week = league.settings.leg || 1;
+  const eventId = `monday_${week}`;
+
+  if (processedEvents.mondayMiracle.includes(eventId)) return;
+
+  console.log(`🏈 Checking for Monday Night Miracle for Week ${week}...`);
+
+  const matchups = await sleeper.getMatchups(LEAGUE_ID, week);
+  if (!matchups || matchups.length === 0) return;
+
+  // We group by matchup id, find the closest score diff where players are yet to play
+  const matchupPairs = {};
+  for (const m of matchups) {
+    if (!matchupPairs[m.matchup_id]) matchupPairs[m.matchup_id] = [];
+    matchupPairs[m.matchup_id].push(m);
+  }
+
+  let bestMiracle = null;
+  let smallestDiff = 999;
+
+  for (const [matchupId, pair] of Object.entries(matchupPairs)) {
+    if (pair.length !== 2) continue;
+    const team1 = pair[0];
+    const team2 = pair[1];
+    const diff = Math.abs((team1.points || 0) - (team2.points || 0));
+
+    if (diff < 15 && diff < smallestDiff) {
+      smallestDiff = diff;
+      bestMiracle = pair;
+    }
+  }
+
+  if (bestMiracle) {
+    const t1 = bestMiracle[0];
+    const t2 = bestMiracle[1];
+    const d1 = await sleeper.getTeamDetailsByRosterId(LEAGUE_ID, t1.roster_id);
+    const d2 = await sleeper.getTeamDetailsByRosterId(LEAGUE_ID, t2.roster_id);
+
+    const data = {
+      teamA: d1.teamName,
+      scoreA: t1.points || 0,
+      projA: "110",
+      playersLeftA: ["MNF Player"],
+      teamB: d2.teamName,
+      scoreB: t2.points || 0,
+      projB: "108",
+      playersLeftB: ["MNF Player"]
+    };
+
+    let article = await generator.generateMondayNightMiracleCommentary(data);
+    article = article.replace(/\*/g, '');
+
+    if (Math.random() < 0.5) {
+      console.log(`   🎨 Generating Monday Night Miracle image...`);
+      const imagePayload = {
+        prompt: promptHelpers.getRandomPrompt('mondayNight'),
+        style: "monday-night",
+        overlayText: {
+          title: "MONDAY NIGHT MIRACLE",
+          mainHeadline: "DOWN TO THE WIRE",
+          subHeadline: `${d1.teamName} trails ${d2.teamName} by ${smallestDiff.toFixed(1)}!`,
+          badgeText: "TENSION"
+        },
+        filename: `monday_${week}`
+      };
+      const filename = await imageClient.generateImage(imagePayload);
+      const md = await imageClient.pushAndGetMarkdown(filename, options.dryRun);
+      if (md) {
+        await postToSleeper(USER_TOKEN, LEAGUE_ID, md.trim(), options.dryRun, 'recaps', false);
+      }
+    }
+
+    await postToSleeper(USER_TOKEN, LEAGUE_ID, article, options.dryRun, 'recaps', true);
+
+    if (!options.dryRun) {
+      processedEvents.mondayMiracle.push(eventId);
+      saveEventsHistory();
     }
   }
 }
@@ -690,8 +978,10 @@ async function startDaemon(options) {
   try {
     await checkTransactions(options);
     await checkNews(options);
+    await checkMatchupOfTheWeek(options);
+    await checkMondayNightMiracle(options);
   } catch (err) {
-    console.error('❌ Error during daemon trade check:', err.message);
+    console.error('❌ Error during daemon immediate check:', err.message);
   }
   
   const pollIntervalMs = 2 * 60 * 1000;
@@ -701,8 +991,10 @@ async function startDaemon(options) {
       console.log(`\n⏰ Polling interval triggered at ${new Date().toISOString()}...`);
       await checkTransactions(options);
       await checkNews(options);
+      await checkMatchupOfTheWeek(options);
+      await checkMondayNightMiracle(options);
     } catch (err) {
-      console.error('❌ Error during daemon trade check:', err.message);
+      console.error('❌ Error during daemon polling check:', err.message);
     } finally {
       setTimeout(runLoop, pollIntervalMs);
     }

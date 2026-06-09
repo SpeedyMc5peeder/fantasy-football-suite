@@ -234,6 +234,30 @@ Do not include any other text or punctuation.`;
     const prompt = require('./promptTemplates').getBreakingNewsPrompt(data);
     return await this.executeWithFallback(prompt, 'Breaking News Commentary');
   }
+
+  /**
+   * Generates FAAB waiver spend commentary.
+   */
+  async generateFAABCommentary(data) {
+    const prompt = require('./promptTemplates').getFAABPrompt(data);
+    return await this.executeWithFallback(prompt, 'FAAB Waiver Spend Commentary');
+  }
+
+  /**
+   * Generates Matchup of the Week preview.
+   */
+  async generateMatchupOfTheWeekCommentary(data) {
+    const prompt = require('./promptTemplates').getMatchupOfTheWeekPrompt(data);
+    return await this.executeWithFallback(prompt, 'Matchup of the Week Preview');
+  }
+
+  /**
+   * Generates Monday Night Miracle preview.
+   */
+  async generateMondayNightMiracleCommentary(data) {
+    const prompt = require('./promptTemplates').getMondayNightMiraclePrompt(data);
+    return await this.executeWithFallback(prompt, 'Monday Night Miracle Preview');
+  }
 }
 
 module.exports = CommentaryGenerator;

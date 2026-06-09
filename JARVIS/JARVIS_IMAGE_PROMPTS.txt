@@ -1,0 +1,146 @@
+JARVIS IMAGE GENERATION PROMPTS
+================================
+Rewritten for stronger visual identity, cinematic specificity, and tonal alignment with the JARVIS character (90s American sports culture, British dry wit, dark humor, retro gaming influences).
+
+All prompts include "no text" as required. All are optimized for Midjourney v6 / DALL-E 3 / Stable Diffusion.
+
+--------------------------------------------------------------------------------
+TRIGGER: Trades
+Style: Retro Gaming / Trading Card
+--------------------------------------------------------------------------------
+
+VARIATION 1 (Game Boy Link Cable):
+"Two original 1989 Game Boy systems connected by a glowing purple link cable, trading a pixelated football between their screens, chunky 8-bit sprites, scanlines, CRT glow, dusty bedroom carpet background, 1994 aesthetic, hyper-detailed pixel art, no text"
+
+VARIATION 2 (Holographic Card):
+"A 1990s holographic sports trading card floating in a dark room, rainbow foil prism effect, chrome borders, action photo of a running back mid-tackle, light refractions on the walls, dust motes, cinematic macro lens, shallow depth of field, no text"
+
+VARIATION 3 (Arcade Cabinet):
+"A vintage arcade cabinet screen showing a football trade negotiation mini-game, two pixelated GM characters shaking hands, joystick and buttons in foreground, neon arcade lighting, quarter on the cabinet edge, 1987 aesthetic, CRT screen glow, no text"
+
+--------------------------------------------------------------------------------
+TRIGGER: Weekly Recap
+Style: Newspaper Front Page / Blimp Shot
+--------------------------------------------------------------------------------
+
+VARIATION 1 (Newspaper):
+"A 1993 USA Today sports section front page being printed on a massive industrial press, ink rollers spinning, paper flying through machinery, dramatic side lighting, factory atmosphere, the headline photo showing a blurred football action shot, warm tungsten lighting, high detail, no text"
+
+VARIATION 2 (Blimp):
+"An aerial view from a Goodyear blimp camera looking straight down at a packed NFL stadium at twilight, the field glowing under stadium lights, tailgating smoke rising from the parking lot, Monday Night Football atmosphere, 1995 broadcast aesthetic, cinematic wide angle, slight film grain, no text"
+
+VARIATION 3 (Locker Room Whiteboard):
+"A battered whiteboard in a dim locker room covered in magnetic player nameplates and red marker lines showing weekly scores, a single overhead fluorescent light buzzing, jerseys hanging on hooks, Gatorade coolers, 1990s NFL Films aesthetic, gritty documentary style, no text"
+
+--------------------------------------------------------------------------------
+TRIGGER: Breaking News
+Style: Gritty Photojournalism / Broadcast
+--------------------------------------------------------------------------------
+
+VARIATION 1 (Rainy Street):
+"A single football helmet lying upside down in a puddle on a rainy Chicago street at 2 AM, neon bar signs reflecting in the water, steam rising from a manhole, newspaper box in background, gritty 35mm film photography, high contrast, desaturated colors, no text"
+
+VARIATION 2 (ON AIR):
+"A vintage 1980s television studio with a glowing red 'ON AIR' sign, empty anchor desk with scattered papers and an old coffee mug, a single spotlight, dust particles in the air, broadcast monitors showing static, cinematic chiaroscuro lighting, no text"
+
+VARIATION 3 (Payphone):
+"A graffiti-covered payphone booth at night with the receiver dangling, a crumpled betting slip and a football ticket on the ground, sodium vapor streetlight casting orange glow, 1990s urban decay aesthetic, documentary photography, no text"
+
+--------------------------------------------------------------------------------
+TRIGGER: FAAB Waivers (The Scrooge McDuck)
+Style: Excessive Wealth / Cartoon Capitalism
+--------------------------------------------------------------------------------
+
+VARIATION 1 (Vault):
+"A massive bank vault interior with mountains of gold coins and hundred-dollar bills piled to the ceiling, a single leather football sitting on top like a throne, Scrooge McDuck diving pose mid-air, dramatic god rays from a skylight, cinematic, slightly absurd, no text"
+
+VARIATION 2 (Poker Table):
+"A high-stakes underground poker table in a smoke-filled room, a man in a sharp suit pushing a massive stack of blue and red chips across green felt, a football resting on the pot, single overhead lamp, dramatic shadows, 1970s casino aesthetic, no text"
+
+VARIATION 3 (Money Phone):
+"A 1990s office desk with a rotary phone where the handset has been replaced by a stack of cash, football-themed mousepad, CRT monitor glowing, coffee stains, Dilbert comic strip on the cubicle wall, overhead fluorescent lighting, corporate satire, no text"
+
+--------------------------------------------------------------------------------
+TRIGGER: Fallen Legends (Dynasty Drops)
+Style: Memorial / Hall of Fame
+--------------------------------------------------------------------------------
+
+VARIATION 1 (Bronze Bust):
+"A weathered bronze bust of a legendary running back on a marble pedestal in a dark museum hall, single dramatic spotlight from above, dust motes floating, a discarded fantasy football roster sheet crumpled at the base, melancholy atmosphere, chiaroscuro, no text"
+
+VARIATION 2 (Hall of Fame Jacket):
+"A gold Pro Football Hall of Fame jacket hanging on a rusty nail in a dimly lit, empty locker room, a single shaft of light from a high window, mothballs and dust, a pair of cleats below, cinematic, nostalgic decay, no text"
+
+VARIATION 3 (Jersey Retirement):
+"A framed jersey being slowly lowered from the rafters of an empty stadium, spotlight following it down, confetti still on the floor from a ceremony years ago, seats covered in dust, cinematic wide shot, melancholy, end-of-an-era feeling, no text"
+
+--------------------------------------------------------------------------------
+TRIGGER: Matchup of the Week (Thursday)
+Style: Combat / Boxing Promo
+--------------------------------------------------------------------------------
+
+VARIATION 1 (Gladiator):
+"Two battered Roman gladiator helmets sitting face-to-face on the 50-yard line of a pristine modern NFL stadium, dramatic sideline lighting, empty stands, a single football between them, cinematic wide angle, Ridley Scott aesthetic, no text"
+
+VARIATION 2 (Wrestling Belt):
+"A massive diamond-encrusted WWE-style championship belt hovering over a smoky football field, stadium lights creating lens flares, Thursday Night Football atmosphere, neon and chrome, 1998 wrestling promo aesthetic, cinematic, no text"
+
+VARIATION 3 (Arcade VS Screen):
+"A retro arcade game 'VS' screen with two pixelated football player portraits facing off, health bars above, 16-bit graphics, Street Fighter II aesthetic, joystick and buttons in foreground, pizza box and soda can, dorm room lighting, no text"
+
+--------------------------------------------------------------------------------
+TRIGGER: Monday Night Miracles
+Style: Desperation / Gambling / Final Seconds
+--------------------------------------------------------------------------------
+
+VARIATION 1 (Stadium Clock):
+"A massive LED stadium scoreboard clock showing 0:04 remaining, glowing red digits in a dark empty stadium, a single football on the 1-yard line, fog rolling across the field, tense cinematic atmosphere, Monday Night Football 1996 broadcast aesthetic, no text"
+
+VARIATION 2 (Roulette):
+"A close-up of a roulette wheel spinning in a smoky backroom casino, the ball bouncing between red and black, a sweaty hand gripping the table edge, a crumpled fantasy lineup card next to the chips, dramatic tungsten lighting, 1970s gambling den, no text"
+
+VARIATION 3 (Car Radio):
+"A 1994 Honda Civic interior at night, dashboard glowing, a portable TV balanced on the dash showing a football game, the driver gripping the steering wheel with white knuckles, streetlights streaking past, AM radio dial glowing, desperate energy, cinematic, no text"
+
+--------------------------------------------------------------------------------
+BONUS TRIGGER: Pre-Season Team Preview
+Style: Draft Day / War Room
+--------------------------------------------------------------------------------
+
+VARIATION 1 (War Room):
+"A dimly lit NFL draft war room with a massive wall chart covered in magnetic player names, a single overhead lamp, empty coffee cups and pizza boxes, a landline phone off the hook, 1990s front office aesthetic, documentary photography, no text"
+
+VARIATION 2 (Mascot):
+"A costumed NFL mascot sitting alone in an empty stadium tunnel, head in hands, under a single buzzing fluorescent light, a crumpled playbook on the ground, melancholy and absurd, cinematic, no text"
+
+--------------------------------------------------------------------------------
+BONUS TRIGGER: Star Injuries
+Style: Medical / Tragedy
+--------------------------------------------------------------------------------
+
+VARIATION 1 (Training Room):
+"A sterile NFL training room with an ice bath, crutches leaning against a wall, a single MRI scan on a lightbox showing a knee, a football on the examination table, harsh fluorescent lighting, clinical and cold, no text"
+
+VARIATION 2 (Turf):
+"A close-up of a single football cleat print in fresh turf, a trail of white athletic tape leading off-frame, stadium lights blurred in background, shallow depth of field, medical tragedy aesthetic, no text"
+
+--------------------------------------------------------------------------------
+BONUS TRIGGER: Quarterly Standings
+Style: Corporate / Power Ranking
+--------------------------------------------------------------------------------
+
+VARIATION 1 (Elevator):
+"A corporate office building elevator with the floor buttons showing different fantasy rankings, the button for '1st Place' glowing gold, the button for 'Toilet Bowl' covered in duct tape, fluorescent lighting, 1990s office park aesthetic, no text"
+
+VARIATION 2 (Trophy Case):
+"A dusty trophy case in a rec center with one shiny first-place trophy and several broken participation trophies, cobwebs, a single shaft of afternoon light, sad and funny, no text"
+
+--------------------------------------------------------------------------------
+NOTES FOR THE DEV
+--------------------------------------------------------------------------------
+
+- All prompts include "no text" to prevent gibberish typography in generated images
+- The 90s aesthetic runs through most prompts to align with the league demographic (born 1974-1994)
+- The "film grain," "CRT glow," and "documentary photography" keywords help create a cohesive visual language
+- "Cinematic lighting" and "chiaroscuro" appear frequently to ensure dramatic, high-contrast images that pop in a chat feed
+- The absurd/juxtaposition elements (Scrooge McDuck, gladiator helmets, wrestling belts) align with the JARVIS humor DNA
