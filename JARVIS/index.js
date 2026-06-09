@@ -701,6 +701,18 @@ async function checkNews(options) {
   const articles = await newsScraper.fetchLatestNews();
   if (!articles || articles.length === 0) return;
 
+  // Cold start protection: if we have no history, just save the current news and exit so we don't spam
+  if (processedNews.length === 0 && !options.force) {
+    console.log('🏁 Cold start detected for News: Initializing news database with existing articles to prevent spam...');
+    articles.forEach(article => {
+      const articleId = String(article.id || article.headline);
+      processedNews.push(articleId);
+    });
+    saveNewsHistory();
+    console.log(`✅ News database initialized with ${processedNews.length} articles. Exiting.`);
+    return;
+  }
+
   for (const article of articles) {
     // ESPN API uses 'id' or 'nowId' for unique identification
     const articleId = String(article.id || article.headline);
