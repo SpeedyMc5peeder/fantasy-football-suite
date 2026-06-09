@@ -514,6 +514,11 @@ async function generateWeeklyRecap(options) {
   console.log(`🏈 Generating weekly recap for Week ${week}...`);
 
   // 2. Fetch league data
+  const league = await sleeper.getLeague(LEAGUE_ID);
+  if (league.status !== 'in_season') {
+    console.log(`⏳ League is not in season. Skipping Weekly Recap.`);
+    return;
+  }
   const rosters = await sleeper.getRosters(LEAGUE_ID);
   const users = await sleeper.getUsers(LEAGUE_ID);
   const matchups = await sleeper.getMatchups(LEAGUE_ID, week);
@@ -786,6 +791,10 @@ async function checkMatchupOfTheWeek(options) {
   if (day !== 4) return; // Only run on Thursdays
 
   const league = await sleeper.getLeague(LEAGUE_ID);
+  if (league.status !== 'in_season') {
+    console.log(`⏳ League is not in season. Skipping Matchup of the Week.`);
+    return;
+  }
   const week = league.settings.leg || 1;
   const eventId = `week_${week}`;
 
@@ -887,6 +896,10 @@ async function checkMondayNightMiracle(options) {
   if (day !== 1) return; // Only run on Mondays
 
   const league = await sleeper.getLeague(LEAGUE_ID);
+  if (league.status !== 'in_season') {
+    console.log(`⏳ League is not in season. Skipping Monday Night Miracle.`);
+    return;
+  }
   const week = league.settings.leg || 1;
   const eventId = `monday_${week}`;
 
