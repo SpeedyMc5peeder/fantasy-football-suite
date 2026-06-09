@@ -277,26 +277,38 @@ Instructions:
 
         let rawText = '';
         
-        const tryModel = async () => {
-            const res = await modelFlash.generateContent(promptTemplate);
-            rawText = res.response.text();
-            return JSON.parse(rawText);
+        const tryModelWithRetries = async (modelInstance, maxRetries = 3) => {
+            for (let i = 0; i < maxRetries; i++) {
+                try {
+                    const res = await modelInstance.generateContent(promptTemplate);
+                    rawText = res.response.text();
+                    return JSON.parse(rawText);
+                } catch (e) {
+                    if (i === maxRetries - 1) throw e; // Out of retries
+                    if (e.message?.includes('503') || e.message?.includes('overloaded') || e.message?.includes('429')) {
+                        console.warn(`Model overloaded/rate-limited. Retrying in ${2 * (i + 1)} seconds...`);
+                        await new Promise(r => setTimeout(r, 2000 * (i + 1)));
+                    } else {
+                        throw e; // Unrecoverable error
+                    }
+                }
+            }
         };
 
         try {
-           return await tryModel();
+           return await tryModelWithRetries(modelFlash);
         } catch (e) {
-           if (e.message?.includes('503') || e.message?.includes('overloaded') || e.message?.includes('429')) {
-               console.warn(`Flash overloaded or rate limited, retrying in 3 seconds...`);
-               await new Promise(r => setTimeout(r, 3000));
-               try {
-                  return await tryModel();
-               } catch (e2) {
-                  return { raw_error: rawText || e2.message };
-               }
+           console.warn(`Failed with gemini-2.5-flash. Trying gemini-1.5-flash fallback...`);
+           try {
+               const fallbackModel = genAI.getGenerativeModel({ 
+                 model: "gemini-1.5-flash",
+                 generationConfig: { responseMimeType: "application/json" }
+               });
+               return await tryModelWithRetries(fallbackModel, 2);
+           } catch (e2) {
+               console.warn(`Failed trade generation entirely:`, e2);
+               return { raw_error: rawText || e2.message };
            }
-           console.warn(`Failed trade generation:`, e);
-           return { raw_error: rawText || e.message };
         }
       };
 
