@@ -27,9 +27,10 @@ The system is split into four core applications and a central configuration file
 
 4. **`JARVIS` (AI Commentary & Automation)**
    - Connects to Sleeper API to read matchups, standings, waivers, injuries, and trades.
+   - Scrapes latest NFL headlines from ESPN and filters them for fantasy relevance.
    - Queries `Dynasty-Evaluator` for trade and player values.
    - Requests custom illustrations from `Image-Gen`.
-   - Utilizes the Gemini API to write articles in the voice of Bill Simmons (75%) and Ryen Russillo (25%).
+   - Utilizes the Gemini API to write articles and breaking news blurbs in the voice of a robotic butler.
    - Posts articles directly to Sleeper league chat rooms using incoming webhooks or user token mutations.
 
 5. **`config.json` (Central Config)**
@@ -62,11 +63,12 @@ graph TD
 
     subgraph "JARVIS (Cron / CLI Runner)"
         BS_Worker[Transaction & Weekly Cron] -->|Fetches Matchups & Logs| Sleeper_API
+        BS_Worker -->|Fetches Latest News| ESPN_API[ESPN News API]
         BS_Worker -->|Queries values| DE_API
         BS_Worker -->|Requests cover image| IG_API
         BS_Worker -->|Custom Lore & Mappings| RootConfig
         BS_Worker -->|Prompts| BS_Gen[Gemini AI Generator]
-        BS_Gen -->|Prefixes '[Bill Simmons Bot]' & Webhook| Sleeper_Chat[Sleeper League Chat]
+        BS_Gen -->|Posts Commentary| Sleeper_Chat[Sleeper League Chat]
     end
 
     RootConfig -.->|Configs & Keys| BS_Worker
@@ -109,9 +111,10 @@ graph TD
 └── /JARVIS                         # AI sports journalism engine & cron worker
     ├── /src
     │   ├── sleeperClient.js        # Handles Sleeper matchups, trades, and waivers
-    │   ├── promptTemplates.js      # Few-shot prompts for Simmons & Russillo styles
+    │   ├── promptTemplates.js      # Few-shot prompts for styles and formats
     │   ├── generator.js            # Calls Gemini API to write articles
-    │   └── poster.js               # Webhook messenger to Sleeper
+    │   ├── poster.js               # Webhook messenger to Sleeper
+    │   └── newsScraper.js          # Scrapes ESPN for latest NFL headlines
     ├── index.js                    # Cron / CLI entrypoint
     └── package.json
 ```
