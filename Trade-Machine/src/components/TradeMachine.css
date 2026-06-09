@@ -11,7 +11,7 @@
 
 /* Glass Panel Base */
 .glass-panel {
-  background: rgba(25, 25, 30, 0.6);
+  background: var(--bg-card);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -36,8 +36,8 @@
 }
 
 .league-selector select {
-  background: rgba(0, 0, 0, 0.4);
-  color: white;
+  background: var(--bg-glass-hover);
+  color: var(--text-primary);
   border: 1px solid rgba(255, 255, 255, 0.15);
   padding: 0.75rem 1rem;
   border-radius: 8px;
@@ -54,7 +54,7 @@
 
 .trade-type-toggle {
   display: flex;
-  background: rgba(0, 0, 0, 0.4);
+  background: var(--bg-glass-hover);
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -62,7 +62,7 @@
 
 .trade-type-toggle button {
   background: transparent;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--text-muted);
   border: none;
   padding: 0.75rem 1.5rem;
   font-weight: 600;
@@ -71,8 +71,8 @@
 }
 
 .trade-type-toggle button.active {
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
+  background: var(--bg-glass-hover);
+  color: var(--text-primary);
 }
 
 /* --- AI Assistant Bar --- */
@@ -90,9 +90,9 @@
 
 .ai-search-bar input {
   flex: 1;
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--bg-glass-hover);
   border: 1px solid rgba(0, 255, 136, 0.3);
-  color: white;
+  color: var(--text-primary);
   padding: 1rem 1.5rem;
   border-radius: 30px;
   font-size: 1.1rem;
@@ -129,7 +129,7 @@
 }
 
 .ai-suggestions-drawer {
-  background: rgba(10, 10, 15, 0.8);
+  background: var(--bg-card);
   border: 1px solid rgba(0, 255, 136, 0.2);
   border-radius: 12px;
   padding: 1.5rem;
@@ -151,14 +151,14 @@
 .ai-trade-path {
   flex: 1;
   min-width: 200px;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--bg-glass);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 8px;
   padding: 1rem;
 }
 
 .ai-trade-path strong {
-  color: #00ff88;
+  color: var(--neon-green);
   display: block;
   margin-bottom: 0.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -168,7 +168,7 @@
 .ai-trade-path ul {
   margin: 0;
   padding-left: 1.25rem;
-  color: #ddd;
+  color: var(--text-secondary);
 }
 
 .ai-trade-path li {
@@ -180,7 +180,7 @@
   padding-top: 1rem;
   border-top: 1px dashed rgba(255, 255, 255, 0.1);
   font-style: italic;
-  color: #bbb;
+  color: var(--text-muted);
   line-height: 1.6;
 }
 
@@ -235,8 +235,8 @@
 }
 
 .team-select {
-  background: rgba(0, 0, 0, 0.5);
-  color: #fff;
+  background: var(--bg-glass-hover);
+  color: var(--text-primary);
   border: 1px solid rgba(255, 255, 255, 0.2);
   padding: 0.5rem;
   border-radius: 6px;
@@ -256,17 +256,17 @@
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   background: transparent;
-  color: #aaa;
+  color: var(--text-muted);
   cursor: pointer;
 }
 
 .mode-pill.active.contender { background: rgba(255, 60, 60, 0.2); color: #ff6b6b; border-color: #ff6b6b; }
 .mode-pill.active.rebuilder { background: rgba(0, 195, 255, 0.2); color: #00c3ff; border-color: #00c3ff; }
-.mode-pill.active.neutral { background: rgba(255, 255, 255, 0.2); color: #fff; border-color: #fff; }
+.mode-pill.active.neutral { background: rgba(255, 255, 255, 0.2); color: var(--text-primary); border-color: var(--text-primary); }
 
 /* Assets Box */
 .assets-box {
-  background: rgba(0, 0, 0, 0.3);
+  background: var(--bg-glass-hover);
   border-radius: 8px;
   min-height: 150px;
   padding: 1rem;
@@ -277,7 +277,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--bg-glass);
   padding: 0.5rem;
   border-radius: 6px;
   margin-bottom: 0.5rem;
@@ -289,8 +289,8 @@
 }
 
 .asset-name { font-weight: 600; }
-.asset-dest { font-size: 0.75rem; color: #00ff88; }
-.asset-actions button { background: transparent; border: none; color: #ff4444; cursor: pointer; }
+.asset-dest { font-size: 0.75rem; color: var(--neon-green); }
+.asset-actions button { background: transparent; border: none; color: var(--neon-red); cursor: pointer; }
 
 /* Roster Picker */
 .roster-picker {
@@ -306,7 +306,7 @@
 
 .roster-group-title {
   font-size: 0.85rem;
-  color: #888;
+  color: var(--text-muted);
   text-transform: uppercase;
   margin-bottom: 0.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -318,7 +318,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--bg-glass);
   border-radius: 4px;
   margin-bottom: 0.25rem;
   cursor: pointer;
@@ -326,7 +326,7 @@
 }
 
 .roster-player:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--bg-glass-hover);
 }
 
 .roster-player.selected {
@@ -345,7 +345,7 @@
   background: linear-gradient(90deg, #ff0055, #ffaa00);
   border: none;
   border-radius: 12px;
-  color: white;
+  color: var(--text-primary);
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
   box-shadow: 0 4px 15px rgba(255, 0, 85, 0.3);
@@ -357,8 +357,8 @@
 }
 
 .eval-btn:disabled {
-  background: #333;
-  color: #666;
+  background: var(--bg-tertiary);
+  color: var(--text-muted);
   cursor: not-allowed;
   box-shadow: none;
 }
@@ -375,14 +375,14 @@
   text-transform: uppercase;
 }
 
-.verdict.win { color: #00ff88; }
-.verdict.fair { color: #00ccff; }
-.verdict.lose { color: #ff4444; }
+.verdict.win { color: var(--neon-green); }
+.verdict.fair { color: var(--neon-blue); }
+.verdict.lose { color: var(--neon-red); }
 
 .fairness-bar {
   width: 100%;
   height: 24px;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--bg-glass-hover);
   border-radius: 12px;
   margin: 2rem 0;
   overflow: hidden;
@@ -415,7 +415,7 @@
 }
 
 .net-card {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--bg-glass);
   padding: 1.5rem;
   border-radius: 8px;
 }
@@ -425,8 +425,8 @@
   font-weight: bold;
   margin-top: 0.5rem;
 }
-.net-value.positive { color: #00ff88; }
-.net-value.negative { color: #ff4444; }
+.net-value.positive { color: var(--neon-green); }
+.net-value.negative { color: var(--neon-red); }
 
 
 /* --- Mobile Layout Optimizations --- */

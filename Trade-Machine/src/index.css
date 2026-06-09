@@ -469,13 +469,13 @@ body::after {
 
 /* ---- Light Theme ---- */
 .light-theme {
-  --bg-primary: #f0f2f5;
+  --bg-primary: #faf9f6;
   --bg-secondary: #ffffff;
-  --bg-tertiary: #e4e6eb;
-  --bg-card: rgba(255, 255, 255, 0.9);
-  --bg-card-hover: rgba(255, 255, 255, 1);
-  --bg-glass: rgba(0, 0, 0, 0.03);
-  --bg-glass-hover: rgba(0, 0, 0, 0.06);
+  --bg-tertiary: #f4f1ea;
+  --bg-card: rgba(255, 255, 255, 0.95);
+  --bg-card-hover: #ffffff;
+  --bg-glass: rgba(0, 0, 0, 0.04);
+  --bg-glass-hover: rgba(0, 0, 0, 0.08);
 
   --border-subtle: rgba(0, 0, 0, 0.1);
   --border-medium: rgba(0, 0, 0, 0.15);
@@ -494,10 +494,10 @@ body::after {
   --neon-orange: #ed6c02;
   --neon-yellow: #f57f17;
 
-  --text-primary: #1c1e21;
-  --text-secondary: #65676b;
-  --text-muted: #8a8d91;
-  --text-bright: #050505;
+  --text-primary: #3c3836;
+  --text-secondary: #504945;
+  --text-muted: #7c6f64;
+  --text-bright: #282828;
 
   --pos-qb: #d32f2f;
   --pos-rb: #1976d2;
