@@ -240,14 +240,10 @@ export default function TradeMachine() {
         model: "gemini-2.5-flash",
         generationConfig: { responseMimeType: "application/json" }
       });
-      const modelPro = genAI.getGenerativeModel({ 
-        model: "gemini-2.5-pro",
-        generationConfig: { responseMimeType: "application/json" }
-      });
       
-      const fetchTrade = async (seedIndex) => {
+      const fetchTrade = async () => {
         const promptTemplate = `You are a personal fantasy football AI trade assistant exclusively for the manager: "${userManagerName}". 
-User Request: "${aiQuery}" (Please generate trade option #${seedIndex})
+User Request: "${aiQuery}"
 When the user uses first-person pronouns like "I", "me", "my team", "my roster", "my picks", "who should I trade", they are referring to this manager.
 
 League Teams & Roster Lists (Note: Players valued under ${MIN_VALUE} have been hidden for brevity):
@@ -281,38 +277,36 @@ Instructions:
 
         let rawText = '';
         
-        const tryModel = async (m) => {
-            const res = await m.generateContent(promptTemplate);
+        const tryModel = async () => {
+            const res = await modelFlash.generateContent(promptTemplate);
             rawText = res.response.text();
             return JSON.parse(rawText);
         };
 
         try {
-           return await tryModel(modelFlash);
+           return await tryModel();
         } catch (e) {
-           if (e.message?.includes('503') || e.message?.includes('overloaded')) {
-               console.warn(`Flash 503 on branch #${seedIndex}, falling back to Pro...`);
+           if (e.message?.includes('503') || e.message?.includes('overloaded') || e.message?.includes('429')) {
+               console.warn(`Flash overloaded or rate limited, retrying in 3 seconds...`);
+               await new Promise(r => setTimeout(r, 3000));
                try {
-                  return await tryModel(modelPro);
+                  return await tryModel();
                } catch (e2) {
                   return { raw_error: rawText || e2.message };
                }
            }
-           console.warn(`Failed parallel branch #${seedIndex}:`, e);
+           console.warn(`Failed trade generation:`, e);
            return { raw_error: rawText || e.message };
         }
       };
 
-      console.log("Attempting parallel generation of 3 trades with gemini-2.5-flash...");
-      const results = await Promise.all([fetchTrade(1), fetchTrade(2), fetchTrade(3)]);
-      const validTrades = results.filter(t => t && t.teamA_name);
+      console.log("Attempting generation of trade with gemini-2.5-flash...");
+      const result = await fetchTrade();
       
-      if (validTrades.length === 0) {
-         const rawLogs = results.map(r => r?.raw_error).filter(Boolean);
-         const displayLog = rawLogs.length > 0 ? rawLogs[0] : "Please try adjusting your query.";
-         setAiSuggestion(`Error: The AI failed to generate any valid trades. AI Response: ${displayLog}`);
+      if (!result || !result.teamA_name) {
+         setAiSuggestion(`Error: The AI failed to generate any valid trades. AI Response: ${result?.raw_error || 'Invalid JSON'}`);
       } else {
-         setParsedAiSuggestion({ trades: validTrades });
+         setParsedAiSuggestion({ trades: [result] });
       }
     } catch (err) {
       console.error(err);
