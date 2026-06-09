@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { GoogleGenerativeAI } from '@google/generative-ai';
 import './TradeMachine.css';
 
 const MODES = ['contender', 'neutral', 'rebuilder'];
@@ -186,9 +185,9 @@ export default function TradeMachine() {
   // 3. AI Assistant
   const handleAiSearch = async () => {
     if (!aiQuery) return;
-    const apiKey = import.meta.env.VITE_GEMINI_API_KEY || config?.gemini_api_key;
-    if (!apiKey || apiKey.includes("YOUR_GEMINI_API_KEY") || apiKey === '') {
-      setAiSuggestion("Error: Gemini API Key is missing. Please set VITE_GEMINI_API_KEY in Vercel or in config.json.");
+    const apiKey = import.meta.env.VITE_GROQ_API_KEY || config?.groq_api_key;
+    if (!apiKey || apiKey.includes("YOUR_GROQ_API_KEY") || apiKey === '') {
+      setAiSuggestion("Error: Groq API Key is missing. Please set VITE_GROQ_API_KEY in Vercel or in config.json.");
       return;
     }
     
@@ -197,8 +196,6 @@ export default function TradeMachine() {
     setParsedAiSuggestion(null);
 
     try {
-      const genAI = new GoogleGenerativeAI(apiKey);
-
       // 1. Resolve User Name
       const activeLeague = leagues.find(l => String(l.sleeper_league_id) === String(selectedLeagueId));
       let userManagerName = activeLeague?.user_team_username || config?.user_team_username || '';
@@ -236,14 +233,7 @@ export default function TradeMachine() {
 - Picks: ${picks || 'None'}`;
       }).join('\n\n');
 
-      const modelFlash = genAI.getGenerativeModel({ 
-        model: "gemini-2.5-flash",
-        generationConfig: { responseMimeType: "application/json" }
-      });
-      
-      const fetchTrade = async () => {
-        const promptTemplate = `You are a personal fantasy football AI trade assistant exclusively for the manager: "${userManagerName}". 
-User Request: "${aiQuery}"
+      const systemPrompt = `You are a personal fantasy football AI trade assistant exclusively for the manager: "${userManagerName}". 
 When the user uses first-person pronouns like "I", "me", "my team", "my roster", "my picks", "who should I trade", they are referring to this manager.
 
 League Teams & Roster Lists (Note: Players valued under ${MIN_VALUE} have been hidden for brevity):
@@ -251,18 +241,18 @@ ${context}
 
 Instructions:
 1. ONLY SUGGEST TRADES FOR THE USER:
-   - EVERY trade you suggest MUST include the user ("${userManagerName}") as one of the primary trading partners (e.g. as Team A). Do NOT suggest trades between two other teams.
+   - EVERY trade you suggest MUST include the user ("${userManagerName}") as one of the primary trading partners. Do NOT suggest trades between two other teams.
 
 2. BUILD SMART, MATHEMATICALLY BALANCED WIN-WIN TRADES:
    - ALWAYS look at the "Value" field for each player.
-   - The trade should be as mathematically even as possible. Focus on highly realistic, mutually beneficial trades that both managers would actually consider accepting.
+   - The trade should be as mathematically even as possible. Focus on highly realistic, mutually beneficial trades.
 
 3. STRICT CONSTRAINTS:
    - Do not invent players. Every player in the trade must exist on the respective roster in the list above.
    - Maintain the manager names exactly as written in the list.
 
 4. RESPONSE FORMAT:
-   You must return your response ONLY as a JSON array containing EXACTLY 3 unique, diverse trade options. The outer structure MUST be a JSON array (e.g. [ {trade1}, {trade2}, {trade3} ]). Each object in the array must match this schema:
+   You must return your response ONLY as a JSON object with a single root key called "trades". The value of "trades" MUST be an array containing EXACTLY 3 unique, diverse trade options. Each trade object in the array must match this schema:
    {
      "teamA_name": "Name of Manager/Team A (Must be ${userManagerName})",
      "teamB_name": "Name of Manager/Team B (Must match the list exactly)",
@@ -272,38 +262,52 @@ Instructions:
      "assetsB_sent": [ { "name": "Player Name", "dest_team_name": "Name of Manager receiving this player" } ],
      "assetsC_sent": [ { "name": "Player Name", "dest_team_name": "Name of Manager receiving this player" } ],
      "rationale": "An enthusiastic 'Bill Simmons fake trade' style explanation. Act as a neutral, third-party observer or podcast host reviewing the trade from the outside. Lay out why it makes sense for both sides, pitch it as a brilliant idea, and end with a rhetorical hook like 'why wouldn't they do that!?' or 'who says no!?'"
-   }
-   Return ONLY the JSON array containing exactly 3 trade objects.`;
+   }`;
 
+      const fetchTrade = async () => {
         let rawText = '';
+        const maxRetries = 3;
         
-        const tryModelWithRetries = async (modelInstance, maxRetries = 3) => {
-            for (let i = 0; i < maxRetries; i++) {
-                try {
-                    const res = await modelInstance.generateContent(promptTemplate);
-                    rawText = res.response.text();
-                    return JSON.parse(rawText);
-                } catch (e) {
-                    if (i === maxRetries - 1) throw e; // Out of retries
-                    if (e.message?.includes('503') || e.message?.includes('overloaded') || e.message?.includes('429')) {
-                        console.warn(`Model overloaded/rate-limited. Retrying in ${2 * (i + 1)} seconds...`);
-                        await new Promise(r => setTimeout(r, 2000 * (i + 1)));
-                    } else {
-                        throw e; // Unrecoverable error
-                    }
+        for (let i = 0; i < maxRetries; i++) {
+            try {
+                const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${apiKey}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: "llama-3.3-70b-versatile",
+                        response_format: { type: "json_object" },
+                        messages: [
+                            { role: "system", content: systemPrompt },
+                            { role: "user", content: `User Request: "${aiQuery}"\nReturn ONLY the JSON object containing exactly 3 trades.` }
+                        ]
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(`Groq API Error ${response.status}: ${errorData?.error?.message || response.statusText}`);
+                }
+
+                const data = await response.json();
+                rawText = data.choices[0].message.content;
+                const parsed = JSON.parse(rawText);
+                return parsed.trades || parsed; // Handle array vs object edge case
+            } catch (e) {
+                if (i === maxRetries - 1) throw e;
+                if (e.message?.includes('429') || e.message?.includes('503')) {
+                    console.warn(`Groq overloaded/rate-limited. Retrying in ${2 * (i + 1)} seconds...`);
+                    await new Promise(r => setTimeout(r, 2000 * (i + 1)));
+                } else {
+                    throw e;
                 }
             }
-        };
-
-        try {
-           return await tryModelWithRetries(modelFlash);
-        } catch (e) {
-           console.warn(`Failed trade generation entirely after retries:`, e);
-           return { raw_error: rawText || e.message };
         }
       };
 
-      console.log("Attempting generation of 3 trades with gemini-2.5-flash...");
+      console.log("Attempting generation of 3 trades with Groq (llama-3.3-70b-versatile)...");
       const results = await fetchTrade();
       
       if (!Array.isArray(results) || results.length === 0 || !results[0].teamA_name) {
@@ -314,8 +318,8 @@ Instructions:
     } catch (err) {
       console.error(err);
       const errMsg = err?.message || '';
-      if (errMsg.includes('429') || errMsg.toLowerCase().includes('quota') || errMsg.includes('RESOURCE_EXHAUSTED')) {
-        setAiSuggestion("Error: Gemini API key has exceeded its free tier quota (429 Rate/Quota Limit reached). Please try again in a few minutes, or check if the background scripts are running too frequently.");
+      if (errMsg.includes('429') || errMsg.toLowerCase().includes('quota')) {
+        setAiSuggestion("Error: Groq API key has exceeded its rate limit. Please try again in a few seconds.");
       } else {
         setAiSuggestion(`Error: Failed to fetch AI suggestion. (${errMsg || 'Unknown error'})`);
       }
