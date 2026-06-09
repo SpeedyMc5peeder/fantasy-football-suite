@@ -376,7 +376,7 @@ async function checkTransactions(options) {
 
     try {
       // 1. FAAB WAIVER HEIST PROTOCOL
-      if (tx.type === 'waiver' && tx.settings && tx.settings.waiver_bid >= 15 && tx.adds) {
+      if (tx.type === 'waiver' && tx.settings && tx.settings.waiver_bid >= 25 && tx.adds) {
         for (const [playerId, rosterId] of Object.entries(tx.adds)) {
           const resolved = await sleeper.resolvePlayer(playerId);
           const details = await sleeper.getTeamDetailsByRosterId(LEAGUE_ID, rosterId);

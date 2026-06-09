@@ -261,30 +261,36 @@ Since Sleeper lacks official incoming webhooks, the bot will post messages direc
 
 
 ### ⚡ Article Triggers, Schedule & Graphics
-1. **Pre-Season Daily Team Previews (10 Days Leading to Kickoff)**:
-   - *Proposed Length:* 3 to 4 paragraphs + 1 mascot image.
-   - *Format:* Written in a classic countdown structure, grouping managers into humorous pre-season tiers (Apex Predators, Bubble Teams, Tanking Brigade).
+JARVIS autonomously generates commentary and custom 90s/cinematic graphics based on the following triggers:
+
+1. **Thursday "Matchup of the Week" (Thursdays)**:
+   - Scans the week's matchups to find the most anticipated or hyped game.
+   - Posts a combat/promo-style preview with 90s Wrestling/Arcade graphics.
 2. **Weekly Matchup Recaps (Tuesdays)**:
-   - *Proposed Length:* 4 to 5 short paragraphs + 1 magazine cover image.
-   - *Format:* Meandering Norm-style opening, recap of key matches, roast of bench regrets, and standings updates.
+   - Recaps all matchups, roasts bench regrets, and updates standings.
+   - Generates retro newspaper or aerial blimp-shot graphics.
 3. **Completed Trade Reactions (On Occurrence)**:
-   - *Proposed Length:* 2 short paragraphs + 1 optional cartoon image.
-   - *Format:* One paragraph for evaluator math and winner, and one paragraph roasting the trade/strategy.
-4. **Waiver Wire Add/Drops**:
-   - *Proposed Length:* 1 to 2 sentences (minor daily swaps) or 1 short paragraph (major weekly waiver runs).
+   - Scans every 2 minutes for completed trades.
+   - Generates trade evaluations and 90s trading card / retro arcade graphics.
+4. **FAAB Bank Heists (On Waiver Clear)**:
+   - Scans waivers for any pickups costing $25 or more FAAB.
+   - Generates sarcastic money/vault/casino graphics.
 5. **Fallen Legend Wakes (On Drop)**:
-   - *Proposed Length:* 2 to 3 paragraphs.
-   - *Format:* Celebration of Life (eulogy) for dropped study veterans, including real stats, a fake award, and a YouTube highlight reel URL.
-6. **Star Injuries (On Occurrence)**:
-   - *Proposed Length:* 1 to 2 paragraphs.
-   - *Format:* Sarcastic condolences and roster impact analysis.
+   - Detects when a producing veteran (7+ years experience) is dropped.
+   - AI Bouncer checks if they are a "Legend" and generates a Celebration of Life with museum/hall of fame graphics.
+6. **Monday Night Miracles (Mondays)**:
+   - Scans for games within 15 points going into Monday Night Football.
+   - Generates tense, ticking-clock or desperate gambling graphics.
+7. **Breaking News & Star Injuries (On Occurrence)**:
+   - Scrapes ESPN NFL headlines.
+   - Uses gritty photojournalism graphics for general news, and sterile/clinical graphics for injuries.
 
 ### 🖼️ Automated Image Delivery Flow
 Since Sleeper chat cannot ingest binary uploads via webhook/GraphQL, images are delivered as embeds:
-1. `Image-Gen` creates the graphic and saves it in `/Image-Gen/images/`.
-2. The automation workflow commits and pushes the new JPG to your private GitHub repository.
-3. The bot posts the direct GitHub raw URL (e.g., `https://raw.githubusercontent.com/SpeedyMc5peeder/fantasy-football-suite/main/Image-Gen/images/filename.jpg`) inside the Sleeper chat message.
-4. Sleeper's chat client reads the link and automatically renders the image inside the chat bubble.
+1. `Image-Gen` creates the graphic using Imagen 3 and your custom `imagePrompts.js` logic.
+2. The bot uses `imageClient.pushAndGetMarkdown(filename)` to upload the image to a private Discord image-hosting webhook.
+3. The raw image URL is formatted as markdown and pushed directly into the Sleeper chat via the internal GraphQL API.
+4. Sleeper renders the image perfectly inline with the JARVIS commentary.
 
 ---
 
