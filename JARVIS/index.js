@@ -101,7 +101,7 @@ function parseArgs() {
     testWebhook: args.includes('--test-webhook'),
     dryRun: args.includes('--dry-run'),
     force: args.includes('--force'),
-    watch: args.includes('--watch'),
+    watch: args.includes('--watch') || args.includes('--daemon'),
     week: null
   };
 
