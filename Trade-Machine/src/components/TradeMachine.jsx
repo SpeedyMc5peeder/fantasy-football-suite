@@ -298,17 +298,8 @@ Instructions:
         try {
            return await tryModelWithRetries(modelFlash);
         } catch (e) {
-           console.warn(`Failed with gemini-2.5-flash. Trying gemini-1.5-flash fallback...`);
-           try {
-               const fallbackModel = genAI.getGenerativeModel({ 
-                 model: "gemini-1.5-flash",
-                 generationConfig: { responseMimeType: "application/json" }
-               });
-               return await tryModelWithRetries(fallbackModel, 2);
-           } catch (e2) {
-               console.warn(`Failed trade generation entirely:`, e2);
-               return { raw_error: rawText || e2.message };
-           }
+           console.warn(`Failed trade generation entirely after retries:`, e);
+           return { raw_error: rawText || e.message };
         }
       };
 
