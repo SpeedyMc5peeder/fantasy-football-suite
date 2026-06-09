@@ -96,6 +96,31 @@ async function resolvePlayer(playerId) {
 }
 
 /**
+ * Resolve a player by their full name (used for matching news headlines).
+ * Returns the resolved player object or null if not found.
+ */
+async function resolvePlayerByName(playerName) {
+  const players = await loadSleeperPlayers();
+  
+  const cleanName = (name) => {
+    return name.toLowerCase()
+      .replace(/[^a-z ]/g, '')
+      .replace(/\s+(jr|sr|ii|iii|iv)$/g, '')
+      .trim();
+  };
+  
+  const searchName = cleanName(playerName);
+  
+  for (const [id, player] of Object.entries(players)) {
+    const pName = player.full_name || `${player.first_name || ''} ${player.last_name || ''}`;
+    if (cleanName(pName) === searchName && player.status !== 'Inactive') {
+      return await resolvePlayer(id);
+    }
+  }
+  return null;
+}
+
+/**
  * Fetch league details.
  */
 async function getLeague(leagueId) {
@@ -194,6 +219,7 @@ async function getOwnerNameByRosterId(leagueId, rosterId) {
 module.exports = {
   loadSleeperPlayers,
   resolvePlayer,
+  resolvePlayerByName,
   getLeague,
   getRosters,
   getUsers,

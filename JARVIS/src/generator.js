@@ -198,6 +198,42 @@ class CommentaryGenerator {
     const prompt = require('./promptTemplates').getFallenLegendPrompt(data);
     return this.executeWithFallback(prompt, 'Fallen Legend Tribute');
   }
+
+  /**
+   * Bouncer for Breaking News: Checks if an ESPN news headline/description indicates 
+   * a fantasy-relevant injury, suspension, or major event.
+   * If yes, returns the player's full name. If no, returns null.
+   */
+  async checkNewsRelevance(headline, description) {
+    const prompt = `
+You are a fantasy football news analyzer.
+Headline: "${headline}"
+Description: "${description}"
+
+Does this news involve a specific NFL player at a fantasy-relevant position (QB, RB, WR, TE)?
+If YES, reply ONLY with the player's full name (e.g. "Saquon Barkley").
+If NO, or if it's strictly about a coach or team as a whole, reply ONLY with "NONE".
+Do not include any other text or punctuation.`;
+    try {
+      const result = await this.executeWithFallback(prompt, 'News Bouncer');
+      const text = result.trim().replace(/\.$/, '');
+      if (text !== 'NONE' && text.length > 2) {
+        return text;
+      }
+      return null;
+    } catch (e) {
+      console.error('Bouncer Error on News:', e.message);
+      return null;
+    }
+  }
+
+  /**
+   * Generates breaking news commentary roasting/consoling a manager.
+   */
+  async generateNewsCommentary(data) {
+    const prompt = require('./promptTemplates').getBreakingNewsPrompt(data);
+    return await this.executeWithFallback(prompt, 'Breaking News Commentary');
+  }
 }
 
 module.exports = CommentaryGenerator;

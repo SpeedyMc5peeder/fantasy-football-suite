@@ -17,9 +17,11 @@ const sleeper = require('./src/sleeperClient');
 const CommentaryGenerator = require('./src/generator');
 const { postToSleeper } = require('./src/poster');
 const imageClient = require('./src/imageClient');
+const newsScraper = require('./src/newsScraper');
 
 const CONFIG_PATH = path.join(__dirname, '..', 'config.json');
 const HISTORY_FILE = path.join(__dirname, 'data', 'processed_transactions.json');
+const NEWS_HISTORY_FILE = path.join(__dirname, 'data', 'processed_news.json');
 
 // Load configurations
 let config = { leagues: [] };
@@ -62,11 +64,29 @@ try {
   console.warn('⚠️ Failed to load processed transactions history, starting fresh.', err.message);
 }
 
+// Load processed news history
+let processedNews = [];
+try {
+  if (fs.existsSync(NEWS_HISTORY_FILE)) {
+    processedNews = JSON.parse(fs.readFileSync(NEWS_HISTORY_FILE, 'utf8'));
+  }
+} catch (err) {
+  console.warn('⚠️ Failed to load processed news history, starting fresh.', err.message);
+}
+
 function saveHistory() {
   try {
     fs.writeFileSync(HISTORY_FILE, JSON.stringify(processedTransactions, null, 2));
   } catch (err) {
     console.error('❌ Failed to save transaction history:', err.message);
+  }
+}
+
+function saveNewsHistory() {
+  try {
+    fs.writeFileSync(NEWS_HISTORY_FILE, JSON.stringify(processedNews, null, 2));
+  } catch (err) {
+    console.error('❌ Failed to save news history:', err.message);
   }
 }
 
@@ -594,6 +614,72 @@ async function generateWeeklyRecap(options) {
 }
 
 /**
+ * Fetches NFL news and checks for fantasy relevance.
+ */
+async function checkNews(options) {
+  const articles = await newsScraper.fetchLatestNews();
+  if (!articles || articles.length === 0) return;
+
+  for (const article of articles) {
+    // ESPN API uses 'id' or 'nowId' for unique identification
+    const articleId = String(article.id || article.headline);
+    
+    if (processedNews.includes(articleId)) {
+      continue;
+    }
+    
+    // Add to history so we don't process it again (even if it's ignored)
+    processedNews.push(articleId);
+    saveNewsHistory();
+    
+    // Pass to AI Bouncer
+    const playerMatch = await generator.checkNewsRelevance(article.headline, article.description);
+    
+    if (playerMatch) {
+      console.log(`   🚨 BREAKING NEWS RELEVANT to: ${playerMatch}`);
+      // Find if this player is rostered
+      const resolved = await sleeper.resolvePlayerByName(playerMatch);
+      if (!resolved) {
+        console.log(`   ⚠️ Player ${playerMatch} not found in our local sleeper DB.`);
+        continue;
+      }
+      
+      const rosters = await sleeper.getRosters(LEAGUE_ID);
+      const roster = rosters.find(r => r.players && r.players.includes(resolved.id));
+      
+      if (roster) {
+        const details = await sleeper.getTeamDetailsByRosterId(LEAGUE_ID, roster.roster_id);
+        const isInjury = article.headline.toLowerCase().includes('injur') || article.description.toLowerCase().includes('injur');
+        
+        console.log(`   🔥 Player ${playerMatch} is owned by ${details.ownerName}! Generating news commentary...`);
+        const data = {
+          headline: article.headline,
+          description: article.description,
+          playerName: resolved.name,
+          teamName: details.teamName,
+          ownerName: details.ownerName,
+          isInjury: isInjury
+        };
+        
+        let commentary = await generator.generateNewsCommentary(data);
+        commentary = commentary.replace(/\*/g, ''); // strip markdown
+        
+        await postToSleeper(USER_TOKEN, LEAGUE_ID, commentary, options.dryRun, 'breaking_news', true);
+        
+        // Post the article link
+        const link = article.link && article.link.web ? article.link.web.href : null;
+        if (link) {
+          const ytMessage = `Read more about the impending disaster here: ${link}`;
+          await postToSleeper(USER_TOKEN, LEAGUE_ID, ytMessage, options.dryRun, 'breaking_news', false);
+        }
+      } else {
+        console.log(`   🤷 Player ${playerMatch} is a free agent. Skipping commentary.`);
+      }
+    }
+  }
+}
+
+/**
  * Runs the bot continuously, polling the Sleeper API every 15 minutes for new trades.
  */
 async function startDaemon(options) {
@@ -602,6 +688,7 @@ async function startDaemon(options) {
   // Run once immediately
   try {
     await checkTransactions(options);
+    await checkNews(options);
   } catch (err) {
     console.error('❌ Error during daemon trade check:', err.message);
   }
@@ -611,6 +698,7 @@ async function startDaemon(options) {
     try {
       console.log(`\n⏰ Polling interval triggered at ${new Date().toISOString()}...`);
       await checkTransactions(options);
+      await checkNews(options);
     } catch (err) {
       console.error('❌ Error during daemon trade check:', err.message);
     }
