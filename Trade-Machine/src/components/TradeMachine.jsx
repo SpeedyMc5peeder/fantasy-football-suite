@@ -604,7 +604,12 @@ Instructions:
           })
         });
         const data = await res.json();
-        setEvaluation(data);
+        setEvaluation({ ...data, isThreeWay: false });
+        // Auto-scroll to results on mobile
+        setTimeout(() => {
+          const resultsEl = document.querySelector('.results-panel');
+          if (resultsEl) resultsEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
       } else {
         // 3-way offline calculation
         const getAdjusted = (asset, mode) => {
@@ -613,11 +618,18 @@ Instructions:
            return asset.composite_value;
         };
 
-        const calcNet = (teamId, sentAssets, mode) => {
-          let sentValue = sentAssets.reduce((s, a) => s + getAdjusted(a, mode), 0);
+        const calcNet = (teamId, list, mode) => {
+          let sentValue = 0;
           let receivedValue = 0;
-          [finalA, finalB, finalC].forEach(list => {
-            list.forEach(a => {
+          
+          // Assets sent away by teamId
+          list.forEach(a => {
+            if (a.destId !== teamId) sentValue += getAdjusted(a, mode);
+          });
+          
+          // Assets received by teamId
+          [finalA, finalB, finalC].forEach(otherList => {
+            otherList.forEach(a => {
               if (a.destId === teamId) receivedValue += getAdjusted(a, mode);
             });
           });
@@ -629,6 +641,11 @@ Instructions:
         const netC = calcNet(finalTeamC, finalC, modeC);
         
         setEvaluation({ isThreeWay: true, netA, netB, netC });
+        // Auto-scroll to results on mobile
+        setTimeout(() => {
+          const resultsEl = document.querySelector('.results-panel');
+          if (resultsEl) resultsEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
       }
     } catch (err) {
       console.error(err);
@@ -726,13 +743,18 @@ Instructions:
   );
 
   // Default dests
-  const [destA, setDestA] = useState(teamB);
-  const [destB, setDestB] = useState(teamA);
-  const [destC, setDestC] = useState(teamA);
+  const [destA, setDestA] = useState('');
+  const [destB, setDestB] = useState('');
+  const [destC, setDestC] = useState('');
 
-  // Sync default dests when teams change
-  useEffect(() => { if (!destA) setDestA(teamB); }, [teamB]);
-  useEffect(() => { if (!destB) setDestB(teamA); }, [teamA]);
+  useEffect(() => {
+    if (teamB && !destA) setDestA(teamB);
+  }, [teamB, destA]);
+
+  useEffect(() => {
+    if (teamA && !destB) setDestB(teamA);
+  }, [teamA, destB]);
+
   useEffect(() => { if (!destC) setDestC(teamA); }, [teamA]);
 
   return (
