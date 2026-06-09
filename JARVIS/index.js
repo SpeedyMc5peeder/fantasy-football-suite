@@ -695,15 +695,21 @@ async function startDaemon(options) {
   }
   
   const pollIntervalMs = 2 * 60 * 1000;
-  setInterval(async () => {
+  
+  const runLoop = async () => {
     try {
       console.log(`\n⏰ Polling interval triggered at ${new Date().toISOString()}...`);
       await checkTransactions(options);
       await checkNews(options);
     } catch (err) {
       console.error('❌ Error during daemon trade check:', err.message);
+    } finally {
+      setTimeout(runLoop, pollIntervalMs);
     }
-  }, pollIntervalMs);
+  };
+
+  // Start the recursive loop after the first immediate run
+  setTimeout(runLoop, pollIntervalMs);
 }
 
 /**
