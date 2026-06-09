@@ -222,7 +222,6 @@ module.exports = {
  */
 function getFallenLegendPrompt(data) {
   const { playerName, teamName, ownerName, yearsExp, age, position } = data;
-  const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(playerName + ' career highlights')}`;
 
   return `
 ${STYLE_SAMPLES}
@@ -240,9 +239,8 @@ Write a comedic, dramatic, and celebratory 'Celebration of Life' (Irish Wake / T
 2. Write this like a loud, boisterous, slightly drunken Irish Wake or a Cop Funeral from The Wire. We are celebrating the glory years of this player, while also throwing some shade at the GM (${ownerName}) for dropping them.
 3. Pull in REAL stats, accolades, or historical context about this player's actual NFL career (e.g., peak fantasy seasons, real-life awards).
 4. **CRITICAL: Include one completely FAKE, highly specific, funny fantasy football award** that fits their heyday (e.g., '2019 Winner of the Went Off on Dom's Bench in a Playoff Game Award').
-5. Include the provided YouTube highlight link directly in the text as a RAW URL on its own line (do NOT use markdown link formatting like [text](url) because the chat app does not support it). Introduce it naturally, like: "Pour one out to the highlight reel here: ${searchUrl}"
-6. Keep it punchy, around 150-200 words max.
-7. CRITICAL NAME DIRECTIVE: You must refer to teams by their Team Name (e.g. ${teamName}), NOT by the owner's username or name.
-8. Sign off with a robotic yet slightly drunk/emotional sign-off (e.g. 'Beep Boop. Pouring one out.').
+5. Keep it punchy, around 150-200 words max.
+6. CRITICAL NAME DIRECTIVE: You must refer to teams by their Team Name (e.g. ${teamName}), NOT by the owner's username or name.
+7. Sign off with a robotic yet slightly drunk/emotional sign-off (e.g. 'Beep Boop. Pouring one out.').
 `;
 }

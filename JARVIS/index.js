@@ -368,6 +368,12 @@ async function checkTransactions(options) {
             let article = await generator.generateFallenLegendCommentary(data);
             article = article.replace(/\*/g, ''); // strip markdown
             await postToSleeper(USER_TOKEN, LEAGUE_ID, article, options.dryRun, 'waivers', true);
+            
+            // Post the YouTube highlight link separately
+            const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(resolved.name + ' career highlights')}`;
+            const ytMessage = `Pour one out to the highlight reel here: ${searchUrl}`;
+            await postToSleeper(USER_TOKEN, LEAGUE_ID, ytMessage, options.dryRun, 'waivers', false);
+            
             postedTribute = true;
           } else {
             console.log(`   ❌ AI Bouncer rejected ${resolved.name}. Just a veteran, not a legend.`);
