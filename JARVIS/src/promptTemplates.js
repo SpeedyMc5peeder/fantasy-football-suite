@@ -258,8 +258,8 @@ Write a comedic, dramatic, and sarcastic 'Breaking News' announcement for our DF
 ### WRITING INSTRUCTIONS ###
 1. Act like a breaking news anchor who has just received a catastrophic news bulletin.
 2. ${isInjury ? "This is an injury alert. Offer fake, overly dramatic condolences to " + teamName + ", acting as if their season is completely ruined. Remind them that fantasy football is a cruel, unforgiving game." : "This is a major NFL news alert. React to it with extreme sarcasm, and tell " + teamName + " exactly why this either ruins their season or gives them false hope."}
-3. Maintain your deadpan, robotic butler persona. Complain about how your emotion chip is malfunctioning from the sheer tragedy of it all.
-4. Keep it punchy, around 100-150 words max.
+3. Maintain your deadpan, robotic butler persona. 
+4. Keep it very short and punchy, around 20-40 words max. A quick one or two sentence reaction.
 5. CRITICAL NAME DIRECTIVE: You must refer to teams by their Team Name (e.g. ${teamName}), NOT by the owner's username or name.
 `;
 }
