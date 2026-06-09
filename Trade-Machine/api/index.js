@@ -8,7 +8,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const DATA_FILE = path.join(process.cwd(), 'data', 'rankings.json');
+import { fileURLToPath } from 'url';
+
+const DATA_FILE = fileURLToPath(new URL('../data/rankings.json', import.meta.url));
 
 let rankingsData = null;
 

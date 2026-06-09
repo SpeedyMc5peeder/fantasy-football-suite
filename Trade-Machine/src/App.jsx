@@ -2,7 +2,7 @@ import { useState } from 'react'
 import RankingsExplorer from './components/RankingsExplorer'
 import TradeMachine from './components/TradeMachine'
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5000'
+const API_BASE = import.meta.env.PROD ? '' : (import.meta.env.VITE_API_BASE || 'http://localhost:5000');
 
 const TABS = [
   { id: 'rankings', label: 'Rankings', icon: '📊' },
