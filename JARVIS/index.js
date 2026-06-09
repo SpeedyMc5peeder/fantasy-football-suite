@@ -375,7 +375,10 @@ async function checkTransactions(options) {
         }
       }
 
-      processedDropCount++;
+      if (postedTribute) {
+        processedDropCount++;
+      }
+      
       if (!options.dryRun) {
         processedTransactions.push(dropId);
         saveHistory();
@@ -588,7 +591,7 @@ async function generateWeeklyRecap(options) {
  * Runs the bot continuously, polling the Sleeper API every 15 minutes for new trades.
  */
 async function startDaemon(options) {
-  console.log('🤖 Watch daemon active. Polling Sleeper DFL completed trades every 15 minutes...');
+  console.log('🤖 Watch daemon active. Polling Sleeper DFL completed trades every 2 minutes...');
   
   // Run once immediately
   try {
@@ -597,7 +600,7 @@ async function startDaemon(options) {
     console.error('❌ Error during daemon trade check:', err.message);
   }
   
-  const pollIntervalMs = 15 * 60 * 1000;
+  const pollIntervalMs = 2 * 60 * 1000;
   setInterval(async () => {
     try {
       console.log(`\n⏰ Polling interval triggered at ${new Date().toISOString()}...`);

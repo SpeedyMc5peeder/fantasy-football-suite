@@ -165,14 +165,27 @@ class CommentaryGenerator {
    * AI Bouncer: Checks if a dropped player is a true fantasy legend.
    */
   async checkIsFallenLegend(playerName) {
+    const prompt = `Is the NFL player ${playerName} considered a widely recognized former fantasy football stud/legend (like Nick Chubb, Julio Jones, Derrick Henry, etc.)? Answer ONLY with the word YES or NO. Do not include any other text.`;
+    console.log(`🤖 AI Bouncer: Checking if ${playerName} is a Fallen Legend...`);
+    
     try {
-      const prompt = `Is the NFL player ${playerName} considered a widely recognized former fantasy football stud/legend (like Nick Chubb, Julio Jones, Derrick Henry, etc.)? Answer ONLY with the word YES or NO. Do not include any other text.`;
-      console.log(`🤖 AI Bouncer: Checking if ${playerName} is a Fallen Legend...`);
       const model = this.genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
       const result = await model.generateContent(prompt);
       const answer = result.response.text().trim().toUpperCase();
       return answer.includes('YES');
     } catch (err) {
+      if (err.message && err.message.includes('503')) {
+        console.warn(`⚠️ 503 Service Unavailable with gemini-2.5-flash in Bouncer. Auto-falling back to gemini-2.5-pro...`);
+        try {
+          const fallbackModel = this.genAI.getGenerativeModel({ model: 'gemini-2.5-pro' });
+          const result = await fallbackModel.generateContent(prompt);
+          const answer = result.response.text().trim().toUpperCase();
+          return answer.includes('YES');
+        } catch (fallbackErr) {
+          console.error('⚠️ AI Bouncer fallback failed:', fallbackErr.message);
+          return false;
+        }
+      }
       console.error('⚠️ AI Bouncer failed:', err.message);
       return false;
     }

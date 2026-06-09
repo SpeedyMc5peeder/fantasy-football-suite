@@ -384,8 +384,8 @@ If you run the bot locally on your laptop to get instant trade scans and DM eval
    ```bash
    npm install -g pm2
    ```
-2. **Start the BS-Pod daemon:**
-   Open a terminal, navigate to the `BS-Pod` directory, and run:
+2. **Start the JARVIS daemon:**
+   Open a terminal, navigate to the `JARVIS` directory, and run:
    ```bash
    pm2 start index.js --name "sleeper-bot" -- --check-transactions --watch
    ```
