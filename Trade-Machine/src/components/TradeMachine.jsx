@@ -262,7 +262,7 @@ Instructions:
    - Maintain the manager names exactly as written in the list.
 
 4. RESPONSE FORMAT:
-   You must return your response ONLY as a JSON object containing EXACTLY 1 trade option matching this schema:
+   You must return your response ONLY as a JSON array containing EXACTLY 3 unique, diverse trade options. The outer structure MUST be a JSON array (e.g. [ {trade1}, {trade2}, {trade3} ]). Each object in the array must match this schema:
    {
      "teamA_name": "Name of Manager/Team A (Must be ${userManagerName})",
      "teamB_name": "Name of Manager/Team B (Must match the list exactly)",
@@ -273,7 +273,7 @@ Instructions:
      "assetsC_sent": [ { "name": "Player Name", "dest_team_name": "Name of Manager receiving this player" } ],
      "rationale": "An enthusiastic 'Bill Simmons fake trade' style explanation. Act as a neutral, third-party observer or podcast host reviewing the trade from the outside. Lay out why it makes sense for both sides, pitch it as a brilliant idea, and end with a rhetorical hook like 'why wouldn't they do that!?' or 'who says no!?'"
    }
-   Return ONLY the JSON object for a single trade.`;
+   Return ONLY the JSON array containing exactly 3 trade objects.`;
 
         let rawText = '';
         
@@ -300,13 +300,13 @@ Instructions:
         }
       };
 
-      console.log("Attempting generation of trade with gemini-2.5-flash...");
-      const result = await fetchTrade();
+      console.log("Attempting generation of 3 trades with gemini-2.5-flash...");
+      const results = await fetchTrade();
       
-      if (!result || !result.teamA_name) {
-         setAiSuggestion(`Error: The AI failed to generate any valid trades. AI Response: ${result?.raw_error || 'Invalid JSON'}`);
+      if (!Array.isArray(results) || results.length === 0 || !results[0].teamA_name) {
+         setAiSuggestion(`Error: The AI failed to generate any valid trades. AI Response: ${results?.raw_error || 'Invalid JSON'}`);
       } else {
-         setParsedAiSuggestion({ trades: [result] });
+         setParsedAiSuggestion({ trades: results });
       }
     } catch (err) {
       console.error(err);
