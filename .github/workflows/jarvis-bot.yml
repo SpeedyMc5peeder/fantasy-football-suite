@@ -41,34 +41,17 @@ jobs:
       - name: Install Dynasty-Evaluator dependencies
         run: |
           cd Dynasty-Evaluator
-          npm ci
+          npm ci || npm install
 
       - name: Install JARVIS dependencies
         run: |
           cd JARVIS
-          npm ci
+          npm ci || npm install
 
       - name: Install Image-Gen dependencies
         run: |
           cd Image-Gen
-          npm ci
-
-      - name: Start Dynasty-Evaluator API Server
-        run: |
-          cd Dynasty-Evaluator
-          nohup npm start > server.log 2>&1 &
-          echo "Waiting for server to spin up..."
-          sleep 5
-          curl -s http://localhost:5000/api/health || { echo "❌ Server failed to start"; cat server.log; exit 1; }
-
-      - name: Start Image-Gen API Server
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: |
-          cd Image-Gen
-          nohup npm start > server.log 2>&1 &
-          echo "Waiting for Image-Gen to spin up..."
-          sleep 5
+          npm ci || npm install
 
       - name: Run Bot Command
         env:
