@@ -165,7 +165,7 @@ class CommentaryGenerator {
    * AI Bouncer: Checks if a dropped player is a true fantasy legend.
    */
   async checkIsFallenLegend(playerName) {
-    const prompt = `Is the NFL player ${playerName} considered a widely recognized former fantasy football stud/legend (like Nick Chubb, Julio Jones, Derrick Henry, etc.)? Answer ONLY with the word YES or NO. Do not include any other text.`;
+    const prompt = `Is the NFL player ${playerName} a widely recognized former fantasy football stud, legend, or someone whose star "burned very bright" for at least one or two amazing seasons (like David Johnson, Todd Gurley, Nick Chubb, Julio Jones, etc.)? Answer ONLY with the word YES or NO. Do not include any other text.`;
     console.log(`🤖 AI Bouncer: Checking if ${playerName} is a Fallen Legend...`);
     
     try {

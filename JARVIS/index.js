@@ -429,7 +429,7 @@ async function checkTransactions(options) {
         for (const [playerId, rosterId] of Object.entries(tx.drops)) {
           const resolved = await sleeper.resolvePlayer(playerId);
           
-          if (resolved.years_exp >= 7 || resolved.age >= 28) {
+          if (resolved.years_exp >= 4 || resolved.age >= 26) {
             console.log(`   🕵️  Checking if dropped veteran ${resolved.name} is a Fallen Legend...`);
             const isLegend = await generator.checkIsFallenLegend(resolved.name);
             if (isLegend) {
