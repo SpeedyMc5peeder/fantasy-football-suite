@@ -147,7 +147,7 @@ JARVIS: Dalvin Cook to the Ravens. Well, that's interesting. I suppose if you ca
 
 EXAMPLE 12: News Scraper — Rostered (Longer, Tagged)
 Headline: "Saquon Barkley suffers season-ending ACL tear."
-JARVIS: Oh, fuck. Saquon just tore his ACL getting out of a car, apparently. [@Dave], you own him. You also own three tight ends and a prayer. I don't know which is worse. Your replacement options are a waiver wire graveyard and a guy named Zonovan. I suggest you make a cup of coffee, stare out the window, and accept that the football gods are cruel and arbitrary and probably gay. I'll be refreshing the injury report every ninety seconds in case this is a dream. It's not. But I'll check anyway.
+JARVIS: Oh, fuck. Saquon just tore his ACL getting out of a car, apparently. Dave, you own him. You also own three tight ends and a prayer. I don't know which is worse. Your replacement options are a waiver wire graveyard and a guy named Zonovan. I suggest you make a cup of coffee, stare out the window, and accept that the football gods are cruel and arbitrary and probably gay. I'll be refreshing the injury report every ninety seconds in case this is a dream. It's not. But I'll check anyway.
 `;
 
 /**
@@ -201,7 +201,7 @@ Write a trade reaction sports column breaking down a trade that just occurred in
 3. Keep the reaction exactly 2 short paragraphs. Fast, sharp, and punchy.
 4. CRITICAL NAME DIRECTIVE: You must refer to teams by their Team Name (e.g. "${teamNameA}" or "${teamNameB}"), NOT by the owner's username or name.
 5. Roast the loser or praise the winner using pub-level ribbing. Use swearing and 90s/2000s guy slang naturally.
-6. If you address or tag the managers directly in the chat, you MUST use their Sleeper Usernames: @${usernameA} and @${usernameB}. Do not use @${managerA} or @${teamNameA}.
+6. If you address the managers directly, just use their real first names naturally (${managerA} and ${managerB}). DO NOT use any @ symbols or parentheses or tags.
 7. Do NOT use markdown formatting (no bold/italics in the output) because the chat app does not support it.
 `;
 }
@@ -309,7 +309,7 @@ Write a comedic, dramatic, and celebratory 'Celebration of Life' (mock eulogy) t
 4. CRITICAL: Include one completely FAKE, highly specific, funny fantasy football award that fits their heyday.
 5. Include the provided YouTube highlight link directly in the text as a RAW URL on its own line: "Pour one out to the highlight reel here: ${searchUrl}" (Do NOT use markdown link formatting).
 6. CRITICAL NAME DIRECTIVE: You must refer to teams by their Team Name, NOT by the owner's username or name.
-7. If you decide to tag the manager who dropped them, you MUST use their Sleeper Username: @${data.username}.
+7. If you address the manager who dropped them, just use their real first name naturally (${data.ownerName}). DO NOT use any @ symbols or parentheses or tags.
 8. Do NOT use markdown formatting (no bold/italics in the output) because the chat app does not support it.
 `;
 }
@@ -325,8 +325,8 @@ function getBreakingNewsPrompt(data) {
     : `- **Manager Impacted**: None (Free Agent)`;
 
   let injuryInstruction = isInjury
-    ? (isRostered ? `This is an injury alert. Offer fake, overly dramatic condolences to ${teamName}, acting as if their season is completely ruined. Tag the manager using their Sleeper Username: [@${username}].` : `This is an injury alert about a free agent. Warn the league that they shouldn't bother picking him up.`)
-    : (isRostered ? `This is a major NFL news alert. React to it with extreme sarcasm, and tell ${teamName} exactly why this either ruins their season or gives them false hope. Tag the manager using their Sleeper Username: [@${username}].` : `This is a major NFL news alert about a free agent. Drop a sarcastic comment about how he's still irrelevant to the league.`);
+    ? (isRostered ? `This is an injury alert. Offer fake, overly dramatic condolences to ${teamName}, acting as if their season is completely ruined. If you address the manager, use their real first name naturally (${ownerName}) and DO NOT use any @ symbols or tags.` : `This is an injury alert about a free agent. Warn the league that they shouldn't bother picking him up.`)
+    : (isRostered ? `This is a major NFL news alert. React to it with extreme sarcasm, and tell ${teamName} exactly why this either ruins their season or gives them false hope. If you address the manager, use their real first name naturally (${ownerName}) and DO NOT use any @ symbols or tags.` : `This is a major NFL news alert about a free agent. Drop a sarcastic comment about how he's still irrelevant to the league.`);
 
   let lengthInstruction = isRostered
     ? `Keep it to about 1 paragraph (around 100-150 words). Roast the manager specifically.`
@@ -348,7 +348,7 @@ ${impactLine}
 2. ${injuryInstruction}
 3. ${lengthInstruction}
 4. CRITICAL NAME DIRECTIVE: You must refer to teams by their Team Name, NOT by the owner's username or name.
-5. If you address or tag the manager directly in the chat, you MUST use their Sleeper Username: @${username}. Do not use @${ownerName} or @${teamName}.
+5. If you address the manager directly, just use their real first name naturally (${ownerName}). DO NOT use any @ symbols or parentheses or tags.
 6. Do NOT use markdown formatting (no bold/italics in the output) because the chat app does not support it.
 `;
 }
@@ -374,7 +374,7 @@ Write a comedic, sarcastic reaction to a manager spending a massive amount of FA
 2. Keep it to 1 to 2 short paragraphs.
 3. Roast the manager for spending so much fake money on someone who probably won't help them win.
 4. CRITICAL NAME DIRECTIVE: You must refer to the team by their Team Name, NOT by the owner's username or name.
-5. If you tag the manager who spent the money, you MUST use their Sleeper Username: @${username}.
+5. If you address the manager who spent the money, just use their real first name naturally (${ownerName}). DO NOT use any @ symbols or parentheses or tags.
 6. Do NOT use markdown formatting (no bold/italics).
 `;
 }
