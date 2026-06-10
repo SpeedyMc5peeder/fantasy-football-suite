@@ -9,6 +9,7 @@ const axios = require('axios');
 const crypto = require('crypto');
 
 const { getFormattedPrefix } = require('./prefixManager');
+const { formatSleeperMentions } = require('./sleeperClient');
 
 const SLEEPER_CHAR_LIMIT = 4000;
 const SAFE_LIMIT = 3800; // Leave buffer for formatting and header
@@ -63,7 +64,10 @@ function chunkMessage(text, maxLen = SAFE_LIMIT) {
 async function postToSleeper(userToken, leagueId, content, dryRun = false, trigger = 'general', useHeader = true) {
   // Prepend the randomized bot identification header if requested
   const header = useHeader ? getFormattedPrefix(trigger) : '';
-  const fullContent = header + content;
+  let fullContent = header + content;
+
+  // Replace @username tags with <@user_id> for proper Sleeper notifications
+  fullContent = await formatSleeperMentions(leagueId, fullContent);
 
   // Split into chunks if it exceeds the limit
   const chunks = chunkMessage(fullContent, SAFE_LIMIT);

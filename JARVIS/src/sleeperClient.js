@@ -217,6 +217,22 @@ async function getOwnerNameByRosterId(leagueId, rosterId) {
   return details.ownerName;
 }
 
+/**
+ * Replaces @username in text with the Sleeper internal <@user_id> tag.
+ */
+async function formatSleeperMentions(leagueId, text) {
+  if (!text || !text.includes('@')) return text;
+  
+  const users = await getUsers(leagueId);
+  return text.replace(/@([a-zA-Z0-9_]+)/g, (match, username) => {
+    const user = users.find(u => u.display_name.toLowerCase() === username.toLowerCase());
+    if (user) {
+      return `<@${user.user_id}>`;
+    }
+    return match;
+  });
+}
+
 module.exports = {
   loadSleeperPlayers,
   resolvePlayer,
@@ -227,5 +243,6 @@ module.exports = {
   getMatchups,
   getTransactions,
   getOwnerNameByRosterId,
-  getTeamDetailsByRosterId
+  getTeamDetailsByRosterId,
+  formatSleeperMentions
 };
