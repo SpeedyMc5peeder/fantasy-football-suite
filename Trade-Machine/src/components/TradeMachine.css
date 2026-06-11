@@ -126,6 +126,15 @@
   color: var(--text-primary);
 }
 
+.finder-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
 /* --- AI Assistant Bar --- */
 .ai-assistant-container {
   display: flex;
@@ -579,5 +588,63 @@
 
   .trade-arrow {
     display: none;
+  }
+
+  /* Sync box: full width, input flexes, button stays visible.
+     The label is redundant with the placeholder on small screens. */
+  .sync-box {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .sync-label {
+    display: none;
+  }
+
+  .sync-input {
+    flex: 1;
+    min-width: 0;
+    width: auto;
+    padding: 0.6rem;
+    font-size: 1rem;
+  }
+
+  .sync-btn {
+    padding: 0.6rem 1rem;
+  }
+
+  .league-selector select {
+    width: 100%;
+  }
+
+  /* Toggles become full-width segmented controls */
+  .trade-type-toggle {
+    width: 100%;
+    display: flex;
+  }
+
+  .trade-type-toggle button {
+    flex: 1;
+    padding: 0.65rem 0.2rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .apply-trade-btn {
+    font-size: 0.85rem;
+    padding: 0.75rem 0.5rem;
+    letter-spacing: 0.5px;
+  }
+
+  .finder-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  /* Step titles + value pills wrap cleanly */
+  .mode-pill {
+    padding: 0.45rem 0.7rem !important;
   }
 }

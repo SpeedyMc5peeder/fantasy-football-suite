@@ -456,8 +456,10 @@ body::after {
 }
 
 @media (max-width: 480px) {
+  /* The DT icon carries the brand on phones — the wordmark wraps and
+     pushes the tab nav off-screen at 375px */
   .app-logo-text {
-    font-size: 15px;
+    display: none;
   }
 
   .tab-btn {

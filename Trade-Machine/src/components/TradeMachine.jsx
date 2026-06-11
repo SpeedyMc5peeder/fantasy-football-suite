@@ -768,7 +768,7 @@ export default function TradeMachine() {
 
       {/* Algorithmic Trade Finder */}
       <div className="glass-panel ai-assistant-container">
-        <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'1rem'}}>
+        <div className="finder-header">
            <h3 style={{marginTop:0, marginBottom:0, color:'#00ccff', display:'flex', alignItems:'center', gap:'0.5rem'}}>
              ⚡ Algorithmic Trade Finder
            </h3>
