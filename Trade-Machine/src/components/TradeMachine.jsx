@@ -870,7 +870,7 @@ export default function TradeMachine() {
                      <button className="apply-trade-btn" onClick={() => handleFindTrades('2-way')} disabled={isFinding || tradeBlock.length === 0} style={{background: 'linear-gradient(135deg, #00ff88, #00b3ff)'}}>
                         {isFinding ? 'Crunching...' : 'Find 2-Way Trades'}
                      </button>
-                     <button className="apply-trade-btn" onClick={() => handleFindTrades('3-way')} disabled={isFinding || tradeBlock.length < 2} style={{background: 'linear-gradient(135deg, #ff00cc, #ff6600)'}}>
+                     <button className="apply-trade-btn" onClick={() => handleFindTrades('3-way')} disabled={isFinding || tradeBlock.length === 0} style={{background: 'linear-gradient(135deg, #ff00cc, #ff6600)'}}>
                         {isFinding ? 'Crunching...' : 'Find 3-Way Trades'}
                      </button>
                    </>

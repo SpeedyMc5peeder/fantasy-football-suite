@@ -166,7 +166,7 @@ export function generateTwoWayTrades({ rosterData, userTeamId, userAssets, userM
 // their own, it searches the winning opponent's roster for a single "broker" asset to send
 // to the losing opponent that closes the triangle — the move real 3-way trades are made of.
 export function generateThreeWayTrades({ rosterData, userTeamId, userAssets, userMode = 'neutral', targetNeeds = [], maxResults = 5 }) {
-  if (userAssets.length < 2) return []; // Need at least 2 assets to split
+  if (userAssets.length < 1) return []; // One asset is enough — the broker leg routes value to the team you don't send to
 
   // Cap the block at the 4 most valuable assets to keep the search fast
   const block = [...userAssets].sort((a, b) => (b.composite_value || 0) - (a.composite_value || 0)).slice(0, 4);
@@ -200,9 +200,10 @@ export function generateThreeWayTrades({ rosterData, userTeamId, userAssets, use
     return all;
   };
 
-  // Every split of the block between B and C (both legs non-empty)
+  // Every split of the block between B and C — including one-sided splits where
+  // everything goes to one team and the broker leg compensates the other
   const partitions = [];
-  for (let mask = 1; mask < (1 << n) - 1; mask++) {
+  for (let mask = 0; mask <= (1 << n) - 1; mask++) {
     const toB = [], toC = [];
     let valB = 0, valC = 0;
     for (let k = 0; k < n; k++) {
@@ -292,6 +293,11 @@ export function generateThreeWayTrades({ rosterData, userTeamId, userAssets, use
                 ? { asset: best, fromId: teamB.roster_id, fromName: teamB.name, toId: teamC.roster_id, toName: teamC.name }
                 : { asset: best, fromId: teamC.roster_id, fromName: teamC.name, toId: teamB.roster_id, toName: teamB.name };
             }
+
+            // A team that receives nothing from the user must at least get the broker
+            // asset — nobody sends players away for literally nothing in return
+            if (part.toB.length === 0 && (!broker || String(broker.toId) !== String(teamB.roster_id))) continue;
+            if (part.toC.length === 0 && (!broker || String(broker.toId) !== String(teamC.roster_id))) continue;
 
             // Full user-side evaluation (stud premium + roster tax)
             const sideAValues = [...part.toB, ...part.toC].map(a => applyTeamMode(a.composite_value, a.position, a.age, userMode));
