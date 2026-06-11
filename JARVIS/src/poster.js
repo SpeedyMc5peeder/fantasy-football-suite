@@ -13,6 +13,12 @@ const { getFormattedPrefix } = require('./prefixManager');
 const SLEEPER_CHAR_LIMIT = 4000;
 const SAFE_LIMIT = 3800; // Leave buffer for formatting and header
 
+// Parenthetical prefix headers disabled per league feedback (June 2026) —
+// posts keep the 🎙️ mic marker only. Flip to true to bring back the
+// randomized "🎙️ | (...)" headers.
+const USE_PREFIXES = false;
+const MIC_HEADER = '🎙️ | ';
+
 /**
  * Splits a long markdown text into chunks of maximum size, trying to split on paragraph breaks.
  */
@@ -62,7 +68,7 @@ function chunkMessage(text, maxLen = SAFE_LIMIT) {
  */
 async function postToSleeper(userToken, leagueId, content, dryRun = false, trigger = 'general', useHeader = true) {
   // Prepend the randomized bot identification header if requested
-  const header = useHeader ? getFormattedPrefix(trigger) : '';
+  const header = useHeader ? (USE_PREFIXES ? getFormattedPrefix(trigger) : MIC_HEADER) : '';
   const fullContent = header + content;
 
   // Split into chunks if it exceeds the limit

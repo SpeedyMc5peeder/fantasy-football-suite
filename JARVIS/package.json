@@ -1,7 +1,7 @@
 {
   "name": "jarvis",
   "version": "1.0.0",
-  "description": "AI Commentary Bot in the voice of Bill Simmons and Ryen Russillo for DFL Sleeper League",
+  "description": "AI Commentary Bot with his own voice for DFL Sleeper League",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",

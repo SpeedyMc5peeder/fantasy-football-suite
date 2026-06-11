@@ -223,7 +223,10 @@ Do not include any other text or punctuation.`;
       return null;
     } catch (e) {
       console.error('Bouncer Error on News:', e.message);
-      return null;
+      // Rethrow so the caller can leave the article unprocessed and retry next poll.
+      // Returning null here made API outages indistinguishable from "not relevant",
+      // permanently skipping articles that failed during a Gemini hiccup.
+      throw e;
     }
   }
 

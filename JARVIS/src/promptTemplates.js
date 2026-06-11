@@ -304,7 +304,7 @@ Write a comedic, dramatic, and celebratory 'Celebration of Life' (mock eulogy) t
 
 ### WRITING INSTRUCTIONS ###
 1. Write in the JARVIS voice, matching the tone and style of EXAMPLE 8.
-2. Keep it to 2 to 3 paragraphs.
+2. Keep it tight: 2 short paragraphs, about 120 words total — never exceed 140 words. Every line should earn its spot.
 3. Pull in REAL stats, accolades, or historical context about their actual NFL career.
 4. CRITICAL: Include one completely FAKE, highly specific, funny fantasy football award that fits their heyday.
 5. Include the provided YouTube highlight link directly in the text as a RAW URL on its own line: "Pour one out to the highlight reel here: ${searchUrl}" (Do NOT use markdown link formatting).
@@ -329,8 +329,8 @@ function getBreakingNewsPrompt(data) {
     : (isRostered ? `This is a major NFL news alert. React to it with extreme sarcasm, and tell ${teamName} exactly why this either ruins their season or gives them false hope. If you address the manager, use their real first name naturally (${ownerName}) and DO NOT use any @ symbols or tags.` : `This is a major NFL news alert about a free agent. Drop a sarcastic comment about how he's still irrelevant to the league.`);
 
   let lengthInstruction = isRostered
-    ? `Keep it to about 1 paragraph (around 100-150 words). Roast the manager specifically.`
-    : `Keep it very short and punchy, around 20-40 words max (1-2 sentences).`;
+    ? `Keep it to ONE tight paragraph of 60-90 words — never exceed 90 words. Roast the manager specifically, but make every sentence earn its spot.`
+    : `Keep it very short and punchy, around 20-30 words max (1-2 sentences).`;
 
   return `
 ${STYLE_SAMPLES}

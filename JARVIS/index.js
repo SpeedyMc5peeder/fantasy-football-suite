@@ -468,12 +468,10 @@ async function checkTransactions(options) {
                 }
               }
 
+              // The YouTube highlight link is already embedded in the eulogy text by the prompt —
+              // posting it again as a separate message caused duplicate-link spam (see OBJ drop).
               await postToSleeper(USER_TOKEN, LEAGUE_ID, article, options.dryRun, 'waivers', true);
-              
-              const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(resolved.name + ' career highlights')}`;
-              const ytMessage = `Pour one out to the highlight reel here: ${searchUrl}`;
-              await postToSleeper(USER_TOKEN, LEAGUE_ID, ytMessage, options.dryRun, 'waivers', false);
-              
+
               eventPosted = true;
             } else {
               console.log(`   ❌ AI Bouncer rejected ${resolved.name}. Just a veteran, not a legend.`);
@@ -727,13 +725,20 @@ async function checkNews(options) {
       continue;
     }
     
+    // Pass to AI Bouncer first — only mark processed once we get a definitive answer.
+    // If Gemini is down (503/401), leave the article unmarked so the next poll retries it.
+    let playerMatch;
+    try {
+      playerMatch = await generator.checkNewsRelevance(article.headline, article.description);
+    } catch (err) {
+      console.error(`   ⏳ Bouncer unavailable for "${article.headline}" — will retry next poll.`);
+      continue;
+    }
+
     // Add to history so we don't process it again (even if it's ignored)
     processedNews.push(articleId);
     saveNewsHistory();
-    
-    // Pass to AI Bouncer
-    const playerMatch = await generator.checkNewsRelevance(article.headline, article.description);
-    
+
     if (playerMatch) {
       console.log(`   🚨 BREAKING NEWS RELEVANT to: ${playerMatch}`);
       // Find if this player is rostered
@@ -767,7 +772,10 @@ async function checkNews(options) {
       
       let commentary = await generator.generateNewsCommentary(data);
       commentary = commentary.replace(/\*/g, ''); // strip markdown
-      
+
+      // Match the prefix file's trigger sections: injuries for injury news, news_scraper otherwise
+      const newsTrigger = data.isInjury ? 'injuries' : 'news_scraper';
+
       if (Math.random() < 0.5) {
         console.log(`   🎨 Generating breaking news image...`);
         const imagePayload = {
@@ -784,18 +792,17 @@ async function checkNews(options) {
         const filename = await imageClient.generateImage(imagePayload);
         const md = await imageClient.pushAndGetMarkdown(filename, options.dryRun);
         if (md) {
-          await postToSleeper(USER_TOKEN, LEAGUE_ID, md.trim(), options.dryRun, 'breaking_news', false);
+          await postToSleeper(USER_TOKEN, LEAGUE_ID, md.trim(), options.dryRun, newsTrigger, false);
         }
       }
 
-      await postToSleeper(USER_TOKEN, LEAGUE_ID, commentary, options.dryRun, 'breaking_news', true);
-      
-      // Post the article link
+      // Fold the article link into the commentary message instead of posting it separately
       const link = article.link && article.link.web ? article.link.web.href : null;
       if (link) {
-        const ytMessage = `Read more here: ${link}`;
-        await postToSleeper(USER_TOKEN, LEAGUE_ID, ytMessage, options.dryRun, 'breaking_news', false);
+        commentary += `\n\nRead more here: ${link}`;
       }
+
+      await postToSleeper(USER_TOKEN, LEAGUE_ID, commentary, options.dryRun, newsTrigger, true);
     }
   }
 }
