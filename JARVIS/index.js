@@ -19,11 +19,16 @@ const { postToSleeper } = require('./src/poster');
 const imageClient = require('./src/imageClient');
 const newsScraper = require('./src/newsScraper');
 const promptHelpers = require('./src/imagePrompts');
+const heartbeat = require('./src/heartbeat');
 
 const CONFIG_PATH = path.join(__dirname, '..', 'config.json');
 const HISTORY_FILE = path.join(__dirname, 'data', 'processed_transactions.json');
 const NEWS_HISTORY_FILE = path.join(__dirname, 'data', 'processed_news.json');
+const NEWS_PLAYER_LOG_FILE = path.join(__dirname, 'data', 'news_player_log.json');
 const EVENTS_HISTORY_FILE = path.join(__dirname, 'data', 'processed_events.json');
+
+// Don't post about the same player more than once within this window
+const NEWS_PLAYER_COOLDOWN_MS = 24 * 60 * 60 * 1000;
 
 // Load configurations
 let config = { leagues: [] };
@@ -76,6 +81,16 @@ try {
   console.warn('⚠️ Failed to load processed news history, starting fresh.', err.message);
 }
 
+// Load per-player news log (playerName -> last posted ISO timestamp) for dedupe
+let newsPlayerLog = {};
+try {
+  if (fs.existsSync(NEWS_PLAYER_LOG_FILE)) {
+    newsPlayerLog = JSON.parse(fs.readFileSync(NEWS_PLAYER_LOG_FILE, 'utf8'));
+  }
+} catch (err) {
+  console.warn('⚠️ Failed to load news player log, starting fresh.', err.message);
+}
+
 // Load processed weekly events history
 let processedEvents = { matchupOfWeek: [], mondayMiracle: [] };
 try {
@@ -99,6 +114,14 @@ function saveNewsHistory() {
     fs.writeFileSync(NEWS_HISTORY_FILE, JSON.stringify(processedNews, null, 2));
   } catch (err) {
     console.error('❌ Failed to save news history:', err.message);
+  }
+}
+
+function saveNewsPlayerLog() {
+  try {
+    fs.writeFileSync(NEWS_PLAYER_LOG_FILE, JSON.stringify(newsPlayerLog, null, 2));
+  } catch (err) {
+    console.error('❌ Failed to save news player log:', err.message);
   }
 }
 
@@ -741,6 +764,16 @@ async function checkNews(options) {
 
     if (playerMatch) {
       console.log(`   🚨 BREAKING NEWS RELEVANT to: ${playerMatch}`);
+
+      // Per-player dedupe: skip if we already posted about this player recently,
+      // so a flurry of articles about one guy doesn't spam the chat.
+      const playerKey = playerMatch.toLowerCase().trim();
+      const lastPosted = newsPlayerLog[playerKey] ? Date.parse(newsPlayerLog[playerKey]) : 0;
+      if (lastPosted && (Date.now() - lastPosted) < NEWS_PLAYER_COOLDOWN_MS) {
+        console.log(`   🔁 Already posted about ${playerMatch} in the last 24h — skipping duplicate.`);
+        continue;
+      }
+
       // Find if this player is rostered
       const resolved = await sleeper.resolvePlayerByName(playerMatch);
       if (!resolved) {
@@ -803,6 +836,12 @@ async function checkNews(options) {
       }
 
       await postToSleeper(USER_TOKEN, LEAGUE_ID, commentary, options.dryRun, newsTrigger, true);
+
+      // Record this player so repeat articles within the cooldown window are skipped
+      if (!options.dryRun) {
+        newsPlayerLog[playerKey] = new Date().toISOString();
+        saveNewsPlayerLog();
+      }
     }
   }
 }
@@ -1012,9 +1051,10 @@ async function checkMondayNightMiracle(options) {
  */
 async function startDaemon(options) {
   console.log('🤖 Watch daemon active. Polling Sleeper DFL completed trades every 2 minutes...');
-  
+
   // Run once immediately
   try {
+    heartbeat.updateHeartbeat(); // tell the cloud backup the laptop is alive
     await checkTransactions(options);
     await checkNews(options);
     await checkMatchupOfTheWeek(options);
@@ -1022,12 +1062,13 @@ async function startDaemon(options) {
   } catch (err) {
     console.error('❌ Error during daemon immediate check:', err.message);
   }
-  
+
   const pollIntervalMs = 2 * 60 * 1000;
-  
+
   const runLoop = async () => {
     try {
       console.log(`\n⏰ Polling interval triggered at ${new Date().toISOString()}...`);
+      heartbeat.updateHeartbeat(); // throttled internally to ~5 min
       await checkTransactions(options);
       await checkNews(options);
       await checkMatchupOfTheWeek(options);

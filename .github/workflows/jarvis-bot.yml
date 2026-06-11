@@ -28,7 +28,35 @@ jobs:
         with:
           persist-credentials: true
 
+      # The local laptop bot is primary. It force-pushes a timestamp to the
+      # bot-heartbeat branch every few minutes. If it checked in recently, the
+      # laptop is handling things — skip this scheduled run to avoid double posts.
+      # Manual (workflow_dispatch) runs always proceed, ignoring the heartbeat.
+      - name: Check laptop heartbeat
+        id: hb
+        run: |
+          SKIP=false
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            ALIVE=$(git ls-remote origin refs/heads/bot-heartbeat | cut -f1)
+            if [ -n "$ALIVE" ]; then
+              git fetch --depth=1 origin bot-heartbeat || true
+              TS=$(git show FETCH_HEAD:heartbeat.json 2>/dev/null | grep -o '"alive_at":"[^"]*"' | cut -d'"' -f4)
+              if [ -n "$TS" ]; then
+                AGE=$(( $(date +%s) - $(date -d "$TS" +%s) ))
+                echo "Laptop last checked in ${AGE}s ago."
+                if [ "$AGE" -lt 1200 ]; then
+                  echo "Local bot is alive (<20 min) — skipping cloud run to avoid double posts."
+                  SKIP=true
+                fi
+              fi
+            else
+              echo "No heartbeat branch yet — proceeding as primary."
+            fi
+          fi
+          echo "skip=$SKIP" >> "$GITHUB_OUTPUT"
+
       - name: Set up Node.js
+        if: steps.hb.outputs.skip != 'true'
         uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -38,16 +66,19 @@ jobs:
             Image-Gen/package-lock.json
 
       - name: Install JARVIS dependencies
+        if: steps.hb.outputs.skip != 'true'
         run: |
           cd JARVIS
           npm ci || npm install
 
       - name: Install Image-Gen dependencies
+        if: steps.hb.outputs.skip != 'true'
         run: |
           cd Image-Gen
           npm ci || npm install
 
       - name: Run Bot Command
+        if: steps.hb.outputs.skip != 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           SLEEPER_USER_TOKEN: ${{ secrets.SLEEPER_USER_TOKEN }}
@@ -60,12 +91,13 @@ jobs:
           node index.js $CMD
 
       - name: Commit and Push State Changes
+        if: steps.hb.outputs.skip != 'true'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           
           # Add changes from data folder
-          git add JARVIS/data/processed_transactions.json JARVIS/data/prefix_state.json JARVIS/data/processed_news.json JARVIS/data/processed_events.json || true
+          git add JARVIS/data/processed_transactions.json JARVIS/data/prefix_state.json JARVIS/data/processed_news.json JARVIS/data/processed_events.json JARVIS/data/news_player_log.json || true
           
           # Check if there are changes to commit
           if git diff --cached --quiet; then

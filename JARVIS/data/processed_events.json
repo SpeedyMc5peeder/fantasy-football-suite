@@ -1,5 +1,7 @@
 {
-  "matchupOfWeek": [],
+  "matchupOfWeek": [
+    "week_1"
+  ],
   "mondayMiracle": [
     "monday_1"
   ]
