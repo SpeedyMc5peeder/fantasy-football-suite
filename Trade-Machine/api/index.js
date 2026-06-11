@@ -11,8 +11,10 @@ app.use(express.json());
 import { fileURLToPath } from 'url';
 
 const DATA_FILE = fileURLToPath(new URL('../data/rankings.json', import.meta.url));
+const REDRAFT_DATA_FILE = fileURLToPath(new URL('../data/rankings_redraft.json', import.meta.url));
 
 let rankingsData = null;
+let redraftData = null;
 
 function loadRankings() {
   try {
@@ -20,18 +22,22 @@ function loadRankings() {
       const raw = fs.readFileSync(DATA_FILE, 'utf8');
       rankingsData = JSON.parse(raw);
     }
+    if (fs.existsSync(REDRAFT_DATA_FILE)) {
+      const raw = fs.readFileSync(REDRAFT_DATA_FILE, 'utf8');
+      redraftData = JSON.parse(raw);
+    }
   } catch (err) {
-    console.error('❌ Failed to load rankings.json:', err.message);
+    console.error('❌ Failed to load rankings:', err.message);
   }
 }
 
 // Load it immediately when cold start happens
 loadRankings();
 
-function findPlayer(query) {
-  if (!rankingsData) return null;
+function findPlayer(query, dataset = rankingsData) {
+  if (!dataset) return null;
   const q = String(query).toLowerCase().trim();
-  const found = rankingsData.rankings.find(p =>
+  const found = dataset.rankings.find(p =>
     p.id === query ||
     String(p.ktc_id) === q ||
     p.sleeper_id === query ||
@@ -60,14 +66,16 @@ function findPlayer(query) {
 // --- API ENDPOINTS ---
 
 app.get('/api/rankings', (req, res) => {
-  if (!rankingsData) return res.status(503).json({ error: 'Rankings not loaded.' });
-  res.json(rankingsData.rankings);
+  const data = req.query.format === 'redraft' ? redraftData : rankingsData;
+  if (!data) return res.status(503).json({ error: 'Rankings not loaded.' });
+  res.json(data.rankings);
 });
 
 app.post('/api/evaluate', (req, res) => {
-  if (!rankingsData) return res.status(503).json({ error: 'Rankings not loaded.' });
-
   const { sideA, sideB, settings } = req.body;
+  const dataset = settings?.format === 'redraft' ? redraftData : rankingsData;
+  if (!dataset) return res.status(503).json({ error: 'Rankings not loaded.' });
+
   if (!sideA || !sideB) return res.status(400).json({ error: 'Both sideA and sideB are required.' });
 
   const modeA = settings?.team_1_mode || 'neutral';
@@ -75,7 +83,7 @@ app.post('/api/evaluate', (req, res) => {
 
   const resolveAssets = (assetIds, mode) => {
     return assetIds.map(id => {
-      const player = findPlayer(id);
+      const player = findPlayer(id, dataset);
       if (!player) return { id, name: id, value: 0, found: false };
       const adjusted = applyTeamMode(player.composite_value, player.position, player.age, mode);
       return {
@@ -89,8 +97,8 @@ app.post('/api/evaluate', (req, res) => {
     });
   };
 
-  const resolvedA = resolveAssets(sideAAssets = [...(sideA.players || []), ...(sideA.picks || [])], modeA);
-  const resolvedB = resolveAssets(sideBAssets = [...(sideB.players || []), ...(sideB.picks || [])], modeB);
+  const resolvedA = resolveAssets([...(sideA.players || []), ...(sideA.picks || [])], modeA);
+  const resolvedB = resolveAssets([...(sideB.players || []), ...(sideB.picks || [])], modeB);
 
   const sideAValues = resolvedA.map(a => a.adjusted_value || a.value || 0);
   const sideBValues = resolvedB.map(b => b.adjusted_value || b.value || 0);

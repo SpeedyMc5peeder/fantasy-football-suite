@@ -52,6 +52,57 @@
   border-color: rgba(255, 255, 255, 0.3);
 }
 
+/* --- Sleeper Sync --- */
+.sync-box {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--bg-glass-hover);
+  padding: 0.5rem;
+  border-radius: 8px;
+}
+
+.sync-label {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.sync-input {
+  background: var(--bg-glass);
+  border: 1px solid rgba(128, 128, 128, 0.35);
+  color: var(--text-primary);
+  padding: 0.4rem;
+  border-radius: 4px;
+  width: 130px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.sync-input:focus {
+  border-color: var(--neon-green);
+}
+
+.sync-btn {
+  background: var(--neon-green);
+  border: none;
+  color: #000;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.sync-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.sync-error {
+  color: var(--neon-red);
+  font-size: 0.85rem;
+}
+
 .trade-type-toggle {
   display: flex;
   background: var(--bg-glass-hover);
@@ -173,6 +224,75 @@
 
 .ai-trade-path li {
   margin-bottom: 0.25rem;
+}
+
+.asset-val {
+  color: var(--text-muted);
+  font-size: 0.85em;
+}
+
+.ai-trade-option {
+  background: var(--bg-glass);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid rgba(128, 128, 128, 0.25);
+  transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+
+.ai-trade-option:hover {
+  border-color: var(--neon-green);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 255, 136, 0.12);
+}
+
+.trade-arrow {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  color: var(--text-muted);
+}
+
+/* Position color badges (Sleeper-style colors) */
+.pos-badge {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  margin-right: 0.4rem;
+  color: #fff;
+  vertical-align: middle;
+  letter-spacing: 0.5px;
+}
+
+.pos-QB { background: #ff2a6d; }
+.pos-RB { background: #00ceb8; color: #000; }
+.pos-WR { background: #58a7ff; color: #000; }
+.pos-TE { background: #ffae58; color: #000; }
+.pos-RDP { background: #a78bfa; color: #000; }
+
+/* Numbered step circles */
+.step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  background: var(--neon-green);
+  color: #000;
+  font-weight: 800;
+  font-size: 0.8rem;
+  margin-right: 0.5rem;
+}
+
+.trade-path-total {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
 }
 
 .ai-rationale {
@@ -330,8 +450,9 @@
 }
 
 .roster-player.selected {
-  opacity: 0.5;
-  pointer-events: none;
+  background: rgba(0, 255, 136, 0.2);
+  border-left: 3px solid #00ff88;
+  color: var(--text-primary);
 }
 
 /* Evaluation Section */
@@ -454,5 +575,9 @@
   .ai-search-bar button {
     padding: 1rem;
     width: 100%;
+  }
+
+  .trade-arrow {
+    display: none;
   }
 }

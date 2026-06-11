@@ -18,10 +18,13 @@ import { compositeValue, normalizeECR, applyTeamMode } from '../api/formulas.js'
 // ─── Configuration ───────────────────────────────────────────────────────────
 
 const KTC_URL = 'https://keeptradecut.com/dynasty-rankings';
+const KTC_REDRAFT_URL = 'https://keeptradecut.com/fantasy-rankings';
+const FC_REDRAFT_URL = 'https://api.fantasycalc.com/values/current?isDynasty=false&numQbs=2&numTeams=12&ppr=0.5';
 const DP_VALUES_URL = 'https://raw.githubusercontent.com/dynastyprocess/data/master/files/values.csv';
 const DP_IDS_URL = 'https://raw.githubusercontent.com/dynastyprocess/data/master/files/db_playerids.csv';
 const DATA_DIR = path.join(process.cwd(), 'data');
 const OUTPUT_FILE = path.join(DATA_DIR, 'rankings.json');
+const REDRAFT_OUTPUT_FILE = path.join(DATA_DIR, 'rankings_redraft.json');
 
 // Read config weight from root config.json if available
 let marketWeight = 0.6;
@@ -76,6 +79,67 @@ async function scrapeKTC() {
       mfl_id: p.mflid || 0,
     };
   });
+}
+
+// ─── 1b. Parse KTC Redraft (fantasy-rankings) ────────────────────────────────
+
+async function scrapeKTCRedraft() {
+  console.log('📡 Fetching KeepTradeCut REDRAFT rankings...');
+  const html = await fetchText(KTC_REDRAFT_URL);
+
+  const match = html.match(/var\s+playersArray\s*=\s*(\[[\s\S]*?\]);/);
+  if (!match) throw new Error('Could not find playersArray in KTC redraft HTML');
+
+  const players = JSON.parse(match[1]);
+  console.log(`   ✅ Parsed ${players.length} players from KTC redraft`);
+
+  return players
+    .filter(p => p.position !== 'RDP') // no draft picks in redraft
+    .map(p => {
+      const sf = p.superflexValues || {};
+      return {
+        ktc_id: p.playerID,
+        name: p.playerName,
+        position: p.position,
+        team: p.team,
+        age: p.age || 0,
+        rookie: p.rookie || false,
+        ktc_value: sf.value || 0,
+        ktc_rank: sf.rank || 9999,
+        ktc_positional_rank: sf.positionalRank || 9999,
+        ktc_tier: sf.overallTier || 99,
+        ktc_trend: sf.overallTrend || 0,
+        ktc_7day_trend: sf.overall7DayTrend || 0,
+        slug: p.slug || '',
+        college: p.college || '',
+        draft_year: p.draftYear || 0,
+        injury: p.injury || {},
+        mfl_id: p.mflid || 0,
+      };
+    });
+}
+
+// ─── 1c. FantasyCalc Redraft Values (public API) ─────────────────────────────
+
+async function fetchFantasyCalcRedraft() {
+  console.log('📡 Fetching FantasyCalc redraft values...');
+  const res = await fetch(FC_REDRAFT_URL, {
+    headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' },
+  });
+  if (!res.ok) throw new Error(`Failed to fetch FantasyCalc: ${res.status}`);
+  const items = await res.json();
+  console.log(`   ✅ Parsed ${items.length} FantasyCalc redraft entries`);
+
+  const maxVal = Math.max(...items.map(i => Number(i.value) || 0), 1);
+  const bySleeperId = {};
+  const byName = {};
+  for (const i of items) {
+    const norm = Math.round(((Number(i.value) || 0) / maxVal) * 9999);
+    if (i.player?.sleeperId) bySleeperId[String(i.player.sleeperId)] = norm;
+    const key = (i.player?.name || '').toLowerCase().trim();
+    if (key) byName[key] = norm;
+  }
+  return { bySleeperId, byName };
 }
 
 // ─── 2. Parse DynastyProcess Values CSV ──────────────────────────────────────
@@ -208,6 +272,65 @@ async function buildRankings() {
   return rankings;
 }
 
+// ─── 4b. Merge & Build Redraft Rankings ──────────────────────────────────────
+
+async function buildRedraftRankings() {
+  const [ktcPlayers, fc, dpIds] = await Promise.all([
+    scrapeKTCRedraft(),
+    fetchFantasyCalcRedraft(),
+    fetchDPIds(),
+  ]);
+
+  const { byKtcId, byName } = dpIds;
+
+  const rankings = ktcPlayers.map(player => {
+    const nameKey = player.name.toLowerCase().trim();
+    const idMap = byKtcId[player.ktc_id] || byName[nameKey] || {};
+    const sleeperId = idMap.sleeper_id || '';
+
+    // FantasyCalc value matched by sleeper ID first, then name; falls back to KTC alone
+    const fcNorm = fc.bySleeperId[sleeperId] ?? fc.byName[nameKey] ?? player.ktc_value;
+
+    const comp = compositeValue(player.ktc_value, fcNorm, marketWeight);
+
+    return {
+      id: sleeperId || String(player.ktc_id),
+      ktc_id: player.ktc_id,
+      sleeper_id: sleeperId,
+      name: player.name,
+      position: player.position,
+      team: player.team,
+      age: player.age,
+      rookie: player.rookie,
+      college: player.college,
+      draft_year: player.draft_year,
+      injury: player.injury,
+      slug: player.slug,
+
+      // Values (ecr_value carries the FantasyCalc blend partner in redraft mode)
+      ktc_value: player.ktc_value,
+      ecr_value: fcNorm,
+      composite_value: comp,
+      contender_value: comp,
+      rebuilder_value: comp,
+
+      // Rankings
+      ktc_rank: player.ktc_rank,
+      ktc_positional_rank: player.ktc_positional_rank,
+      ktc_tier: player.ktc_tier,
+
+      // Trends
+      ktc_trend: player.ktc_trend,
+      ktc_7day_trend: player.ktc_7day_trend,
+    };
+  });
+
+  rankings.sort((a, b) => b.composite_value - a.composite_value);
+  rankings.forEach((p, i) => { p.composite_rank = i + 1; });
+
+  return rankings;
+}
+
 // ─── 5. Write Output ─────────────────────────────────────────────────────────
 
 async function run() {
@@ -239,6 +362,28 @@ async function run() {
     rankings.slice(0, 10).forEach((p, i) => {
       console.log(`   ${i + 1}. ${p.name} (${p.position} - ${p.team}) — Composite: ${p.composite_value} | KTC: ${p.ktc_value} | ECR: ${p.ecr_value}`);
     });
+
+    // Redraft rankings (KTC redraft + FantasyCalc blend)
+    const redraftRankings = await buildRedraftRankings();
+    const redraftOutput = {
+      meta: {
+        scraped_at: new Date().toISOString(),
+        ktc_source: KTC_REDRAFT_URL,
+        ecr_source: FC_REDRAFT_URL,
+        market_weight: marketWeight,
+        total_players: redraftRankings.length,
+        format: 'Redraft · Superflex · 0.5 PPR · No TE Premium',
+      },
+      rankings: redraftRankings,
+    };
+
+    fs.writeFileSync(REDRAFT_OUTPUT_FILE, JSON.stringify(redraftOutput, null, 2));
+    console.log(`\n💾 Wrote ${redraftRankings.length} REDRAFT rankings to ${REDRAFT_OUTPUT_FILE}`);
+    console.log(`   Top 5 redraft:`);
+    redraftRankings.slice(0, 5).forEach((p, i) => {
+      console.log(`   ${i + 1}. ${p.name} (${p.position} - ${p.team}) — Composite: ${p.composite_value} | KTC: ${p.ktc_value} | FC: ${p.ecr_value}`);
+    });
+
     console.log('\n✅ Sync complete.\n');
     return output;
   } catch (err) {
@@ -252,4 +397,4 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   run();
 }
 
-export { run, buildRankings, scrapeKTC, fetchDPValues, fetchDPIds };
+export { run, buildRankings, buildRedraftRankings, scrapeKTC, scrapeKTCRedraft, fetchFantasyCalcRedraft, fetchDPValues, fetchDPIds };
