@@ -34,7 +34,7 @@ export default function App() {
     <>
       <header className="app-header">
         <div className="app-logo">
-          <div className="app-logo-icon">DT</div>
+          <img className="app-logo-icon" src="/apple-touch-icon.png" alt="Football Trade Jackpot logo" />
           <div>
             <div className="app-logo-text">Dynasty Trade Machine</div>
             <div className="app-logo-sub">Fantasy Football Analytics</div>
