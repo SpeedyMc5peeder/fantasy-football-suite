@@ -29,4 +29,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Auto-sync daily dynasty rankings"
-          file_pattern: "Trade-Machine/data/rankings.json"
+          file_pattern: "Trade-Machine/data/rankings*.json"

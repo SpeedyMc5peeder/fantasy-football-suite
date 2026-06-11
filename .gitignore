@@ -1,6 +1,7 @@
 # Secrets & Configs
 config.json
 .env
+Trade-Machine/Keys/
 
 # Dependencies
 node_modules/

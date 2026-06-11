@@ -34,14 +34,8 @@ jobs:
           node-version: '24'
           cache: 'npm'
           cache-dependency-path: |
-            Dynasty-Evaluator/package-lock.json
             JARVIS/package-lock.json
             Image-Gen/package-lock.json
-
-      - name: Install Dynasty-Evaluator dependencies
-        run: |
-          cd Dynasty-Evaluator
-          npm ci || npm install
 
       - name: Install JARVIS dependencies
         run: |
@@ -71,7 +65,7 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           
           # Add changes from data folder
-          git add JARVIS/data/processed_transactions.json JARVIS/data/prefix_state.json || true
+          git add JARVIS/data/processed_transactions.json JARVIS/data/prefix_state.json JARVIS/data/processed_news.json JARVIS/data/processed_events.json || true
           
           # Check if there are changes to commit
           if git diff --cached --quiet; then
