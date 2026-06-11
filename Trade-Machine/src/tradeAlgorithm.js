@@ -90,18 +90,24 @@ function getSubsets(array, maxLen) {
 
 function filterDiverseTrades(trades, maxPerTeam = 2) {
   const seenSignatures = new Set();
-  const teamCounts = {};
-  const diverse = [];
+  const byTeam = new Map(); // insertion order follows global fairness sort
   for (const t of trades) {
     // create a signature based on player IDs received
     const sig = t.assetsReceived.map(a => a.id).sort().join(',');
     if (seenSignatures.has(sig)) continue;
-    // cap how many results a single opponent can occupy so one stacked roster doesn't fill the list
-    const teamKey = String(t.teamB_id);
-    if ((teamCounts[teamKey] || 0) >= maxPerTeam) continue;
     seenSignatures.add(sig);
-    teamCounts[teamKey] = (teamCounts[teamKey] || 0) + 1;
-    diverse.push(t);
+    const teamKey = String(t.teamB_id);
+    if (!byTeam.has(teamKey)) byTeam.set(teamKey, []);
+    const arr = byTeam.get(teamKey);
+    if (arr.length < maxPerTeam) arr.push(t);
+  }
+  // Round-robin across teams: every opponent's best offer surfaces before any
+  // team's second offer, so one stacked roster can't dominate the list
+  const diverse = [];
+  for (let round = 0; round < maxPerTeam; round++) {
+    for (const arr of byTeam.values()) {
+      if (arr[round]) diverse.push(arr[round]);
+    }
   }
   return diverse;
 }
@@ -316,10 +322,13 @@ export function generateThreeWayTrades({ rosterData, userTeamId, userAssets, use
 
   results.sort((a, b) => a.diff - b.diff);
 
-  // Dedupe by what the user receives (+ broker asset), cap 2 results per team pair
+  // Dedupe by what the user receives (+ broker asset). Cap each TEAM's total
+  // appearances across all pairs — capping only per-pair let one deep roster
+  // ride in every result through different partners.
   const diverse = [];
   const seen = new Set();
-  const pairCounts = {};
+  const teamCounts = {};
+  const MAX_PER_TEAM = 2;
   for (const t of results) {
     const sig = [
       ...t.assetsReceivedFromB.map(a => a.id),
@@ -327,11 +336,14 @@ export function generateThreeWayTrades({ rosterData, userTeamId, userAssets, use
       t.broker ? `bk:${t.broker.asset.id}` : ''
     ].sort().join(',');
     if (seen.has(sig)) continue;
-    const pairKey = `${t.teamB_id}|${t.teamC_id}`;
-    if ((pairCounts[pairKey] || 0) >= 2) continue;
+    const bKey = String(t.teamB_id);
+    const cKey = String(t.teamC_id);
+    if ((teamCounts[bKey] || 0) >= MAX_PER_TEAM || (teamCounts[cKey] || 0) >= MAX_PER_TEAM) continue;
     seen.add(sig);
-    pairCounts[pairKey] = (pairCounts[pairKey] || 0) + 1;
+    teamCounts[bKey] = (teamCounts[bKey] || 0) + 1;
+    teamCounts[cKey] = (teamCounts[cKey] || 0) + 1;
     diverse.push(t);
+    if (diverse.length >= maxResults) break;
   }
 
   return diverse.slice(0, maxResults);
