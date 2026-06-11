@@ -347,6 +347,14 @@ async function checkTransactions(options) {
       try {
         let article = await generator.generateTradeCommentary(tradeData);
 
+        // Claim the trade NOW that generation succeeded, before any posting.
+        // If a post fails afterward we lose one reaction instead of re-posting
+        // it on every subsequent 2-minute poll (the Odell Beckham spam bug).
+        if (!options.dryRun) {
+          processedTransactions.push(tradeId);
+          saveHistory();
+        }
+
         // Generate a trade comic ~50% of the time (changed from 100%)
         if (Math.random() < 0.5) {
           console.log(`   🎨 Generating trade cartoon...`);
@@ -374,11 +382,6 @@ async function checkTransactions(options) {
         article = article.replace(/\*/g, '');
 
         await postToSleeper(USER_TOKEN, LEAGUE_ID, article, options.dryRun, 'trades', true);
-
-        if (!options.dryRun) {
-          processedTransactions.push(tradeId);
-          saveHistory();
-        }
       } catch (err) {
         console.error(`❌ Failed to process and post trade ${tradeId}:`, err.message);
         if (err.message && (err.message.includes('429') || err.message.includes('quota') || err.message.includes('Quota'))) {
@@ -400,6 +403,17 @@ async function checkTransactions(options) {
     if (processedEventCount >= MAX_EVENTS_PER_RUN) break;
 
     let eventPosted = false;
+    let claimed = false;
+    // Claim exactly once. Called right after generation succeeds (before posting)
+    // so a failed post can't trigger a re-post on every poll — the bug that
+    // spammed Odell Beckham's eulogy 20+ times during the Gemini outage.
+    const claim = () => {
+      if (!claimed && !options.dryRun) {
+        processedTransactions.push(txId);
+        saveHistory();
+        claimed = true;
+      }
+    };
 
     try {
       // 1. FAAB WAIVER HEIST PROTOCOL
@@ -420,6 +434,7 @@ async function checkTransactions(options) {
 
           let article = await generator.generateFAABCommentary(data);
           article = article.replace(/\*/g, '');
+          claim(); // generation succeeded — claim before posting
 
           if (Math.random() < 0.5) {
             console.log(`   🎨 Generating FAAB Vault image...`);
@@ -469,7 +484,8 @@ async function checkTransactions(options) {
               };
               
               let article = await generator.generateFallenLegendCommentary(data);
-              article = article.replace(/\*/g, ''); 
+              article = article.replace(/\*/g, '');
+              claim(); // generation succeeded — claim before posting
 
               if (Math.random() < 0.5) {
                 console.log(`   🎨 Generating Fallen Legend memorial image...`);
@@ -505,18 +521,12 @@ async function checkTransactions(options) {
 
       if (eventPosted) {
         processedEventCount++;
-      } else {
-        // If it was just a boring drop/add, mark it processed so we don't look at it again
-        if (!options.dryRun) {
-          processedTransactions.push(txId);
-          saveHistory();
-        }
       }
-      
-      if (eventPosted && !options.dryRun) {
-        processedTransactions.push(txId);
-        saveHistory();
-      }
+      // Mark every examined transaction exactly once. Events were already
+      // claimed pre-post; boring drops and rejected non-legends get claimed here
+      // so we never re-examine them. A generation failure throws before any
+      // claim(), leaving the tx unclaimed so it retries once Gemini recovers.
+      claim();
     } catch (err) {
       console.error(`❌ Failed to process waiver transaction ${txId}:`, err.message);
     }
