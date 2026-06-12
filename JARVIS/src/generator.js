@@ -13,6 +13,12 @@ const { SYSTEM_INSTRUCTIONS, getTradePrompt, getRecapPrompt, getWaiverPrompt } =
 
 const { evaluate } = require('./evaluator');
 
+// Cheapest model — used for yes/no classifier calls (news relevance, fallen
+// legend check). These don't need the persona or the pricier flash model.
+const CLASSIFIER_MODEL = 'gemini-2.5-flash-lite';
+
+const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
 /**
  * Helper to get the Dynasty-Evaluator evaluation for a trade natively
  */
@@ -66,28 +72,32 @@ class CommentaryGenerator {
   }
 
   /**
-   * Helper to execute Gemini call with 503 fallback to gemini-2.5-pro
+   * Execute a commentary generation. On a transient 503 (model busy) it retries
+   * the SAME model after a short backoff rather than escalating to gemini-2.5-pro
+   * — Pro costs ~4x more and has a tiny free tier, so the old fallback was the
+   * main driver of both API cost and instant free-tier limits. If it still fails,
+   * it throws so the caller can defer and retry on the next poll.
    */
   async executeWithFallback(prompt, context) {
-    try {
-      console.log(`🤖 Generating ${context} via Gemini API (${this.modelName})...`);
-      const model = this.genAI.getGenerativeModel({
-        model: this.modelName,
-        systemInstruction: SYSTEM_INSTRUCTIONS
-      });
-      const result = await model.generateContent(prompt);
-      return result.response.text();
-    } catch (err) {
-      if (err.message && err.message.includes('503') && this.modelName !== 'gemini-2.5-pro') {
-        console.warn(`⚠️ 503 Service Unavailable with ${this.modelName}. Auto-falling back to gemini-2.5-pro...`);
-        const fallbackModel = this.genAI.getGenerativeModel({
-          model: 'gemini-2.5-pro',
-          systemInstruction: SYSTEM_INSTRUCTIONS
-        });
-        const result = await fallbackModel.generateContent(prompt);
+    const model = this.genAI.getGenerativeModel({
+      model: this.modelName,
+      systemInstruction: SYSTEM_INSTRUCTIONS
+    });
+    const maxAttempts = 3;
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      try {
+        console.log(`🤖 Generating ${context} via Gemini API (${this.modelName})${attempt > 1 ? ` [retry ${attempt - 1}]` : ''}...`);
+        const result = await model.generateContent(prompt);
         return result.response.text();
+      } catch (err) {
+        const transient = err.message && (err.message.includes('503') || err.message.includes('overloaded'));
+        if (transient && attempt < maxAttempts) {
+          console.warn(`⚠️ ${this.modelName} busy (503). Retrying in ${attempt * 2}s...`);
+          await sleep(attempt * 2000);
+          continue;
+        }
+        throw err;
       }
-      throw err;
     }
   }
 
@@ -169,24 +179,14 @@ class CommentaryGenerator {
     console.log(`🤖 AI Bouncer: Checking if ${playerName} is a Fallen Legend...`);
     
     try {
-      const model = this.genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+      // Cheapest model, no persona — it's a YES/NO classifier.
+      const model = this.genAI.getGenerativeModel({ model: CLASSIFIER_MODEL });
       const result = await model.generateContent(prompt);
       const answer = result.response.text().trim().toUpperCase();
       return answer.includes('YES');
     } catch (err) {
-      if (err.message && err.message.includes('503')) {
-        console.warn(`⚠️ 503 Service Unavailable with gemini-2.5-flash in Bouncer. Auto-falling back to gemini-2.5-pro...`);
-        try {
-          const fallbackModel = this.genAI.getGenerativeModel({ model: 'gemini-2.5-pro' });
-          const result = await fallbackModel.generateContent(prompt);
-          const answer = result.response.text().trim().toUpperCase();
-          return answer.includes('YES');
-        } catch (fallbackErr) {
-          console.error('⚠️ AI Bouncer fallback failed:', fallbackErr.message);
-          return false;
-        }
-      }
-      console.error('⚠️ AI Bouncer failed:', err.message);
+      // A failed legend check just means "not a legend" for this drop — no Pro fallback.
+      console.error('⚠️ AI Bouncer (Fallen Legend) failed:', err.message);
       return false;
     }
   }
@@ -215,8 +215,11 @@ If YES, reply ONLY with the player's full name (e.g. "Saquon Barkley").
 If NO, or if it's strictly about a coach or team as a whole, reply ONLY with "NONE".
 Do not include any other text or punctuation.`;
     try {
-      const result = await this.executeWithFallback(prompt, 'News Bouncer');
-      const text = result.trim().replace(/\.$/, '');
+      // Lean classifier call: cheapest model, NO persona/system instruction.
+      // This runs on every news article, so the ~2k-token persona was pure waste.
+      const model = this.genAI.getGenerativeModel({ model: CLASSIFIER_MODEL });
+      const result = await model.generateContent(prompt);
+      const text = result.response.text().trim().replace(/\.$/, '');
       if (text !== 'NONE' && text.length > 2) {
         return text;
       }

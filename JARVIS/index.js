@@ -54,8 +54,12 @@ if (!LEAGUE_ID || !USER_TOKEN || !GEMINI_KEY) {
   process.exit(1);
 }
 
-// Initialize generator
-const generator = new CommentaryGenerator(GEMINI_KEY, 'gemini-2.5-flash');
+// Initialize generator. Commentary model is configurable — set GEMINI_MODEL or
+// config.gemini_model to 'gemini-2.5-flash-lite' to cut cost further (classifier
+// calls always use flash-lite regardless). Defaults to flash for joke quality.
+const COMMENTARY_MODEL = process.env.GEMINI_MODEL || config.gemini_model || 'gemini-2.5-flash';
+const generator = new CommentaryGenerator(GEMINI_KEY, COMMENTARY_MODEL);
+console.log(`🧠 Commentary model: ${COMMENTARY_MODEL}`);
 
 // Load processed transactions history
 let processedTransactions = [];
