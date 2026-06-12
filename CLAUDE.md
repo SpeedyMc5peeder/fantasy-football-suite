@@ -17,8 +17,17 @@ GitHub: https://github.com/SpeedyMc5peeder/fantasy-football-suite (branch `main`
 | `Image-Gen/` | Imagen 3 wrapper + canvas overlay for Ringer-style graphics | Local, port 5001 | `src/server.js`, `src/overlay.js` |
 
 JARVIS depends on Dynasty-Evaluator (port 5000) and Image-Gen (port 5001) being up.
-Images can't be uploaded to Sleeper directly — they're hosted via a Discord webhook
-and embedded as markdown links (see README "Automated Image Delivery Flow").
+Images can't be uploaded to Sleeper directly — `JARVIS/src/imageClient.js`
+`pushAndGetMarkdown()` uploads the generated file to **catbox.moe** (anonymous, no
+auth) and posts the returned direct URL, which Sleeper renders inline.
+
+**Image hosting history (fixed June 2026):** this previously did `git commit` + `git
+push` of each image into the repo and served it from `raw.githubusercontent`. On the
+local PM2 box that spawned Git Credential Manager popups every image, raced the Actions
+runner's pushes (`! [rejected] (fetch first)`), and reset global git identity to
+`github-actions[bot]`. Replaced with the catbox upload. `generateImage()` also now
+guards empty Imagen payloads (503/quota/safety-block) before `sharp`, which was the
+source of the `Input buffer is empty` spam. Don't reintroduce git-based image hosting.
 
 ## Secrets — never commit
 

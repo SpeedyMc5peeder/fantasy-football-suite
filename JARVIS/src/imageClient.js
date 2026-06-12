@@ -1,6 +1,6 @@
 /**
  * imageClient.js — Generates images via Imagen 3 & overlays via sharp.
- * Uploads to catbox.moe for Sleeper embedding.
+ * Uploads to catbox.moe and returns the direct URL for Sleeper embedding.
  */
 
 const fs = require('fs');
@@ -70,9 +70,19 @@ async function generateImage(payload) {
       throw new Error("No images returned from API.");
     }
 
-    const imgBase64 = response.generatedImages[0].image.imageBytes;
+    // Guard against empty payloads — when Imagen is overloaded (503) or the prompt
+    // is safety-blocked, it can still return a generatedImages entry with no bytes.
+    // Without this check, Buffer.from(undefined) yields an empty buffer and sharp
+    // throws the cryptic "Input buffer is empty" downstream.
+    const imgBase64 = response.generatedImages[0]?.image?.imageBytes;
+    if (!imgBase64) {
+      throw new Error("API returned an image with no data (likely 503/quota or a safety block).");
+    }
     const baseBuffer = Buffer.from(imgBase64, 'base64');
-    
+    if (baseBuffer.length === 0) {
+      throw new Error("Decoded image buffer is empty.");
+    }
+
     const safeFilename = filename ? `${filename}.jpg` : `img_${Date.now()}.jpg`;
     const outputPath = path.join(OUTPUT_DIR, safeFilename);
 
@@ -89,38 +99,52 @@ async function generateImage(payload) {
 }
 
 /**
- * Commits the generated image to the public GitHub repository and returns the raw GitHub URL.
- * @param {string} filename 
- * @param {boolean} dryRun 
- * @returns {string} Public image URL
+ * Uploads the generated image to catbox.moe and returns its direct URL as markdown.
+ * Catbox is anonymous (no auth), returns a permanent direct-file URL that Sleeper
+ * renders inline. This replaces the old git-commit-and-push hosting, which spawned
+ * Git Credential Manager popups, raced the GitHub Actions runner's pushes, and reset
+ * the machine's global git identity on every image.
+ * @param {string} filename
+ * @param {boolean} dryRun
+ * @returns {string} Markdown-ready image URL, or '' on failure (so we never post a broken link)
  */
 async function pushAndGetMarkdown(filename, dryRun) {
   if (!filename) return '';
 
   const imagePath = path.join(OUTPUT_DIR, filename);
-  const publicUrl = `https://raw.githubusercontent.com/SpeedyMc5peeder/fantasy-football-suite/main/JARVIS/images/${filename}`;
-  const markdownStr = `\n\n${publicUrl}`;
-  
+
   if (dryRun) {
-    console.log(`🚫 [DRY RUN] Bypassing git push for image: ${filename}`);
-    return markdownStr;
+    console.log(`🚫 [DRY RUN] Bypassing image upload for: ${filename}`);
+    return `\n\n[DRY RUN IMAGE: ${filename}]`;
+  }
+
+  if (!fs.existsSync(imagePath)) {
+    console.error(`⚠️ Image file not found, cannot upload: ${imagePath}`);
+    return '';
   }
 
   try {
-    console.log(`📡 Auto-committing generated image to GitHub...`);
-    const { execSync } = require('child_process');
-    
-    execSync(`git config --global user.name "github-actions[bot]"`);
-    execSync(`git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"`);
-    // Add the image file explicitly (using path relative to JARVIS dir)
-    execSync(`git add images/${filename}`);
-    execSync(`git commit -m "feat: generate image ${filename} [skip ci]"`);
-    execSync(`git push`);
-    console.log(`✅ Image pushed to GitHub successfully: ${publicUrl}`);
-    
-    return markdownStr;
+    console.log(`📡 Uploading image to catbox.moe...`);
+    const form = new FormData();
+    form.append('reqtype', 'fileupload');
+    form.append('fileToUpload', fs.createReadStream(imagePath));
+
+    const res = await axios.post('https://catbox.moe/user/api.php', form, {
+      headers: form.getHeaders(),
+      timeout: 30000,
+      maxContentLength: Infinity,
+      maxBodyLength: Infinity
+    });
+
+    const publicUrl = typeof res.data === 'string' ? res.data.trim() : '';
+    if (!publicUrl.startsWith('http')) {
+      throw new Error(`Unexpected catbox response: ${publicUrl || '(empty)'}`);
+    }
+
+    console.log(`✅ Image uploaded successfully: ${publicUrl}`);
+    return `\n\n${publicUrl}`;
   } catch (err) {
-    console.error(`⚠️ Failed to push image to GitHub:`, err.message);
+    console.error(`⚠️ Failed to upload image to catbox:`, err.message);
     return ''; // Return empty string so we don't post a broken link
   }
 }
