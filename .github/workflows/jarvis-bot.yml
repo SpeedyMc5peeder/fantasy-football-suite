@@ -29,17 +29,19 @@ jobs:
           persist-credentials: true
 
       # The local laptop bot is primary. It force-pushes a timestamp to the
-      # bot-heartbeat branch every few minutes. If it checked in recently, the
-      # laptop is handling things — skip this scheduled run to avoid double posts.
-      # Manual (workflow_dispatch) runs always proceed, ignoring the heartbeat.
+      # refs/bot-heartbeat/laptop ref every few minutes (a custom ref, not a
+      # branch, so Vercel never tries to build it). If the laptop checked in
+      # recently it's handling things — skip this scheduled run to avoid double
+      # posts. Manual (workflow_dispatch) runs always proceed, ignoring it.
       - name: Check laptop heartbeat
         id: hb
         run: |
           SKIP=false
+          HB_REF=refs/bot-heartbeat/laptop
           if [ "${{ github.event_name }}" = "schedule" ]; then
-            ALIVE=$(git ls-remote origin refs/heads/bot-heartbeat | cut -f1)
+            ALIVE=$(git ls-remote origin "$HB_REF" | cut -f1)
             if [ -n "$ALIVE" ]; then
-              git fetch --depth=1 origin bot-heartbeat || true
+              git fetch --depth=1 origin "$HB_REF" || true
               TS=$(git show FETCH_HEAD:heartbeat.json 2>/dev/null | grep -o '"alive_at":"[^"]*"' | cut -d'"' -f4)
               if [ -n "$TS" ]; then
                 AGE=$(( $(date +%s) - $(date -d "$TS" +%s) ))
@@ -50,7 +52,7 @@ jobs:
                 fi
               fi
             else
-              echo "No heartbeat branch yet — proceeding as primary."
+              echo "No heartbeat yet — proceeding as primary."
             fi
           fi
           echo "skip=$SKIP" >> "$GITHUB_OUTPUT"

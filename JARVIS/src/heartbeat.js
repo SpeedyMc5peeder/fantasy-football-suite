@@ -16,7 +16,9 @@ const path = require('path');
 const os = require('os');
 
 const REPO_ROOT = path.join(__dirname, '..', '..');
-const BRANCH = 'bot-heartbeat';
+// Custom ref namespace (NOT refs/heads/*) so Vercel — which only builds
+// branches — never tries to deploy the heartbeat.
+const HEARTBEAT_REF = 'refs/bot-heartbeat/laptop';
 const PUSH_INTERVAL_MS = 5 * 60 * 1000; // don't push more than once per 5 min
 
 let lastPush = 0;
@@ -35,7 +37,7 @@ function updateHeartbeat() {
     const blob = run('git hash-object -w --stdin', content);
     const tree = run('git mktree', `100644 blob ${blob}\theartbeat.json\n`);
     const commit = run(`git commit-tree ${tree} -m "heartbeat ${ts}"`);
-    run(`git push -f origin ${commit}:refs/heads/${BRANCH}`);
+    run(`git push -f origin ${commit}:${HEARTBEAT_REF}`);
   } catch (_) {
     // Best-effort only — a heartbeat failure must never disrupt the bot.
   }
