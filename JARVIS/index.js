@@ -754,14 +754,25 @@ async function checkNews(options) {
     return;
   }
 
+  // Hard backstop: never post more than this many news items in a single run,
+  // no matter what the dedup does. Bounds the blast radius of any dedup failure
+  // (this is what would have capped the Stefon Diggs spam at 2 instead of 25).
+  const MAX_NEWS_PER_RUN = 2;
+  let newsPostsThisRun = 0;
+
   for (const article of articles) {
+    if (newsPostsThisRun >= MAX_NEWS_PER_RUN) {
+      console.log(`   ⏳ Hit news cap (${MAX_NEWS_PER_RUN}/run). Remaining articles will process next poll.`);
+      break;
+    }
+
     // ESPN API uses 'id' or 'nowId' for unique identification
     const articleId = String(article.id || article.headline);
-    
+
     if (processedNews.includes(articleId)) {
       continue;
     }
-    
+
     // Pass to AI Bouncer first — only mark processed once we get a definitive answer.
     // If Gemini is down (503/401), leave the article unmarked so the next poll retries it.
     let playerMatch;
@@ -807,15 +818,19 @@ async function checkNews(options) {
         isRostered: !!roster
       };
 
-      if (roster) {
-        const details = await sleeper.getTeamDetailsByRosterId(LEAGUE_ID, roster.roster_id);
-        console.log(`   🔥 Player ${playerMatch} is owned by ${details.ownerName}! Generating detailed news commentary...`);
-        data.teamName = details.teamName;
-        data.ownerName = details.ownerName;
-        data.username = details.username;
-      } else {
-        console.log(`   🤷 Player ${playerMatch} is a free agent. Generating brief news commentary...`);
+      if (!roster) {
+        // Only post news about players someone in the league actually rosters —
+        // league-agnostic ESPN headlines about free agents aren't relevant to the chat.
+        // (Already marked processed above, so this won't be re-evaluated next poll.)
+        console.log(`   🤷 Player ${playerMatch} isn't on any roster in this league — skipping post.`);
+        continue;
       }
+
+      const details = await sleeper.getTeamDetailsByRosterId(LEAGUE_ID, roster.roster_id);
+      console.log(`   🔥 Player ${playerMatch} is owned by ${details.ownerName}! Generating detailed news commentary...`);
+      data.teamName = details.teamName;
+      data.ownerName = details.ownerName;
+      data.username = details.username;
       
       let commentary = await generator.generateNewsCommentary(data);
       commentary = commentary.replace(/\*/g, ''); // strip markdown
@@ -850,6 +865,7 @@ async function checkNews(options) {
       }
 
       await postToSleeper(USER_TOKEN, LEAGUE_ID, commentary, options.dryRun, newsTrigger, true);
+      newsPostsThisRun++;
 
       // Record this player so repeat articles within the cooldown window are skipped
       if (!options.dryRun) {

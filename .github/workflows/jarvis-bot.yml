@@ -97,15 +97,29 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          
-          # Add changes from data folder
+
           git add JARVIS/data/processed_transactions.json JARVIS/data/prefix_state.json JARVIS/data/processed_news.json JARVIS/data/processed_events.json JARVIS/data/news_player_log.json || true
-          
-          # Check if there are changes to commit
+
           if git diff --cached --quiet; then
-            echo "No new transactions or prefix states to commit."
-          else
-            git commit -m "chore: update transaction and prefix history [skip ci]"
-            git push
-            echo "State files pushed successfully."
+            echo "No state changes to commit."
+            exit 0
           fi
+
+          git commit -m "chore: update JARVIS state [skip ci]"
+
+          # Push with rebase-retry. The old version pushed with no rebase, so any
+          # commit that landed on main during the run (daily-scrape, another JARVIS
+          # run, manual pushes) caused a non-fast-forward rejection — and the state
+          # was silently lost. That is why processed_news stopped persisting and the
+          # cloud bot re-posted the same articles every run (the Diggs spam).
+          for attempt in 1 2 3 4 5; do
+            if git push; then
+              echo "State pushed (attempt $attempt)."
+              exit 0
+            fi
+            echo "Push rejected — rebasing on latest main and retrying..."
+            git fetch origin main
+            git rebase origin/main || { git rebase --abort; exit 1; }
+          done
+          echo "::warning::Could not push JARVIS state after 5 attempts."
+          exit 1
