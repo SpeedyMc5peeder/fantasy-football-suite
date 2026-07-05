@@ -1,8 +1,12 @@
 name: JARVISbot Autopilot
 
 on:
-  schedule:
-    - cron: '*/30 * * * *' # Runs every 30 minutes
+  # Automatic schedule DISABLED. The local PM2 bot is the primary and only
+  # automatic poster. This cloud runner is now manual-only backup: trigger it
+  # from the Actions tab (e.g. from your phone) when the laptop is off/traveling.
+  # Re-enable by uncommenting the schedule below.
+  # schedule:
+  #   - cron: '*/30 * * * *'
   workflow_dispatch:
     inputs:
       command:
