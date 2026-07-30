@@ -471,7 +471,8 @@ async function checkTransactions(options) {
         for (const [playerId, rosterId] of Object.entries(tx.drops)) {
           const resolved = await sleeper.resolvePlayer(playerId);
           
-          if (resolved.years_exp >= 4 || resolved.age >= 26) {
+          const isSkillPos = ['QB', 'RB', 'WR', 'TE'].includes(resolved.position);
+          if (isSkillPos && (resolved.years_exp >= 4 || resolved.age >= 26)) {
             console.log(`   🕵️  Checking if dropped veteran ${resolved.name} is a Fallen Legend...`);
             const isLegend = await generator.checkIsFallenLegend(resolved.name);
             if (isLegend) {
@@ -712,7 +713,7 @@ async function generateWeeklyRecap(options) {
         overlayText: {
           title: "WEEKLY RECAP",
           mainHeadline: `WEEK ${week}`,
-          subHeadline: `Highest Score: ${highestScorerName}`,
+          subHeadline: `Highest Score: ${highestScoringOwner || 'N/A'}`,
           badgeText: "RECAP"
         },
         filename: `recap_week${week}_${Date.now()}`
@@ -770,6 +771,30 @@ async function checkNews(options) {
     const articleId = String(article.id || article.headline);
 
     if (processedNews.includes(articleId)) {
+      continue;
+    }
+
+    // Fast local pre-filter: check if headline/description mentions any rostered player in our league
+    const rosters = await sleeper.getRosters(LEAGUE_ID);
+    const rosteredPlayerIds = new Set(rosters.flatMap(r => r.players || []));
+    const fullText = `${article.headline} ${article.description}`.toLowerCase();
+    
+    let hasRosteredPlayerMention = false;
+    for (const pId of rosteredPlayerIds) {
+      const p = await sleeper.resolvePlayer(pId);
+      if (p && p.name && p.name.length > 3) {
+        const lastName = p.name.split(' ').pop().toLowerCase();
+        if (lastName.length >= 4 && fullText.includes(lastName)) {
+          hasRosteredPlayerMention = true;
+          break;
+        }
+      }
+    }
+
+    if (!hasRosteredPlayerMention) {
+      // No rostered player mentioned — mark processed without wasting an API call
+      processedNews.push(articleId);
+      saveNewsHistory();
       continue;
     }
 
