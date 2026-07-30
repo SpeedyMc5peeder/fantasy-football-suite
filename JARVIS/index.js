@@ -1111,7 +1111,6 @@ async function startDaemon(options) {
   try {
     heartbeat.updateHeartbeat(); // tell the cloud backup the laptop is alive
     await checkTransactions(options);
-    await checkNews(options);
     await checkMatchupOfTheWeek(options);
     await checkMondayNightMiracle(options);
   } catch (err) {
@@ -1125,7 +1124,6 @@ async function startDaemon(options) {
       console.log(`\n⏰ Polling interval triggered at ${new Date().toISOString()}...`);
       heartbeat.updateHeartbeat(); // throttled internally to ~5 min
       await checkTransactions(options);
-      await checkNews(options);
       await checkMatchupOfTheWeek(options);
       await checkMondayNightMiracle(options);
     } catch (err) {
