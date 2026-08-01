@@ -1120,6 +1120,50 @@ async function generateSeasonPreview(options) {
     return;
   }
 
+  // 1. Fetch recent transactions to capture offseason trades
+  let recentTradesByRoster = {};
+  try {
+    const currentWeek = (await sleeper.getLeague(LEAGUE_ID))?.settings?.leg || 1;
+    const weeksToCheck = [1, currentWeek];
+    for (const w of weeksToCheck) {
+      const txs = await sleeper.getTransactions(LEAGUE_ID, w);
+      const trades = txs.filter(t => t.type === 'trade' && t.status === 'complete');
+      for (const tr of trades) {
+        for (const rId of (tr.roster_ids || [])) {
+          if (!recentTradesByRoster[rId]) recentTradesByRoster[rId] = [];
+          recentTradesByRoster[rId].push(tr);
+        }
+      }
+    }
+  } catch (err) {
+    console.warn('⚠️ Could not fetch recent trades for preview:', err.message);
+  }
+
+  // 2. Fetch 14-week schedule to evaluate Strength of Schedule (SoS)
+  let scheduleByRoster = {};
+  try {
+    for (let w = 1; w <= 14; w++) {
+      const mList = await sleeper.getMatchups(LEAGUE_ID, w);
+      if (!mList) continue;
+      const mPairs = {};
+      for (const m of mList) {
+        if (!mPairs[m.matchup_id]) mPairs[m.matchup_id] = [];
+        mPairs[m.matchup_id].push(m.roster_id);
+      }
+      for (const pair of Object.values(mPairs)) {
+        if (pair.length === 2) {
+          const [r1, r2] = pair;
+          if (!scheduleByRoster[r1]) scheduleByRoster[r1] = [];
+          if (!scheduleByRoster[r2]) scheduleByRoster[r2] = [];
+          scheduleByRoster[r1].push(r2);
+          scheduleByRoster[r2].push(r1);
+        }
+      }
+    }
+  } catch (err) {
+    console.warn('⚠️ Could not fetch 14-week schedule for preview:', err.message);
+  }
+
   // Evaluate each team's roster composite value
   const teamEvaluations = [];
   let totalLeagueValue = 0;
@@ -1138,18 +1182,23 @@ async function generateSeasonPreview(options) {
 
     const topStars = playerObjects
       .filter(p => ['QB', 'RB', 'WR', 'TE'].includes(p.position))
-      .slice(0, 3)
-      .map(p => p.name);
+      .slice(0, 4)
+      .map(p => `${p.name} (${p.position})`);
 
     let rosterVal = playerObjects.length * 10;
     totalLeagueValue += rosterVal;
 
     const lore = MANAGER_LORE[details.ownerName] || MANAGER_LORE[details.teamName] || '';
     const getRosterMode = (l) => {
-      if (l.toLowerCase().includes('rebuild')) return 'rebuilder';
-      if (l.toLowerCase().includes('contend')) return 'contender';
-      return 'neutral';
+      if (l.toLowerCase().includes('rebuild')) return 'Rebuilder / Future Picks Hoarder';
+      if (l.toLowerCase().includes('contend')) return 'Heavyweight Contender / Win-Now Window';
+      return 'Middle-Class Purgatory';
     };
+
+    const hasRecentTrade = (recentTradesByRoster[r.roster_id] || []).length > 0;
+    const tradeSummary = hasRecentTrade 
+      ? `Active in offseason trading (${recentTradesByRoster[r.roster_id].length} trade(s) completed recently)`
+      : 'Quiet offseason, standing pat on current roster core';
 
     teamEvaluations.push({
       rosterId: r.roster_id,
@@ -1158,6 +1207,7 @@ async function generateSeasonPreview(options) {
       username: details.username,
       rosterMode: getRosterMode(lore),
       topPlayers: topStars.length > 0 ? topStars : ['Roster Core'],
+      recentTrades: tradeSummary,
       lore,
       wins: r.settings.wins || 0,
       rosterVal
@@ -1166,8 +1216,23 @@ async function generateSeasonPreview(options) {
 
   const avgVal = totalLeagueValue / (teamEvaluations.length || 1);
 
-  // Calculate win lines for each team (scaled around 7.0 wins for 14-game season)
+  // Map opponent values to calculate Strength of Schedule (SoS)
+  const rosterValMap = {};
+  teamEvaluations.forEach(t => { rosterValMap[t.rosterId] = t.rosterVal; });
+
   const teamsData = teamEvaluations.map(t => {
+    const oppIds = scheduleByRoster[t.rosterId] || [];
+    let totalOppVal = 0;
+    oppIds.forEach(oId => { totalOppVal += (rosterValMap[oId] || avgVal); });
+    const avgOppVal = oppIds.length > 0 ? (totalOppVal / oppIds.length) : avgVal;
+
+    let sosDescription = 'Balanced 14-Week Schedule';
+    if (avgOppVal > avgVal + 2) {
+      sosDescription = 'Tough 14-Week Schedule (Brutal opponent gauntlet)';
+    } else if (avgOppVal < avgVal - 2) {
+      sosDescription = 'Favorable 14-Week Schedule (Soft opponent slate)';
+    }
+
     const diff = t.rosterVal - avgVal;
     let rawLine = 7.0 + (diff / 20.0);
     rawLine = Math.max(4.5, Math.min(9.5, rawLine));
@@ -1179,6 +1244,8 @@ async function generateSeasonPreview(options) {
       winLine,
       rosterMode: t.rosterMode,
       topPlayers: t.topPlayers,
+      sosDescription,
+      recentTrades: t.recentTrades,
       lore: t.lore
     };
   });
