@@ -45,6 +45,11 @@ const PROMPTS = {
   injury: [
     "A sterile NFL training room with an ice bath, crutches leaning against a wall, a single MRI scan on a lightbox showing a knee, a football on the examination table, harsh fluorescent lighting, clinical and cold, no text",
     "A close-up of a single football cleat print in fresh turf, a trail of white athletic tape leading off-frame, stadium lights blurred in background, shallow depth of field, medical tragedy aesthetic, no text"
+  ],
+  seasonPreview: [
+    "A massive 1995 Las Vegas sports book wall with glowing red LED odds boards, crumpled betting slips on the floor, leather couches, overhead fluorescent lighting, 1990s gambling manifesto aesthetic, cinematic, no text",
+    "A dimly lit NFL draft war room with a massive wall chart covered in magnetic player names and over/under win totals written in red marker, 1990s front office aesthetic, documentary photography, no text",
+    "A sleek 1990s magazine cover spread featuring a golden championship trophy next to a stack of betting chips and a football, studio lighting, glossy finish, Ringer aesthetic, no text"
   ]
 };
 

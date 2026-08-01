@@ -96,10 +96,11 @@ try {
 }
 
 // Load processed weekly events history
-let processedEvents = { matchupOfWeek: [], mondayMiracle: [] };
+let processedEvents = { matchupOfWeek: [], mondayMiracle: [], seasonPreview: [] };
 try {
   if (fs.existsSync(EVENTS_HISTORY_FILE)) {
     processedEvents = JSON.parse(fs.readFileSync(EVENTS_HISTORY_FILE, 'utf8'));
+    if (!processedEvents.seasonPreview) processedEvents.seasonPreview = [];
   }
 } catch (err) {
   console.warn('⚠️ Failed to load processed events history, starting fresh.', err.message);
@@ -145,6 +146,7 @@ function parseArgs() {
   const options = {
     checkTransactions: args.includes('--check-transactions'),
     weeklyRecap: args.includes('--weekly-recap'),
+    seasonPreview: args.includes('--season-preview'),
     testWebhook: args.includes('--test-webhook'),
     dryRun: args.includes('--dry-run'),
     force: args.includes('--force'),
@@ -1102,6 +1104,151 @@ async function checkMondayNightMiracle(options) {
 }
 
 /**
+ * Core Logic: Generate Bill Simmons-style Preseason Over/Under Gambling Manifesto.
+ */
+async function generateSeasonPreview(options) {
+  const date = new Date();
+  const year = date.getFullYear();
+
+  console.log(`🏈 Generating DFL Preseason Over/Under Gambling Manifesto for ${year}...`);
+
+  const rosters = await sleeper.getRosters(LEAGUE_ID);
+  const users = await sleeper.getUsers(LEAGUE_ID);
+
+  if (!rosters || rosters.length === 0) {
+    console.error('❌ No rosters found for league.');
+    return;
+  }
+
+  // Evaluate each team's roster composite value
+  const teamEvaluations = [];
+  let totalLeagueValue = 0;
+
+  for (const r of rosters) {
+    const details = await sleeper.getTeamDetailsByRosterId(LEAGUE_ID, r.roster_id);
+    const playerIds = r.players || [];
+    
+    const playerObjects = [];
+    for (const pId of playerIds) {
+      const p = await sleeper.resolvePlayer(pId);
+      if (p && p.name) {
+        playerObjects.push(p);
+      }
+    }
+
+    const topStars = playerObjects
+      .filter(p => ['QB', 'RB', 'WR', 'TE'].includes(p.position))
+      .slice(0, 3)
+      .map(p => p.name);
+
+    let rosterVal = playerObjects.length * 10;
+    totalLeagueValue += rosterVal;
+
+    const lore = MANAGER_LORE[details.ownerName] || MANAGER_LORE[details.teamName] || '';
+    const getRosterMode = (l) => {
+      if (l.toLowerCase().includes('rebuild')) return 'rebuilder';
+      if (l.toLowerCase().includes('contend')) return 'contender';
+      return 'neutral';
+    };
+
+    teamEvaluations.push({
+      rosterId: r.roster_id,
+      teamName: details.teamName,
+      ownerName: details.ownerName,
+      username: details.username,
+      rosterMode: getRosterMode(lore),
+      topPlayers: topStars.length > 0 ? topStars : ['Roster Core'],
+      lore,
+      wins: r.settings.wins || 0,
+      rosterVal
+    });
+  }
+
+  const avgVal = totalLeagueValue / (teamEvaluations.length || 1);
+
+  // Calculate win lines for each team (scaled around 7.0 wins for 14-game season)
+  const teamsData = teamEvaluations.map(t => {
+    const diff = t.rosterVal - avgVal;
+    let rawLine = 7.0 + (diff / 20.0);
+    rawLine = Math.max(4.5, Math.min(9.5, rawLine));
+    const winLine = (Math.round(rawLine * 2) / 2).toFixed(1);
+
+    return {
+      teamName: t.teamName,
+      ownerName: t.ownerName,
+      winLine,
+      rosterMode: t.rosterMode,
+      topPlayers: t.topPlayers,
+      lore: t.lore
+    };
+  });
+
+  const previewPayload = {
+    year,
+    teams: teamsData
+  };
+
+  try {
+    let article = await generator.generateSeasonPreview(previewPayload);
+
+    // Generate Custom Las Vegas / Over-Under Magazine Graphic
+    if (Math.random() < 0.5) {
+      console.log(`   🎨 Generating Preseason Over/Under graphic...`);
+      const imagePayload = {
+        prompt: promptHelpers.getRandomPrompt('seasonPreview'),
+        style: "retro-comic",
+        overlayText: {
+          title: "SEASON PREVIEW",
+          mainHeadline: `${year} OVER / UNDER`,
+          subHeadline: "GAMBLING MANIFESTO",
+          badgeText: "PREVIEW"
+        },
+        filename: `preview_${year}_${Date.now()}`
+      };
+      const filename = await imageClient.generateImage(imagePayload);
+      const md = await imageClient.pushAndGetMarkdown(filename, options.dryRun);
+      if (md) {
+        await postToSleeper(USER_TOKEN, LEAGUE_ID, md.trim(), options.dryRun, 'general', false);
+      }
+    }
+
+    article = article.replace(/\*/g, '');
+    await postToSleeper(USER_TOKEN, LEAGUE_ID, article, options.dryRun, 'general', true);
+
+    if (!options.dryRun) {
+      if (!processedEvents.seasonPreview) processedEvents.seasonPreview = [];
+      processedEvents.seasonPreview.push(`preview_${year}`);
+      saveEventsHistory();
+    }
+  } catch (err) {
+    console.error('❌ Failed to generate Preseason Over/Under column:', err.message);
+  }
+}
+
+/**
+ * Checks if it's time for the Preseason Over/Under (approx 1 week before NFL kickoff).
+ */
+async function checkPreseasonOverUnder(options) {
+  const date = new Date();
+  const year = date.getFullYear();
+  const eventId = `preview_${year}`;
+
+  if (!processedEvents.seasonPreview) processedEvents.seasonPreview = [];
+  if (processedEvents.seasonPreview.includes(eventId) && !options.force) return;
+
+  const month = date.getMonth();
+  const day = date.getDate();
+
+  // 1 week before kickoff corresponds to late August (Aug 24-31) or early Sept (Sept 1-8).
+  const isOneWeekBeforeKickoff = (month === 7 && day >= 24) || (month === 8 && day <= 8);
+
+  if (isOneWeekBeforeKickoff || options.force) {
+    console.log(`🏈 1 Week Before Kickoff Triggered: Generating Preseason Over/Under Manifesto...`);
+    await generateSeasonPreview(options);
+  }
+}
+
+/**
  * Runs the bot continuously, polling the Sleeper API every 15 minutes for new trades.
  */
 async function startDaemon(options) {
@@ -1111,6 +1258,7 @@ async function startDaemon(options) {
   try {
     heartbeat.updateHeartbeat(); // tell the cloud backup the laptop is alive
     await checkTransactions(options);
+    await checkPreseasonOverUnder(options);
     await checkMatchupOfTheWeek(options);
     await checkMondayNightMiracle(options);
   } catch (err) {
@@ -1124,6 +1272,7 @@ async function startDaemon(options) {
       console.log(`\n⏰ Polling interval triggered at ${new Date().toISOString()}...`);
       heartbeat.updateHeartbeat(); // throttled internally to ~5 min
       await checkTransactions(options);
+      await checkPreseasonOverUnder(options);
       await checkMatchupOfTheWeek(options);
       await checkMondayNightMiracle(options);
     } catch (err) {
@@ -1152,6 +1301,8 @@ async function main() {
     await runTestWebhook(options.dryRun);
   } else if (options.weeklyRecap) {
     await generateWeeklyRecap(options);
+  } else if (options.seasonPreview) {
+    await generateSeasonPreview(options);
   } else if (options.checkTransactions) {
     if (options.watch) {
       await startDaemon(options);
@@ -1160,7 +1311,7 @@ async function main() {
     }
   } else {
     console.log('\n🎙️  JARVIS Bot: No action specified.');
-    console.log('   Use: --check-transactions, --weekly-recap, or --test-webhook');
+    console.log('   Use: --check-transactions, --weekly-recap, --season-preview, or --test-webhook');
     console.log('   Add: --dry-run (to output locally only) or --force (to reprocess old trades)');
     console.log('   Add: --watch (to run continuously in watch mode)\n');
   }

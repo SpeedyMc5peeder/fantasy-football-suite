@@ -264,6 +264,14 @@ Do not include any other text or punctuation.`;
     const prompt = require('./promptTemplates').getMondayNightMiraclePrompt(data);
     return await this.executeWithFallback(prompt, 'Monday Night Miracle Preview');
   }
+
+  /**
+   * Generates the Preseason Over/Under Gambling Manifesto (Bill Simmons style).
+   */
+  async generateSeasonPreview(previewData) {
+    const prompt = require('./promptTemplates').getSeasonPreviewPrompt(previewData);
+    return await this.executeWithFallback(prompt, 'Preseason Over/Under Column');
+  }
 }
 
 module.exports = CommentaryGenerator;

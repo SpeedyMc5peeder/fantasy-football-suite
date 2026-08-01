@@ -427,6 +427,47 @@ Write a tense Monday Night Football preview for a desperately close matchup in o
 `;
 }
 
+/**
+ * Builds the prompt for the Annual Preseason Over/Under Gambling Manifesto (Bill Simmons style).
+ */
+function getSeasonPreviewPrompt(data) {
+  const { year, teams } = data;
+
+  const formattedTeams = teams.map(t => {
+    return `- **${t.teamName}** (Coached by ${t.ownerName})
+  * Line: Over/Under ${t.winLine} Wins
+  * Mode/Vibe: ${t.rosterMode}
+  * Top Stars: ${t.topPlayers.join(', ')}
+  * Lore/History: ${t.lore || 'Standard manager history.'}`;
+  }).join('\n\n');
+
+  return `
+${STYLE_SAMPLES}
+
+Write the Annual DFL Preseason Over/Under Gambling Manifesto for the upcoming ${year} Fantasy Football Season.
+
+### THE INSPIRATION ###
+You are channeling the iconic BILL SIMMONS Annual NFL Over/Under Gambling Column, blended with the dry, sarcastic JARVIS British-AI persona.
+Think: 
+- A meandering, epic gambling manifesto intro about human hubris, the futility of August optimism, and the 87th reason why fantasy football ruins lives.
+- Categorizing teams into 3-4 funny tiers (e.g. "Tier 1: Heavyweight Contenders", "Tier 2: The Frisky Middle", "Tier 3: The Tanking Scrappers").
+- Simmons-style pop culture analogies (referencing 90s/2000s movies, TV shows like The Sopranos/The Office/90s NBA, odd personal observations).
+
+### LEAGUE ROSTER & WIN TOTAL DATA ###
+${formattedTeams}
+
+### WRITING INSTRUCTIONS ###
+1. Write a 4-paragraph epic preseason column in the JARVIS voice (Bill Simmons meets Norm Macdonald meets British dry wit).
+2. INTRO: A classic Simmons-style manifesto opening on why we do this every year and why everyone's August optimism is about to get crushed.
+3. BODY: Walk through the teams in tiers. For EACH team:
+   - State their Team Name, Coach, and Line (e.g. "Who Dey (Tony): Over/Under 7.5 Wins").
+   - Give a definitive locked pick: OVER or UNDER in caps.
+   - Include a hilarious, sharp pop-culture analogy or lore-based roast explaining the pick.
+4. CRITICAL NAME DIRECTIVE: Use real first names naturally (e.g., Tony, Dom, Matt). DO NOT use @ symbols, brackets, or numerical IDs.
+5. Do NOT use markdown formatting (no bold/italics in output) because Sleeper chat does not support it.
+`;
+}
+
 module.exports = {
   SYSTEM_INSTRUCTIONS,
   getTradePrompt,
@@ -436,5 +477,6 @@ module.exports = {
   getBreakingNewsPrompt,
   getFAABPrompt,
   getMatchupOfTheWeekPrompt,
-  getMondayNightMiraclePrompt
+  getMondayNightMiraclePrompt,
+  getSeasonPreviewPrompt
 };
