@@ -1191,25 +1191,23 @@ async function generateSeasonPreview(options) {
   try {
     let article = await generator.generateSeasonPreview(previewPayload);
 
-    // Generate Custom Las Vegas / Over-Under Magazine Graphic
-    if (Math.random() < 0.5) {
-      console.log(`   🎨 Generating Preseason Over/Under graphic...`);
-      const imagePayload = {
-        prompt: promptHelpers.getRandomPrompt('seasonPreview'),
-        style: "retro-comic",
-        overlayText: {
-          title: "SEASON PREVIEW",
-          mainHeadline: `${year} OVER / UNDER`,
-          subHeadline: "GAMBLING MANIFESTO",
-          badgeText: "PREVIEW"
-        },
-        filename: `preview_${year}_${Date.now()}`
-      };
-      const filename = await imageClient.generateImage(imagePayload);
-      const md = await imageClient.pushAndGetMarkdown(filename, options.dryRun);
-      if (md) {
-        await postToSleeper(USER_TOKEN, LEAGUE_ID, md.trim(), options.dryRun, 'general', false);
-      }
+    // Generate Custom Las Vegas / Over-Under Magazine Graphic (100% guaranteed)
+    console.log(`   🎨 Generating Preseason Over/Under graphic...`);
+    const imagePayload = {
+      prompt: promptHelpers.getRandomPrompt('seasonPreview'),
+      style: "retro-comic",
+      overlayText: {
+        title: "SEASON PREVIEW",
+        mainHeadline: `${year} OVER / UNDER`,
+        subHeadline: "GAMBLING MANIFESTO",
+        badgeText: "PREVIEW"
+      },
+      filename: `preview_${year}_${Date.now()}`
+    };
+    const filename = await imageClient.generateImage(imagePayload);
+    const md = await imageClient.pushAndGetMarkdown(filename, options.dryRun);
+    if (md) {
+      await postToSleeper(USER_TOKEN, LEAGUE_ID, md.trim(), options.dryRun, 'general', false);
     }
 
     article = article.replace(/\*/g, '');
