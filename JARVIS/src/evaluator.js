@@ -121,5 +121,7 @@ function evaluate(payload) {
 }
 
 module.exports = {
-  evaluate
+  evaluate,
+  findPlayer,
+  loadRankings
 };

@@ -20,6 +20,7 @@ const imageClient = require('./src/imageClient');
 const newsScraper = require('./src/newsScraper');
 const promptHelpers = require('./src/imagePrompts');
 const heartbeat = require('./src/heartbeat');
+const evaluator = require('./src/evaluator');
 
 const CONFIG_PATH = path.join(__dirname, '..', 'config.json');
 const HISTORY_FILE = path.join(__dirname, 'data', 'processed_transactions.json');
@@ -1168,24 +1169,31 @@ async function generateSeasonPreview(options) {
   const teamEvaluations = [];
   let totalLeagueValue = 0;
 
+  evaluator.loadRankings();
+
   for (const r of rosters) {
     const details = await sleeper.getTeamDetailsByRosterId(LEAGUE_ID, r.roster_id);
     const playerIds = r.players || [];
     
     const playerObjects = [];
+    let rosterVal = 0;
     for (const pId of playerIds) {
       const p = await sleeper.resolvePlayer(pId);
       if (p && p.name) {
+        const found = evaluator.findPlayer(p.name) || evaluator.findPlayer(pId);
+        const val = found?.composite_value || 100;
+        p.val = val;
+        rosterVal += val;
         playerObjects.push(p);
       }
     }
 
     const topStars = playerObjects
       .filter(p => ['QB', 'RB', 'WR', 'TE'].includes(p.position))
-      .slice(0, 4)
+      .sort((a, b) => b.val - a.val)
+      .slice(0, 5)
       .map(p => `${p.name} (${p.position})`);
 
-    let rosterVal = playerObjects.length * 10;
     totalLeagueValue += rosterVal;
 
     const lore = MANAGER_LORE[details.ownerName] || MANAGER_LORE[details.teamName] || '';
@@ -1242,7 +1250,7 @@ async function generateSeasonPreview(options) {
     if (t.ownerName.toLowerCase().includes('tyler')) {
       playerNotes = "BREAKING NEWS: Josh Jacobs recently placed on Commissioner's Exempt List and faces a potential season-long suspension! Backfield is in sudden jeopardy. Tank Dell is 26+ (older breakout, not a young dynasty prospect).";
     } else if (t.ownerName.toLowerCase().includes('dom')) {
-      playerNotes = "In Superflex / 2QB format, holding 3 starting QBs (Kyler Murray, Drew Allar, Mac Jones) is an elite positional luxury and trade leverage, giving him huge starting security.";
+      playerNotes = "In Superflex / 2QB format, holding Trevor Lawrence and Kyler Murray as his QB tandem alongside Ja'Marr Chase and A.J. Brown gives him one of the most explosive offensive cores in the league.";
     } else if (t.ownerName.toLowerCase().includes('tony')) {
       playerNotes = "Recently put Patrick Mahomes, Stefon Diggs, Jaylen Warren, and T.J. Hockenson on the trade block in chat.";
     } else if (t.ownerName.toLowerCase().includes('matt') && t.teamName.toLowerCase().includes('shough')) {

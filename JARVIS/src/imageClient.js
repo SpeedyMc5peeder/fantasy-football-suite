@@ -57,7 +57,7 @@ async function generateImage(payload) {
     console.log(`   Calling Imagen 3 via Gemini API...`);
 
     const response = await ai.models.generateImages({
-      model: 'imagen-4.0-generate-001',
+      model: 'imagen-3.0-generate-002',
       prompt: prompt,
       config: {
         numberOfImages: 1,
