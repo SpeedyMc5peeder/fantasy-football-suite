@@ -210,7 +210,40 @@ async function getTeamDetailsByRosterId(leagueId, rosterId) {
 }
 
 /**
- * Maps a roster_id to the user's display name. (Deprecated: prefer getTeamDetailsByRosterId)
+ * Fetches recent chat messages from the league channel via GraphQL.
+ */
+async function getRecentChat(leagueId, userToken) {
+  if (!userToken) return [];
+  try {
+    const q = `query { messages(parent_id: "${leagueId}") { message_id text author_id created } }`;
+    const res = await axios.post('https://sleeper.com/graphql', { query: q }, {
+      headers: {
+        'authorization': userToken,
+        'Content-Type': 'application/json'
+      }
+    });
+    const msgs = res.data?.data?.messages || [];
+    const users = await getUsers(leagueId);
+    const userMap = {};
+    users.forEach(u => {
+      userMap[u.user_id] = u.display_name;
+    });
+
+    return msgs
+      .filter(m => m.text && !m.text.includes('made a roster move') && !m.text.includes('🎙️') && !m.text.includes('waiver claims') && !m.text.includes('was claimed off waivers') && !m.text.includes('A trade has been completed') && !m.text.includes('All teams have paid their dues'))
+      .slice(-15)
+      .map(m => {
+        const sender = userMap[m.author_id] || m.author_id;
+        return `${sender}: ${m.text.replace(/<@[^>]+>/g, '').trim()}`;
+      });
+  } catch (err) {
+    console.warn('⚠️ Could not fetch Sleeper chat messages:', err.message);
+    return [];
+  }
+}
+
+/**
+ * Maps a roster_id to the user's display name.
  */
 async function getOwnerNameByRosterId(leagueId, rosterId) {
   const details = await getTeamDetailsByRosterId(leagueId, rosterId);
@@ -227,5 +260,6 @@ module.exports = {
   getMatchups,
   getTransactions,
   getOwnerNameByRosterId,
-  getTeamDetailsByRosterId
+  getTeamDetailsByRosterId,
+  getRecentChat
 };

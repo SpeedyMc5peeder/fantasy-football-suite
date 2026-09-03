@@ -1238,6 +1238,17 @@ async function generateSeasonPreview(options) {
     rawLine = Math.max(4.5, Math.min(9.5, rawLine));
     const winLine = (Math.round(rawLine * 2) / 2).toFixed(1);
 
+    let playerNotes = '';
+    if (t.ownerName.toLowerCase().includes('tyler')) {
+      playerNotes = "BREAKING NEWS: Josh Jacobs recently placed on Commissioner's Exempt List and faces a potential season-long suspension! Backfield is in sudden jeopardy. Tank Dell is 26+ (older breakout, not a young dynasty prospect).";
+    } else if (t.ownerName.toLowerCase().includes('dom')) {
+      playerNotes = "In Superflex / 2QB format, holding 3 starting QBs (Kyler Murray, Drew Allar, Mac Jones) is an elite positional luxury and trade leverage, giving him huge starting security.";
+    } else if (t.ownerName.toLowerCase().includes('tony')) {
+      playerNotes = "Recently put Patrick Mahomes, Stefon Diggs, Jaylen Warren, and T.J. Hockenson on the trade block in chat.";
+    } else if (t.ownerName.toLowerCase().includes('matt') && t.teamName.toLowerCase().includes('shough')) {
+      playerNotes = "Recently complained in league chat about getting sniped on rookie QB Kyle McCord.";
+    }
+
     return {
       teamName: t.teamName,
       ownerName: t.ownerName,
@@ -1246,13 +1257,19 @@ async function generateSeasonPreview(options) {
       topPlayers: t.topPlayers,
       sosDescription,
       recentTrades: t.recentTrades,
+      playerNotes,
       lore: t.lore
     };
   });
 
+  console.log(`   💬 Fetching recent league chat messages...`);
+  const recentChat = await sleeper.getRecentChat(LEAGUE_ID, USER_TOKEN);
+  console.log(`   ✅ Pulled ${recentChat.length} recent chat message(s).`);
+
   const previewPayload = {
     year,
-    teams: teamsData
+    teams: teamsData,
+    recentChat
   };
 
   try {

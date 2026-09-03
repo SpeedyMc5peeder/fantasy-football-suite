@@ -434,7 +434,7 @@ Write a tense Monday Night Football preview for a desperately close matchup in o
  * Builds the prompt for the Annual Preseason Over/Under Gambling Manifesto (Bill Simmons style).
  */
 function getSeasonPreviewPrompt(data) {
-  const { year, teams } = data;
+  const { year, teams, recentChat } = data;
 
   const formattedTeams = teams.map(t => {
     return `- **${t.teamName}** (Coached by ${t.ownerName})
@@ -443,13 +443,18 @@ function getSeasonPreviewPrompt(data) {
   * Top Core Stars: ${t.topPlayers.join(', ')}
   * 14-Week Schedule Difficulty / SoS: ${t.sosDescription || 'Balanced Schedule'}
   * Key Offseason Moves / Trades: ${t.recentTrades || 'No major offseason moves'}
+  * Key Roster & Player Notes: ${t.playerNotes || 'None'}
   * Franchise Lore & History: ${t.lore || 'Standard manager history.'}`;
   }).join('\n\n');
+
+  const formattedChat = (recentChat && recentChat.length > 0)
+    ? `\n### RECENT LEAGUE CHATTER & TRASH TALK (PULLED LIVE FROM CHAT) ###\n` + recentChat.map(c => `> ${c}`).join('\n')
+    : '';
 
   return `
 ${STYLE_SAMPLES}
 
-Write the Annual DFL Preseason Over/Under Gambling Manifesto for the upcoming ${year} DYNASTY Fantasy Football Season.
+Write the Annual DFL Preseason Over/Under Gambling Manifesto for the upcoming ${year} SUPERFLEX / 2QB DYNASTY Fantasy Football Season.
 
 ### THE INSPIRATION ###
 You are channeling the iconic BILL SIMMONS Annual NFL Over/Under Gambling Column, blended with the dry, sarcastic JARVIS British-AI persona.
@@ -458,10 +463,15 @@ Think:
 - Categorizing teams into 3-4 funny tiers (e.g. "Tier 1: Heavyweight Contenders", "Tier 2: The Frisky Middle", "Tier 3: The Tanking Scrappers").
 - Simmons-style pop culture analogies (referencing 90s/2000s movies, TV shows like The Sopranos/The Office/90s NBA, odd personal observations).
 
-### DYNASTY CONTEXT (CRITICAL) ###
-- THIS IS A DYNASTY LEAGUE (DFL). Teams carry their rosters over year-to-year indefinitely and trade future rookie picks (2026, 2027 1st/2nd rounders).
-- ABSOLUTELY NO REDRAFT JOKES. Do NOT mention "drafting CMC first overall", "taking a QB in round 3 of the draft", or startup redraft picks.
-- DO focus on DYNASTY themes: 14-week schedule gauntlets, offseason trades, 2027 1st round pick hoarders, 3-year rebuild plans, aging windows closing, and tanking for the 1.01 rookie pick.
+### SUPERFLEX / 2QB DYNASTY FORMAT (CRITICAL) ###
+- THIS IS A SUPERFLEX / 2QB DYNASTY LEAGUE (DFL). Teams start 2 Quarterbacks every single week.
+- IN A 2QB LEAGUE, QUARTERBACKS ARE THE ULTIMATE CURRENCY. Having 3 or 4 starting QBs (like Dom having Kyler Murray, Drew Allar, Mac Jones) is a massive positional advantage and huge trade leverage, NOT "too many QBs" or "spare tires." Never mock a manager for having 3 QBs in a 2QB format!
+- Teams with only 1 starting QB are in deep trouble.
+- PLAYER NEWS AWARENESS:
+  * Josh Jacobs (Tyler's RB) was recently placed on the Commissioner's Exempt List and faces a potential season-long suspension! Tyler's backfield is in sudden peril.
+  * Tank Dell is 26+ years old — an older breakout, NOT a "young pup" or rookie in Dynasty terms.
+- ABSOLUTELY NO REDRAFT JOKES. Focus on dynasty trading, future rookie picks, Superflex QB hoarding, and rebuild windows.
+${formattedChat}
 
 ### LEAGUE DYNASTY DATA & 14-WEEK SCHEDULE METRICS ###
 ${formattedTeams}
@@ -472,7 +482,7 @@ ${formattedTeams}
 3. BODY: Walk through all 10 teams in tiers. For EACH team:
    - State their Team Name, Coach, and Line (e.g. "Who Dey (Tony): Over/Under 7.5 Wins").
    - Give a definitive locked pick: OVER or UNDER in caps.
-   - Mention their actual 14-week schedule difficulty, recent offseason trades, or dynasty pick situation.
+   - Mention their actual 14-week schedule difficulty, recent offseason trades, Superflex QB situation, or recent chat trash talk.
    - Include a hilarious, sharp pop-culture analogy or lore-based roast explaining the pick.
 4. CRITICAL NAME DIRECTIVE: Use real first names naturally (e.g., Tony, Dom, Matt). DO NOT use @ symbols, brackets, or numerical IDs.
 5. Do NOT use markdown formatting (no bold/italics in output) because Sleeper chat does not support it.
