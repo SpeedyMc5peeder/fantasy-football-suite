@@ -14,7 +14,10 @@ let rankingsData = null;
 function loadRankings() {
   if (rankingsData) return;
   try {
-    const dataPath = path.join(__dirname, '..', 'data', 'rankings.json');
+    const tradeMachinePath = path.join(__dirname, '..', '..', 'Trade-Machine', 'data', 'rankings.json');
+    const jarvisPath = path.join(__dirname, '..', 'data', 'rankings.json');
+    const dataPath = fs.existsSync(tradeMachinePath) ? tradeMachinePath : jarvisPath;
+
     if (fs.existsSync(dataPath)) {
       rankingsData = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
       console.log(`✅ Evaluator Engine: Loaded ${rankingsData.rankings.length} players locally.`);

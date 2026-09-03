@@ -25,8 +25,12 @@ jobs:
         working-directory: ./Trade-Machine
         run: node scripts/scraper.js
 
+      - name: Sync Rankings to JARVIS
+        run: |
+          cp Trade-Machine/data/rankings*.json JARVIS/data/
+
       - name: Commit and Push Changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Auto-sync daily dynasty rankings"
-          file_pattern: "Trade-Machine/data/rankings*.json"
+          file_pattern: "Trade-Machine/data/rankings*.json JARVIS/data/rankings*.json"
