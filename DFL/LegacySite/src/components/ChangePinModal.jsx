@@ -123,6 +123,8 @@ export default function ChangePinModal({ isOpen, onClose, currentUser }) {
             <div className="relative">
               <input
                 type="password"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 maxLength={4}
                 value={currentPin}
                 onChange={(e) => setCurrentPin(e.target.value.replace(/\D/g, ''))}
@@ -141,6 +143,8 @@ export default function ChangePinModal({ isOpen, onClose, currentUser }) {
             <div className="relative">
               <input
                 type="password"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 maxLength={4}
                 value={newPin}
                 onChange={(e) => setNewPin(e.target.value.replace(/\D/g, ''))}
@@ -159,6 +163,8 @@ export default function ChangePinModal({ isOpen, onClose, currentUser }) {
             <div className="relative">
               <input
                 type="password"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 maxLength={4}
                 value={confirmPin}
                 onChange={(e) => setConfirmPin(e.target.value.replace(/\D/g, ''))}

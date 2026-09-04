@@ -139,6 +139,8 @@ export default function LoginModal({ isOpen, onClose, franchises, onLoginSuccess
               <KeyRound className="absolute left-3.5 top-3 w-4 h-4 text-slate-400" />
               <input
                 type="password"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 maxLength={4}
                 value={pin}
                 onChange={(e) => setPin(e.target.value.replace(/\D/g, ''))}
