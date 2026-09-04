@@ -1,0 +1,290 @@
+{
+  "2022": {
+    "Rhymenoceros": {
+      "playerId": "7523",
+      "name": "Trevor Lawrence",
+      "position": "QB",
+      "nflTeam": "JAX",
+      "points": 278.1
+    },
+    "PoppinChunkies": {
+      "playerId": "4984",
+      "name": "Josh Allen",
+      "position": "QB",
+      "nflTeam": "BUF",
+      "points": 369.9
+    },
+    "LMcVicker": {
+      "playerId": "1166",
+      "name": "Kirk Cousins",
+      "position": "QB",
+      "nflTeam": "LV",
+      "points": 249.4
+    },
+    "DukeofWales": {
+      "playerId": "8266",
+      "name": "Quay Walker",
+      "position": "LB",
+      "nflTeam": "LV",
+      "points": 193.8
+    },
+    "MaffuJames": {
+      "playerId": "4960",
+      "name": "Roquan Smith",
+      "position": "LB",
+      "nflTeam": "BAL",
+      "points": 265
+    },
+    "doesntfleeze": {
+      "playerId": "4046",
+      "name": "Patrick Mahomes",
+      "position": "QB",
+      "nflTeam": "KC",
+      "points": 384.6
+    },
+    "Tklumb86": {
+      "playerId": "6904",
+      "name": "Jalen Hurts",
+      "position": "QB",
+      "nflTeam": "PHI",
+      "points": 374.4
+    },
+    "SamBaugh": {
+      "playerId": "1373",
+      "name": "Geno Smith",
+      "position": "QB",
+      "nflTeam": "NYJ",
+      "points": 293.1
+    },
+    "MattyiceR": {
+      "playerId": "7591",
+      "name": "Justin Fields",
+      "position": "QB",
+      "nflTeam": "KC",
+      "points": 263.3
+    },
+    "JayZone13": {
+      "playerId": "6770",
+      "name": "Joe Burrow",
+      "position": "QB",
+      "nflTeam": "CIN",
+      "points": 338.1
+    }
+  },
+  "2023": {
+    "Rhymenoceros": {
+      "playerId": "7523",
+      "name": "Trevor Lawrence",
+      "position": "QB",
+      "nflTeam": "JAX",
+      "points": 253.6
+    },
+    "PoppinChunkies": {
+      "playerId": "4984",
+      "name": "Josh Allen",
+      "position": "QB",
+      "nflTeam": "BUF",
+      "points": 355.8
+    },
+    "LMcVicker": {
+      "playerId": "4881",
+      "name": "Lamar Jackson",
+      "position": "QB",
+      "nflTeam": "BAL",
+      "points": 284.5
+    },
+    "DukeofWales": {
+      "playerId": "4034",
+      "name": "Christian McCaffrey",
+      "position": "RB",
+      "nflTeam": "SF",
+      "points": 288.4
+    },
+    "MaffuJames": {
+      "playerId": "3163",
+      "name": "Jared Goff",
+      "position": "QB",
+      "nflTeam": "DET",
+      "points": 252.8
+    },
+    "doesntfleeze": {
+      "playerId": "1373",
+      "name": "Geno Smith",
+      "position": "QB",
+      "nflTeam": "NYJ",
+      "points": 197.5
+    },
+    "Tklumb86": {
+      "playerId": "6904",
+      "name": "Jalen Hurts",
+      "position": "QB",
+      "nflTeam": "PHI",
+      "points": 327.4
+    },
+    "SamBaugh": {
+      "playerId": "3321",
+      "name": "Tyreek Hill",
+      "position": "WR",
+      "nflTeam": "FA",
+      "points": 192.8
+    },
+    "MattyiceR": {
+      "playerId": "8183",
+      "name": "Brock Purdy",
+      "position": "QB",
+      "nflTeam": "SF",
+      "points": 296.4
+    },
+    "JayZone13": {
+      "playerId": "9758",
+      "name": "C.J. Stroud",
+      "position": "QB",
+      "nflTeam": "HOU",
+      "points": 277.3
+    }
+  },
+  "2024": {
+    "Rhymenoceros": {
+      "playerId": "7564",
+      "name": "Ja'Marr Chase",
+      "position": "WR",
+      "nflTeam": "CIN",
+      "points": 274.9
+    },
+    "PoppinChunkies": {
+      "playerId": "4866",
+      "name": "Saquon Barkley",
+      "position": "RB",
+      "nflTeam": "PHI",
+      "points": 287.5
+    },
+    "LMcVicker": {
+      "playerId": "1373",
+      "name": "Geno Smith",
+      "position": "QB",
+      "nflTeam": "NYJ",
+      "points": 223.6
+    },
+    "DukeofWales": {
+      "playerId": "421",
+      "name": "Matthew Stafford",
+      "position": "QB",
+      "nflTeam": "LAR",
+      "points": 224.2
+    },
+    "MaffuJames": {
+      "playerId": "9221",
+      "name": "Jahmyr Gibbs",
+      "position": "RB",
+      "nflTeam": "DET",
+      "points": 221.8
+    },
+    "doesntfleeze": {
+      "playerId": "4881",
+      "name": "Lamar Jackson",
+      "position": "QB",
+      "nflTeam": "BAL",
+      "points": 379.6
+    },
+    "Tklumb86": {
+      "playerId": "6904",
+      "name": "Jalen Hurts",
+      "position": "QB",
+      "nflTeam": "PHI",
+      "points": 310.7
+    },
+    "SamBaugh": {
+      "playerId": "11563",
+      "name": "Bo Nix",
+      "position": "QB",
+      "nflTeam": "DEN",
+      "points": 256
+    },
+    "MattyiceR": {
+      "playerId": "4984",
+      "name": "Josh Allen",
+      "position": "QB",
+      "nflTeam": "BUF",
+      "points": 349.4
+    },
+    "JayZone13": {
+      "playerId": "6770",
+      "name": "Joe Burrow",
+      "position": "QB",
+      "nflTeam": "CIN",
+      "points": 345
+    }
+  },
+  "2025": {
+    "Rhymenoceros": {
+      "playerId": "7523",
+      "name": "Trevor Lawrence",
+      "position": "QB",
+      "nflTeam": "JAX",
+      "points": 247.3
+    },
+    "PoppinChunkies": {
+      "playerId": "3294",
+      "name": "Dak Prescott",
+      "position": "QB",
+      "nflTeam": "DAL",
+      "points": 308.8
+    },
+    "LMcVicker": {
+      "playerId": "4034",
+      "name": "Christian McCaffrey",
+      "position": "RB",
+      "nflTeam": "SF",
+      "points": 229.6
+    },
+    "DukeofWales": {
+      "playerId": "5870",
+      "name": "Daniel Jones",
+      "position": "QB",
+      "nflTeam": "IND",
+      "points": 262.9
+    },
+    "MaffuJames": {
+      "playerId": "11564",
+      "name": "Drake Maye",
+      "position": "QB",
+      "nflTeam": "NE",
+      "points": 297.1
+    },
+    "doesntfleeze": {
+      "playerId": "11560",
+      "name": "Caleb Williams",
+      "position": "QB",
+      "nflTeam": "CHI",
+      "points": 272.6
+    },
+    "Tklumb86": {
+      "playerId": "6904",
+      "name": "Jalen Hurts",
+      "position": "QB",
+      "nflTeam": "PHI",
+      "points": 284.9
+    },
+    "SamBaugh": {
+      "playerId": "4046",
+      "name": "Patrick Mahomes",
+      "position": "QB",
+      "nflTeam": "KC",
+      "points": 309.9
+    },
+    "MattyiceR": {
+      "playerId": "4984",
+      "name": "Josh Allen",
+      "position": "QB",
+      "nflTeam": "BUF",
+      "points": 348.3
+    },
+    "JayZone13": {
+      "playerId": "4892",
+      "name": "Baker Mayfield",
+      "position": "QB",
+      "nflTeam": "TB",
+      "points": 245.4
+    }
+  }
+}

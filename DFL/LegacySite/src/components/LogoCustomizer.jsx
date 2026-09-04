@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Upload, Check, Palette, Sparkles, Image as ImageIcon } from 'lucide-react';
+import { X, Upload, Check, Palette, Sparkles, Image as ImageIcon, KeyRound } from 'lucide-react';
 
 const PRESET_MASCOTS = [
   { name: 'War Rhinoceros', icon: '🦏', url: 'https://images.unsplash.com/photo-1575550959106-5a7defe28b56?w=200&auto=format&fit=crop&q=80' },
@@ -12,7 +12,7 @@ const PRESET_MASCOTS = [
   { name: 'Island Palm', icon: '🏝️', url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=200&auto=format&fit=crop&q=80' },
 ];
 
-export default function LogoCustomizer({ isOpen, onClose, currentUser, onSaveProfile }) {
+export default function LogoCustomizer({ isOpen, onClose, currentUser, onSaveProfile, onOpenChangePin }) {
   const [logoUrl, setLogoUrl] = useState(currentUser?.customLogoUrl || currentUser?.avatar || '');
   const [slogan, setSlogan] = useState(currentUser?.slogan || '');
   const [selectedFile, setSelectedFile] = useState(null);
@@ -96,7 +96,7 @@ export default function LogoCustomizer({ isOpen, onClose, currentUser, onSavePro
             <div>
               <span className="text-[10px] font-bold uppercase text-cyan-400 block">Live Preview</span>
               <h4 className="font-bold text-sm text-white">{currentUser.teamName}</h4>
-              <p className="text-xs text-slate-400 italic">"{slogan || 'No team slogan set'}"</p>
+              <p className="text-xs text-slate-400">Manager: {currentUser.name}</p>
             </div>
           </div>
 
@@ -144,18 +144,29 @@ export default function LogoCustomizer({ isOpen, onClose, currentUser, onSavePro
             </div>
           </div>
 
-          {/* Slogan */}
-          <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
-              Team Motto / Slogan
-            </label>
-            <input
-              type="text"
-              value={slogan}
-              onChange={(e) => setSlogan(e.target.value)}
-              placeholder="e.g. 44-12 speaks for itself or Shaving close since '22"
-              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-cyan-400"
-            />
+          {/* 4-Digit Security PIN Shortcut */}
+          <div className="p-4 bg-slate-900/60 rounded-2xl border border-slate-800 flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
+                <KeyRound className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 className="text-xs font-bold text-white">4-Digit Security PIN</h4>
+                <p className="text-[11px] text-slate-400">Change your private login access code</p>
+              </div>
+            </div>
+            {onOpenChangePin && (
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  onOpenChangePin();
+                }}
+                className="px-3.5 py-1.5 bg-amber-500/20 text-amber-300 border border-amber-500/40 rounded-xl text-xs font-bold hover:bg-amber-500/30 transition"
+              >
+                Change PIN
+              </button>
+            )}
           </div>
 
           {/* Actions */}

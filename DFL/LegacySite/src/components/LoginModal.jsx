@@ -44,7 +44,9 @@ export default function LoginModal({ isOpen, onClose, franchises, onLoginSuccess
       }
     } catch (err) {
       // Fallback for offline/local direct auth if server not reachable
-      if (pin === '1234' || pin === '0000') {
+      const customPin = localStorage.getItem(`dfl_custom_pin_${selectedFranchise}`);
+      const validPin = customPin || '1234';
+      if (pin === validPin || pin === '0000') {
         onLoginSuccess({
           franchiseKey: selectedFranchise,
           ...franchises[selectedFranchise],

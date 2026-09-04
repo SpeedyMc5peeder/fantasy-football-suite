@@ -1,0 +1,163 @@
+{
+  "pins": {
+    "Rhymenoceros": "1234",
+    "PoppinChunkies": "1234",
+    "MattyiceR": "1234",
+    "SamBaugh": "1234",
+    "Tklumb86": "1234",
+    "LMcVicker": "1234",
+    "doesntfleeze": "1234",
+    "MaffuJames": "1234",
+    "JayZone13": "1234",
+    "DukeofWales": "1234"
+  },
+  "overUnderLines": [
+    {
+      "teamKey": "doesntfleeze",
+      "teamName": "Washed🫩",
+      "manager": "Trent",
+      "line": 9.5,
+      "tier": "TIER 1: The Heavyweight Title Contenders",
+      "rationale": "Heavyweight Title Contender setting the pace at 9.5 wins"
+    },
+    {
+      "teamKey": "MattyiceR",
+      "teamName": "Heisenberg's Hitmen",
+      "manager": "Matt",
+      "line": 8.5,
+      "tier": "TIER 1: The Heavyweight Title Contenders",
+      "rationale": "Reigning 2025 champion returning with veteran grit at 8.5 wins"
+    },
+    {
+      "teamKey": "MaffuJames",
+      "teamName": "I don't Gibbs a Shough",
+      "manager": "Matt James",
+      "line": 8.5,
+      "tier": "TIER 1: The Heavyweight Title Contenders",
+      "rationale": "Active trade maestro looking to break into the top tier at 8.5 wins"
+    },
+    {
+      "teamKey": "Rhymenoceros",
+      "teamName": "Scott's Totts",
+      "manager": "Dom",
+      "line": 7.5,
+      "tier": "TIER 2: The Dangerous Middle Class",
+      "rationale": "The Commish leading the dangerous middle class at 7.5 wins"
+    },
+    {
+      "teamKey": "PoppinChunkies",
+      "teamName": "Poppin' Chunkies",
+      "manager": "Tyler",
+      "line": 7,
+      "tier": "TIER 2: The Dangerous Middle Class",
+      "rationale": "Perennial powerhouse with a 7.0 win line"
+    },
+    {
+      "teamKey": "LMcVicker",
+      "teamName": "Laces Out, Ladies",
+      "manager": "Lauren",
+      "line": 6.5,
+      "tier": "TIER 2: The Dangerous Middle Class",
+      "rationale": "Inherited Tre legacy franchise, solid playoff contender at 6.5 wins"
+    },
+    {
+      "teamKey": "DukeofWales",
+      "teamName": "Hands for Jobs",
+      "manager": "David",
+      "line": 6.5,
+      "tier": "TIER 2: The Dangerous Middle Class",
+      "rationale": "Underdog looking to capitalize on high-upside young talent at 6.5 wins"
+    },
+    {
+      "teamKey": "SamBaugh",
+      "teamName": "Dude, Where's Lamar?",
+      "manager": "Sam",
+      "line": 6,
+      "tier": "TIER 3: The Cellar Dwellers & Rebuild Trench",
+      "rationale": "Loaded with talent aiming to beat the 6.0 win line"
+    },
+    {
+      "teamKey": "Tklumb86",
+      "teamName": "Who Dey",
+      "manager": "Tony",
+      "line": 5.5,
+      "tier": "TIER 3: The Cellar Dwellers & Rebuild Trench",
+      "rationale": "New regime after Jake exit; stockpile of picks and depth at 5.5 wins"
+    },
+    {
+      "teamKey": "JayZone13",
+      "teamName": "Ronin",
+      "manager": "Jason",
+      "line": 5,
+      "tier": "TIER 3: The Cellar Dwellers & Rebuild Trench",
+      "rationale": "2024 champion with big upside looking to shatter the 5.0 win line"
+    }
+  ],
+  "predictions": {
+    "Rhymenoceros": {
+      "picks": {
+        "PoppinChunkies": "OVER",
+        "SamBaugh": "UNDER",
+        "LMcVicker": "OVER",
+        "JayZone13": "OVER",
+        "doesntfleeze": "OVER",
+        "MaffuJames": "UNDER",
+        "Tklumb86": "UNDER",
+        "MattyiceR": "OVER",
+        "DukeofWales": "UNDER",
+        "Rhymenoceros": "OVER"
+      },
+      "awards": {
+        "champion": "LMcVicker",
+        "runnerUp": "Rhymenoceros",
+        "toiletBowl": "SamBaugh",
+        "pointsChamp": "PoppinChunkies",
+        "boldPrediction": "Scott's Totts will knock out Ronin in the Semi's"
+      },
+      "updatedAt": "2026-09-04T07:31:43.170Z"
+    }
+  },
+  "bets": [],
+  "customProfiles": {
+    "Rhymenoceros": {
+      "slogan": "",
+      "accentColor": "#38bdf8"
+    },
+    "PoppinChunkies": {
+      "slogan": "",
+      "accentColor": "#fbbf24"
+    },
+    "MattyiceR": {
+      "slogan": "",
+      "accentColor": "#34d399"
+    },
+    "SamBaugh": {
+      "slogan": "",
+      "accentColor": "#a78bfa"
+    },
+    "Tklumb86": {
+      "slogan": "",
+      "accentColor": "#f97316"
+    },
+    "LMcVicker": {
+      "slogan": "",
+      "accentColor": "#ec4899"
+    },
+    "doesntfleeze": {
+      "slogan": "",
+      "accentColor": "#94a3b8"
+    },
+    "MaffuJames": {
+      "slogan": "",
+      "accentColor": "#eab308"
+    },
+    "JayZone13": {
+      "slogan": "",
+      "accentColor": "#ef4444"
+    },
+    "DukeofWales": {
+      "slogan": "",
+      "accentColor": "#06b6d4"
+    }
+  }
+}

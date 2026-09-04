@@ -1,7 +1,10 @@
-import React from 'react';
-import { Users, Palette, Trophy, Shield, Sparkles, Check, TrendingUp } from 'lucide-react';
+import React, { useState } from 'react';
+import { Users, Palette, Trophy, Shield, Sparkles, Check, TrendingUp, KeyRound, Calendar, ChevronRight } from 'lucide-react';
+import RosterModal from './RosterModal';
+import rostersData from '../data/league_rosters_and_picks.json';
 
-export default function ManagerDossiers({ franchises, currentUser, onOpenBranding, onOpenLogin }) {
+export default function ManagerDossiers({ franchises, currentUser, onOpenBranding, onOpenLogin, onOpenChangePin }) {
+  const [selectedRosterKey, setSelectedRosterKey] = useState(null);
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -9,7 +12,7 @@ export default function ManagerDossiers({ franchises, currentUser, onOpenBrandin
         <div>
           <div className="inline-flex items-center space-x-2 text-cyan-400 text-xs font-bold uppercase tracking-wider mb-1">
             <Users className="w-4 h-4" />
-            <span>The 10 Founding Franchises</span>
+            <span>The 10 Franchises</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-black font-display tracking-tight text-white">
             FRANCHISE DOSSIERS
@@ -20,13 +23,22 @@ export default function ManagerDossiers({ franchises, currentUser, onOpenBrandin
         </div>
 
         {currentUser && (
-          <button
-            onClick={onOpenBranding}
-            className="flex items-center space-x-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition"
-          >
-            <Palette className="w-4 h-4 text-cyan-400" />
-            <span>Customize My Team Logo & Slogan</span>
-          </button>
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={onOpenChangePin}
+              className="flex items-center space-x-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-amber-400 font-bold text-xs px-3 py-2.5 rounded-xl transition"
+            >
+              <KeyRound className="w-4 h-4" />
+              <span>Change PIN</span>
+            </button>
+            <button
+              onClick={onOpenBranding}
+              className="flex items-center space-x-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition"
+            >
+              <Palette className="w-4 h-4 text-cyan-400" />
+              <span>Customize My Team Logo</span>
+            </button>
+          </div>
         )}
       </div>
 
@@ -64,7 +76,7 @@ export default function ManagerDossiers({ franchises, currentUser, onOpenBrandin
                     </div>
                     <div>
                       <div className="flex items-center space-x-2">
-                        <h3 className="text-lg font-bold text-white leading-tight">{f.name}</h3>
+                        <h3 className="text-lg font-black font-display text-white leading-tight tracking-wide">{f.teamName}</h3>
                         {isCommish && (
                           <span className="text-[9px] bg-cyan-950 text-cyan-300 font-extrabold px-1.5 py-0.5 rounded border border-cyan-800">
                             COMMISH
@@ -76,32 +88,65 @@ export default function ManagerDossiers({ franchises, currentUser, onOpenBrandin
                           </span>
                         )}
                       </div>
-                      <p className="text-xs font-semibold text-cyan-400 mt-0.5">{f.teamName}</p>
-                      <p className="text-[11px] text-slate-500">@{f.username}</p>
+                      <p className="text-xs font-semibold text-cyan-400 mt-0.5">
+                        Manager: {f.name} <span className="text-slate-500 font-normal">(@{f.username})</span>
+                      </p>
                     </div>
                   </div>
 
-                  {/* Slogan badge or Edit button */}
+                  {/* Edit Logo & Change PIN buttons */}
                   {isCurrentUser ? (
-                    <button
-                      onClick={onOpenBranding}
-                      className="px-2.5 py-1 text-[11px] font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 rounded-lg hover:bg-cyan-500/30 transition flex items-center space-x-1"
-                    >
-                      <Palette className="w-3 h-3" />
-                      <span>Edit Logo</span>
-                    </button>
+                    <div className="flex items-center space-x-1.5">
+                      <button
+                        onClick={onOpenChangePin}
+                        title="Change Security PIN"
+                        className="px-2.5 py-1 text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 rounded-lg hover:bg-amber-500/30 transition flex items-center space-x-1"
+                      >
+                        <KeyRound className="w-3 h-3" />
+                        <span>PIN</span>
+                      </button>
+                      <button
+                        onClick={onOpenBranding}
+                        className="px-2.5 py-1 text-[11px] font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 rounded-lg hover:bg-cyan-500/30 transition flex items-center space-x-1"
+                      >
+                        <Palette className="w-3 h-3" />
+                        <span>Edit Logo</span>
+                      </button>
+                    </div>
                   ) : null}
                 </div>
 
-                {/* Team Slogan */}
-                {f.slogan && (
-                  <div className="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800/80 text-xs italic text-slate-300">
-                    "{f.slogan}"
+                {/* Bio */}
+                <p className="text-xs text-slate-400 leading-relaxed">{f.bio}</p>
+
+                {/* Franchise Lineage Note for Succession Teams */}
+                {key === 'Tklumb86' && (
+                  <div className="p-3 rounded-2xl bg-orange-950/25 border border-orange-500/40 text-xs space-y-1">
+                    <div className="flex items-center space-x-1.5 text-orange-400 font-bold text-[11px]">
+                      <span>👑 Franchise Lineage & Transition</span>
+                    </div>
+                    <p className="text-slate-300 text-[11px]">
+                      <strong className="text-white">Jake (Abusement Park):</strong> 2022–2025 (Waiver wizard, stepped down)
+                    </p>
+                    <p className="text-slate-300 text-[11px]">
+                      <strong className="text-orange-400">Tony (Who Dey):</strong> 2026–Present (Took over franchise in 2026)
+                    </p>
                   </div>
                 )}
 
-                {/* Bio */}
-                <p className="text-xs text-slate-400 leading-relaxed">{f.bio}</p>
+                {key === 'LMcVicker' && (
+                  <div className="p-3 rounded-2xl bg-purple-950/25 border border-purple-500/40 text-xs space-y-1">
+                    <div className="flex items-center space-x-1.5 text-purple-300 font-bold text-[11px]">
+                      <span>👑 Franchise Lineage & Transition</span>
+                    </div>
+                    <p className="text-slate-300 text-[11px]">
+                      <strong className="text-white">Tre (Team Pupinsuds):</strong> 2022 Inaugural Champion (In Loving Memory)
+                    </p>
+                    <p className="text-slate-300 text-[11px]">
+                      <strong className="text-pink-400">Lauren (Laces Out, Ladies):</strong> 2023–Present (Took over franchise in 2023)
+                    </p>
+                  </div>
+                )}
 
                 {/* All-Time Stat Chips */}
                 <div className="grid grid-cols-4 gap-2 pt-2 text-center text-xs">
@@ -139,11 +184,44 @@ export default function ManagerDossiers({ franchises, currentUser, onOpenBrandin
                     ))}
                   </div>
                 </div>
+
+                {/* Roster & Draft Capital Action Button */}
+                <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between flex-wrap gap-2">
+                  <div className="flex items-center space-x-2 text-xs">
+                    <span className="text-[10px] text-slate-500 uppercase font-bold">Draft Capital:</span>
+                    <span className="text-xs font-mono text-amber-400 font-black">
+                      {rostersData?.franchises?.[key]?.draftPicks?.length || 0} Picks
+                    </span>
+                    {(rostersData?.franchises?.[key]?.draftPicks?.filter(p => p.round === 1).length || 0) > 0 && (
+                      <span className="text-[10px] bg-amber-500/15 text-amber-300 border border-amber-500/30 px-1.5 py-0.5 rounded font-mono font-bold">
+                        {rostersData?.franchises?.[key]?.draftPicks?.filter(p => p.round === 1).length}x 1st Rd
+                      </span>
+                    )}
+                  </div>
+
+                  <button
+                    onClick={() => setSelectedRosterKey(key)}
+                    className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs border border-slate-700/80 hover:border-cyan-400/60 transition flex items-center space-x-1.5 shadow-sm group"
+                  >
+                    <Users className="w-3.5 h-3.5 text-cyan-400 group-hover:text-amber-400 transition" />
+                    <span>View Roster & Picks</span>
+                    <ChevronRight className="w-3.5 h-3.5 text-slate-500 group-hover:translate-x-0.5 transition" />
+                  </button>
+                </div>
               </div>
             </div>
           );
         })}
       </div>
+
+      {/* Roster & Draft Capital Modal */}
+      {selectedRosterKey && (
+        <RosterModal
+          franchiseKey={selectedRosterKey}
+          franchiseInfo={franchises[selectedRosterKey]}
+          onClose={() => setSelectedRosterKey(null)}
+        />
+      )}
     </div>
   );
 }

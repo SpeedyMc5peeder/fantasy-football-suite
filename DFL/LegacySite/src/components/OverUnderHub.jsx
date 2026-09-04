@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { TrendingUp, CheckCircle, Save, Award, Users, AlertCircle, Sparkles } from 'lucide-react';
+import { TrendingUp, CheckCircle, Save, Award, Users, AlertCircle, Sparkles, ExternalLink } from 'lucide-react';
+import RosterModal from './RosterModal';
 
 export default function OverUnderHub({ franchises, lines, predictions, currentUser, onOpenLogin, onSavePredictions }) {
+  const [selectedRosterKey, setSelectedRosterKey] = useState(null);
   const [picks, setPicks] = useState({});
   const [awards, setAwards] = useState({
     champion: '',
@@ -120,69 +122,119 @@ export default function OverUnderHub({ franchises, lines, predictions, currentUs
       {/* SUB-TAB 1: BALLOT */}
       {activeSubTab === 'ballot' && (
         <div className="space-y-8">
-          {/* Win Totals Card Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {lines.map((lineItem) => {
-              const f = franchises[lineItem.teamKey];
-              const currentPick = picks[lineItem.teamKey];
+          {[
+            {
+              name: 'TIER 1: The Heavyweight Title Contenders',
+              badge: '👑 Tier 1: The Heavyweight Title Contenders',
+              style: 'text-amber-300 border-amber-500/40 bg-amber-500/10',
+              keys: ['doesntfleeze', 'MattyiceR', 'MaffuJames'],
+            },
+            {
+              name: 'TIER 2: The Dangerous Middle Class',
+              badge: '⚔️ Tier 2: The Dangerous Middle Class',
+              style: 'text-cyan-300 border-cyan-500/40 bg-cyan-500/10',
+              keys: ['Rhymenoceros', 'PoppinChunkies', 'LMcVicker', 'DukeofWales'],
+            },
+            {
+              name: 'TIER 3: The Cellar Dwellers & Rebuild Trench',
+              badge: '🕳️ Tier 3: The Cellar Dwellers & Rebuild Trench',
+              style: 'text-rose-300 border-rose-500/40 bg-rose-500/10',
+              keys: ['SamBaugh', 'Tklumb86', 'JayZone13'],
+            },
+          ].map((tier) => {
+            const tierLines = lines.filter(l => tier.keys.includes(l.teamKey));
+            if (tierLines.length === 0) return null;
 
-              return (
-                <div
-                  key={lineItem.teamKey}
-                  className="glass-panel p-5 rounded-2xl border border-slate-800 flex flex-col justify-between space-y-4 hover:border-slate-700 transition"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <img
-                        src={f?.customLogoUrl || f?.avatar || 'https://sleepercdn.com/images/v2/icons/player_default.webp'}
-                        alt={lineItem.manager}
-                        className="w-11 h-11 rounded-xl border border-slate-700 object-cover"
-                      />
-                      <div>
-                        <div className="flex items-center space-x-1.5">
-                          <h3 className="font-bold text-sm text-white">{lineItem.teamName}</h3>
-                          <span className="text-[11px] text-slate-400">({lineItem.manager})</span>
-                        </div>
-                        <p className="text-[11px] text-slate-500 line-clamp-1">{lineItem.rationale}</p>
-                      </div>
-                    </div>
-
-                    {/* Win total line badge */}
-                    <div className="text-right">
-                      <span className="text-[10px] text-slate-500 uppercase font-black block">Line</span>
-                      <span className="font-mono font-black text-xl text-amber-400">{lineItem.line} Wins</span>
-                    </div>
-                  </div>
-
-                  {/* Pick Buttons */}
-                  <div className="grid grid-cols-2 gap-3 pt-2 border-t border-slate-800/80">
-                    <button
-                      type="button"
-                      onClick={() => handlePick(lineItem.teamKey, 'OVER')}
-                      className={`py-2.5 px-4 rounded-xl font-bold text-xs flex items-center justify-center space-x-1.5 transition ${
-                        currentPick === 'OVER'
-                          ? 'bg-emerald-500 text-black shadow-md font-black ring-2 ring-emerald-300'
-                          : 'bg-slate-900/80 hover:bg-slate-800 text-slate-300 border border-slate-800'
-                      }`}
-                    >
-                      <span>OVER {lineItem.line}</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handlePick(lineItem.teamKey, 'UNDER')}
-                      className={`py-2.5 px-4 rounded-xl font-bold text-xs flex items-center justify-center space-x-1.5 transition ${
-                        currentPick === 'UNDER'
-                          ? 'bg-rose-500 text-white shadow-md font-black ring-2 ring-rose-300'
-                          : 'bg-slate-900/80 hover:bg-slate-800 text-slate-300 border border-slate-800'
-                      }`}
-                    >
-                      <span>UNDER {lineItem.line}</span>
-                    </button>
-                  </div>
+            return (
+              <div key={tier.name} className="space-y-3">
+                <div className="flex items-center space-x-2 border-b border-slate-800 pb-2">
+                  <span className={`px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider border ${tier.style}`}>
+                    {tier.badge}
+                  </span>
                 </div>
-              );
-            })}
-          </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {tierLines.map((lineItem) => {
+                    const f = franchises[lineItem.teamKey];
+                    const currentPick = picks[lineItem.teamKey];
+
+                    return (
+                      <div
+                        key={lineItem.teamKey}
+                        className="glass-panel p-5 rounded-2xl border border-slate-800 flex flex-col justify-between space-y-4 hover:border-slate-700 transition"
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-3">
+                            <img
+                              src={f?.customLogoUrl || f?.avatar || 'https://sleepercdn.com/images/v2/icons/player_default.webp'}
+                              alt={lineItem.manager}
+                              onClick={() => setSelectedRosterKey(lineItem.teamKey)}
+                              className="w-11 h-11 rounded-xl border border-slate-700 object-cover cursor-pointer hover:border-cyan-400 transition"
+                            />
+                            <div>
+                              <div className="flex items-center space-x-1.5">
+                                <h3
+                                  onClick={() => setSelectedRosterKey(lineItem.teamKey)}
+                                  className="font-bold text-sm text-white hover:text-cyan-400 cursor-pointer transition flex items-center space-x-1"
+                                >
+                                  <span>{lineItem.teamName}</span>
+                                  <ExternalLink className="w-3 h-3 text-slate-500 inline opacity-70" />
+                                </h3>
+                                <span className="text-[11px] text-slate-400">({lineItem.manager})</span>
+                              </div>
+                              <p className="text-[11px] text-slate-500 line-clamp-1">{lineItem.rationale}</p>
+                              <button
+                                type="button"
+                                onClick={() => setSelectedRosterKey(lineItem.teamKey)}
+                                className="text-[10px] text-cyan-400 hover:text-cyan-300 font-bold flex items-center space-x-1 mt-1 transition"
+                              >
+                                <Users className="w-3 h-3" />
+                                <span>Scout Roster & Picks</span>
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* Win total line badge */}
+                          <div className="text-right">
+                            <span className="text-[10px] text-slate-500 uppercase font-black block">Line</span>
+                            <span className="font-mono font-black text-xl text-amber-400">
+                              {Number(lineItem.line).toFixed(1)} Wins
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Pick Buttons */}
+                        <div className="grid grid-cols-2 gap-3 pt-2 border-t border-slate-800/80">
+                          <button
+                            type="button"
+                            onClick={() => handlePick(lineItem.teamKey, 'OVER')}
+                            className={`py-2.5 px-4 rounded-xl font-bold text-xs flex items-center justify-center space-x-1.5 transition ${
+                              currentPick === 'OVER'
+                                ? 'bg-emerald-500 text-black shadow-md font-black ring-2 ring-emerald-300'
+                                : 'bg-slate-900/80 hover:bg-slate-800 text-slate-300 border border-slate-800'
+                            }`}
+                          >
+                            <span>OVER {Number(lineItem.line).toFixed(1)}</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handlePick(lineItem.teamKey, 'UNDER')}
+                            className={`py-2.5 px-4 rounded-xl font-bold text-xs flex items-center justify-center space-x-1.5 transition ${
+                              currentPick === 'UNDER'
+                                ? 'bg-rose-500 text-white shadow-md font-black ring-2 ring-rose-300'
+                                : 'bg-slate-900/80 hover:bg-slate-800 text-slate-300 border border-slate-800'
+                            }`}
+                          >
+                            <span>UNDER {Number(lineItem.line).toFixed(1)}</span>
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
 
           {/* Season Awards Ballot */}
           <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-slate-800 space-y-6">
@@ -358,26 +410,62 @@ export default function OverUnderHub({ franchises, lines, predictions, currentUs
 
           {/* Award Picks Summary */}
           <div className="pt-6 border-t border-slate-800 space-y-4">
-            <h3 className="text-sm font-bold uppercase text-slate-300">Championship & Sacko Forecasts</h3>
+            <h3 className="text-sm font-bold uppercase text-slate-300">DFL Award & Trophy Forecasts</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
               {Object.entries(predictions).map(([fKey, pred]) => {
-                if (!pred.awards?.champion && !pred.awards?.toiletBowl) return null;
+                if (!pred.awards?.champion && !pred.awards?.runnerUp && !pred.awards?.toiletBowl && !pred.awards?.pointsChamp && !pred.awards?.boldPrediction) return null;
                 const m = franchises[fKey];
                 return (
-                  <div key={fKey} className="p-3 bg-slate-900/60 rounded-xl border border-slate-800 text-xs space-y-1">
-                    <span className="font-bold text-white block">{m?.name} predicts:</span>
+                  <div key={fKey} className="forecast-card p-3.5 bg-slate-900/70 rounded-2xl border border-slate-800 text-xs space-y-2 hover:border-slate-700 transition shadow-sm">
+                    <div className="flex items-center space-x-2 pb-1.5 border-b border-slate-800/80">
+                      <img
+                        src={m?.customLogoUrl || m?.avatar || 'https://sleepercdn.com/images/v2/icons/player_default.webp'}
+                        alt=""
+                        className="w-5 h-5 rounded-full object-cover border border-slate-700"
+                      />
+                      <span className="font-bold text-white truncate forecast-title">{m?.name || fKey} predicts:</span>
+                    </div>
+
                     {pred.awards.champion && (
-                      <p className="text-amber-300 text-[11px]">
-                        🏆 Champ: <strong>{franchises[pred.awards.champion]?.name || pred.awards.champion}</strong>
+                      <p className="text-amber-300 text-[11px] flex items-center justify-between">
+                        <span className="text-slate-400">🏆 Champion:</span>
+                        <strong className="truncate max-w-[170px] text-right font-black">
+                          {franchises[pred.awards.champion]?.teamName || franchises[pred.awards.champion]?.name || pred.awards.champion}
+                        </strong>
                       </p>
                     )}
+
+                    {pred.awards.runnerUp && (
+                      <p className="text-slate-200 text-[11px] flex items-center justify-between">
+                        <span className="text-slate-400">🥈 Runner-Up:</span>
+                        <strong className="truncate max-w-[170px] text-right font-bold text-slate-200">
+                          {franchises[pred.awards.runnerUp]?.teamName || franchises[pred.awards.runnerUp]?.name || pred.awards.runnerUp}
+                        </strong>
+                      </p>
+                    )}
+
+                    {pred.awards.pointsChamp && (
+                      <p className="text-cyan-300 text-[11px] flex items-center justify-between">
+                        <span className="text-slate-400">⚡ Scoring Champ:</span>
+                        <strong className="truncate max-w-[170px] text-right font-bold text-cyan-300">
+                          {franchises[pred.awards.pointsChamp]?.teamName || franchises[pred.awards.pointsChamp]?.name || pred.awards.pointsChamp}
+                        </strong>
+                      </p>
+                    )}
+
                     {pred.awards.toiletBowl && (
-                      <p className="text-slate-400 text-[11px]">
-                        🚽 Sacko: <strong>{franchises[pred.awards.toiletBowl]?.name || pred.awards.toiletBowl}</strong>
+                      <p className="text-rose-400 text-[11px] flex items-center justify-between">
+                        <span className="text-slate-400">🚽 Sacko (Last):</span>
+                        <strong className="truncate max-w-[170px] text-right font-bold text-rose-300">
+                          {franchises[pred.awards.toiletBowl]?.teamName || franchises[pred.awards.toiletBowl]?.name || pred.awards.toiletBowl}
+                        </strong>
                       </p>
                     )}
+
                     {pred.awards.boldPrediction && (
-                      <p className="text-cyan-300 text-[11px] italic">"{pred.awards.boldPrediction}"</p>
+                      <p className="text-teal-300 text-[11px] italic pt-1 border-t border-slate-800/60">
+                        "{pred.awards.boldPrediction}"
+                      </p>
                     )}
                   </div>
                 );
@@ -385,6 +473,15 @@ export default function OverUnderHub({ franchises, lines, predictions, currentUs
             </div>
           </div>
         </div>
+      )}
+
+      {/* Roster & Draft Capital Modal */}
+      {selectedRosterKey && (
+        <RosterModal
+          franchiseKey={selectedRosterKey}
+          franchiseInfo={franchises[selectedRosterKey]}
+          onClose={() => setSelectedRosterKey(null)}
+        />
       )}
     </div>
   );

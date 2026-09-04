@@ -47,7 +47,8 @@ const FRANCHISE_INFO = {
     username: 'Rhymenoceros',
     teamName: "Scott's Totts",
     role: 'Commissioner',
-    bio: "DFL Commissioner and founder. Known for taking an eternity to draft due to haircuts ('The Barbershop Rule') and authoring Jake's emotional retirement eulogy.",
+    bio: "DFL Commissioner, League Architect, and Chief Trade Officer. Golden rule: 'Don't smoke and trade, kids.'",
+    slogan: "",
     mascot: 'War Rhinoceros',
     defaultPin: '1234',
     accentColor: '#38bdf8', // Cyan
@@ -55,9 +56,10 @@ const FRANCHISE_INFO = {
   PoppinChunkies: {
     name: 'Tyler',
     username: 'PoppinChunkies',
-    teamName: 'Poppinchunkies',
+    teamName: "Poppin' Chunkies",
     role: 'Manager',
-    bio: "The undisputed DFL powerhouse (44-12, 78% win rate). Won the historic undefeated 2023 championship, which rivals jokingly call a 'Mickey Mouse ring'.",
+    bio: "The undisputed DFL powerhouse (44-12, 78% win rate). Won the historic undefeated 2023 championship.",
+    slogan: "",
     mascot: 'Chunky Juggernaut',
     defaultPin: '1234',
     accentColor: '#fbbf24', // Amber
@@ -68,6 +70,7 @@ const FRANCHISE_INFO = {
     teamName: "Heisenberg's Hitmen",
     role: 'Manager',
     bio: "The reigning 2025 DFL Champion. Loud, proud, and frequently reminding everyone ('League champ btw') while demanding his official championship profile ribbon.",
+    slogan: "",
     mascot: 'Hazmat Heisenberg',
     defaultPin: '1234',
     accentColor: '#34d399', // Emerald
@@ -78,6 +81,7 @@ const FRANCHISE_INFO = {
     teamName: "Dude, Where's Lamar?",
     role: 'Manager',
     bio: "Perennial contender and top-tier trade shark. Traded for Amon-Ra St. Brown and orchestrated the Mahomes & Hurts mega-swap with Tony. Always lurking in the playoff mix.",
+    slogan: "",
     mascot: 'Gunslinger QB',
     defaultPin: '1234',
     accentColor: '#a78bfa', // Purple
@@ -88,6 +92,7 @@ const FRANCHISE_INFO = {
     teamName: 'Who Dey',
     role: 'Manager',
     bio: "Took over the franchise in 2026 from Jake (Takethecakejake), who he previously defeated in redraft. Renamed his entire QB room to '2027 picks' on the block.",
+    slogan: "",
     mascot: 'Cyber Wolf',
     defaultPin: '1234',
     accentColor: '#f97316', // Orange
@@ -97,7 +102,8 @@ const FRANCHISE_INFO = {
     username: 'LMcVicker',
     teamName: 'Laces Out, Ladies',
     role: 'Manager',
-    bio: "Carries on the franchise legacy of Tre (AsaltySwordsman), the beloved 2022 inaugural Champion. Fiery competitor, connoisseur of the 'SHAME' gif, and recently traded down from 1.06.",
+    bio: "Fiery competitor, connoisseur of the 'SHAME' gif, and unapologetic builder of her own dynasty empire. Sharp-witted, competitive, and forging this roster completely on her own terms.",
+    slogan: "",
     mascot: 'Valkyrie Blade',
     defaultPin: '1234',
     accentColor: '#ec4899', // Pink
@@ -107,7 +113,8 @@ const FRANCHISE_INFO = {
     username: 'doesntfleeze',
     teamName: 'Washed🫩',
     role: 'Manager',
-    bio: "Self-deprecating trade cynic who always claims his team is cursed and washed. Infamously traded away Keon Coleman for the 4.06.",
+    bio: "Self-deprecating trade cynic who always claims his team is cursed and washed, yet consistently orchestrates clever, opportunistic roster moves.",
+    slogan: "",
     mascot: 'Washed Laundry',
     defaultPin: '1234',
     accentColor: '#94a3b8', // Slate
@@ -118,6 +125,7 @@ const FRANCHISE_INFO = {
     teamName: "I don't Gibbs a Shough",
     role: 'Manager',
     bio: "Trade enthusiast and meme maestro. Famous for entering chat debates with 'wanna be where the people are' and reminding the commish about the legendary Bitcoin payout.",
+    slogan: "",
     mascot: 'Meme Maestro',
     defaultPin: '1234',
     accentColor: '#eab308', // Yellow
@@ -128,6 +136,7 @@ const FRANCHISE_INFO = {
     teamName: 'Ronin',
     role: 'Manager',
     bio: "The 2024 DFL Champion. Survived regular season turbulence to orchestrate one of the most incredible Cinderella playoff runs in league history.",
+    slogan: "",
     mascot: 'Shadow Ronin',
     defaultPin: '1234',
     accentColor: '#ef4444', // Red
@@ -137,7 +146,8 @@ const FRANCHISE_INFO = {
     username: 'DukeofWales',
     teamName: 'Hands for Jobs',
     role: 'Manager',
-    bio: "Basement dweller by record, king by vibes. Famous for escaping to the Philippines during key league drafts and executing the Keon Coleman heist for a 4.06.",
+    bio: "Basement dweller by record, king by vibes. Famous for escaping to the Philippines during key league drafts and always making wild, unexpected blockbuster moves.",
+    slogan: "",
     mascot: 'Island Wanderer',
     defaultPin: '1234',
     accentColor: '#06b6d4', // Sky blue
@@ -209,22 +219,106 @@ async function main() {
     // 2. Fetch Rosters
     const rosters = await fetchJson(`https://api.sleeper.app/v1/league/${season.leagueId}/rosters`);
     const rosterToFranchise = {};
+    const seasonRosterMap = {};
+
     rosters.forEach(r => {
+      const u = users.find(user => user.user_id === r.owner_id);
       const fKey = USER_TO_FRANCHISE[r.owner_id];
       if (fKey) {
         rosterToFranchise[r.roster_id] = fKey;
       }
+
+      // Check if it's Jake (Takethecakejake / Abusement Park) in seasons 2022-2025
+      if (r.owner_id === '76407602476892160') {
+        seasonRosterMap[r.roster_id] = {
+          franchiseKey: 'Tklumb86',
+          name: 'Jake',
+          teamName: 'Abusement Park',
+          avatar: 'https://sleepercdn.com/avatars/thumbs/74d5807529717f89b1f01770afe234e1',
+          legacyNote: 'Left league 2026 • Inherited by Tony',
+        };
+      } else if (r.owner_id === '736461309394210816') {
+        // Tre (AsaltySwordsman / Team Pupinsuds)
+        seasonRosterMap[r.roster_id] = {
+          franchiseKey: 'LMcVicker',
+          name: 'Tre',
+          teamName: 'Team Pupinsuds',
+          avatar: 'https://sleepercdn.com/avatars/thumbs/4157550a3069088cea220755577d8c42',
+          legacyNote: 'Inaugural Champion (RIP Tre) • Inherited by Lauren',
+        };
+      } else if (fKey) {
+        seasonRosterMap[r.roster_id] = {
+          franchiseKey: fKey,
+          name: franchiseStats[fKey].name,
+          teamName: (u?.metadata?.team_name) || franchiseStats[fKey].teamName,
+          avatar: (u?.avatar ? `https://sleepercdn.com/avatars/thumbs/${u.avatar}` : null) || franchiseStats[fKey].avatar,
+        };
+      }
     });
 
     // 3. Fetch Playoff Brackets
-    let winnersBracket = [];
-    let losersBracket = [];
+    let winnersBracketRaw = [];
+    let losersBracketRaw = [];
     try {
-      winnersBracket = await fetchJson(`https://api.sleeper.app/v1/league/${season.leagueId}/winners_bracket`);
-      losersBracket = await fetchJson(`https://api.sleeper.app/v1/league/${season.leagueId}/losers_bracket`);
+      winnersBracketRaw = await fetchJson(`https://api.sleeper.app/v1/league/${season.leagueId}/winners_bracket`);
+      losersBracketRaw = await fetchJson(`https://api.sleeper.app/v1/league/${season.leagueId}/losers_bracket`);
     } catch (e) {
       console.warn(`Bracket fetch notice for ${season.year}:`, e.message);
     }
+
+    // Enrich bracket matches with season-accurate Manager & Team Names!
+    const enrichBracket = (bracket) => {
+      if (!bracket || !Array.isArray(bracket)) return [];
+      return bracket.map(match => {
+        const t1Info = seasonRosterMap[match.t1];
+        const t2Info = seasonRosterMap[match.t2];
+        const wInfo = seasonRosterMap[match.w];
+
+        // Determine friendly match label
+        let matchLabel = `Round ${match.r}`;
+        if (match.p === 1) {
+          matchLabel = '🏆 Championship Game (1st Place)';
+        } else if (match.p === 3) {
+          matchLabel = '🥉 3rd Place Match';
+        } else if (match.p === 5) {
+          matchLabel = '5th Place Game';
+        } else if (match.r === 1) {
+          matchLabel = `Quarterfinal (Match ${match.m})`;
+        } else if (match.r === 2 && !match.p) {
+          matchLabel = `Semifinal (Match ${match.m})`;
+        }
+
+        return {
+          ...match,
+          matchLabel,
+          team1: {
+            rosterId: match.t1,
+            franchiseKey: t1Info?.franchiseKey || null,
+            name: t1Info?.name || (match.t1 ? `Roster #${match.t1}` : 'TBD'),
+            teamName: t1Info?.teamName || '',
+            avatar: t1Info?.avatar || null,
+            legacyNote: t1Info?.legacyNote || null,
+          },
+          team2: {
+            rosterId: match.t2,
+            franchiseKey: t2Info?.franchiseKey || null,
+            name: t2Info?.name || (match.t2 ? `Roster #${match.t2}` : 'TBD'),
+            teamName: t2Info?.teamName || '',
+            avatar: t2Info?.avatar || null,
+            legacyNote: t2Info?.legacyNote || null,
+          },
+          winner: {
+            rosterId: match.w,
+            franchiseKey: wInfo?.franchiseKey || null,
+            name: wInfo?.name || (match.w ? `Roster #${match.w}` : null),
+            teamName: wInfo?.teamName || '',
+          },
+        };
+      });
+    };
+
+    const winnersBracket = enrichBracket(winnersBracketRaw);
+    const losersBracket = enrichBracket(losersBracketRaw);
 
     // 4. Fetch Matchups (Weeks 1 to 17)
     for (let week = 1; week <= 17; week++) {
@@ -255,6 +349,27 @@ async function main() {
               if (pts2 > franchiseStats[f2].allTime.highScore) franchiseStats[f2].allTime.highScore = pts2;
               if (pts2 < franchiseStats[f2].allTime.lowScore && pts2 > 0) franchiseStats[f2].allTime.lowScore = pts2;
 
+              // Detect playoff stage if week 15-17
+              let stage = null;
+              if (week >= 15) {
+                const r1 = t1.roster_id;
+                const r2 = t2.roster_id;
+                const wb = winnersBracketRaw.find(m => (m.t1 === r1 && m.t2 === r2) || (m.t1 === r2 && m.t2 === r1));
+                if (wb) {
+                  if (wb.p === 1) stage = '🏆 Championship Game';
+                  else if (wb.p === 3) stage = '🥉 3rd Place Match';
+                  else if (wb.p === 5) stage = '5th Place Game';
+                  else if (wb.r === 2) stage = '⚔️ Semifinal';
+                  else if (wb.r === 1) stage = '🎯 Quarterfinal';
+                  else stage = 'Playoff Match';
+                } else {
+                  const lb = losersBracketRaw.find(m => (m.t1 === r1 && m.t2 === r2) || (m.t1 === r2 && m.t2 === r1));
+                  if (lb) {
+                    stage = lb.p === 1 ? 'Toilet Bowl Final' : 'Consolation Match';
+                  }
+                }
+              }
+
               const gameObj = {
                 year: season.year,
                 week,
@@ -264,6 +379,7 @@ async function main() {
                 pts2,
                 margin: Number(Math.abs(pts1 - pts2).toFixed(2)),
                 winner: pts1 > pts2 ? f1 : pts2 > pts1 ? f2 : 'TIE',
+                stage: stage || null,
               };
 
               allTimeGames.push(gameObj);
@@ -397,6 +513,7 @@ async function main() {
         team: "Heisenberg's Hitmen",
         tagline: 'Reigning Champ & Proud Ribbon Holder',
         record: '33-23 All-Time',
+        photoUrl: '/images/champions/2025-matt.jpg',
       },
       {
         year: '2024',
@@ -405,14 +522,16 @@ async function main() {
         team: 'Ronin',
         tagline: 'The Legendary Cinderella Underdog Title',
         record: '21-35 All-Time',
+        photoUrl: '/images/champions/2024-jason.jpeg',
       },
       {
         year: '2023',
         franchise: 'PoppinChunkies',
         owner: 'Tyler',
-        team: 'Poppinchunkies',
+        team: "Poppin' Chunkies",
         tagline: 'The Undefeated Powerhouse Run',
         record: '44-12 All-Time',
+        photoUrl: '/images/champions/2023-tyler.jpg',
       },
       {
         year: '2022',
@@ -421,6 +540,7 @@ async function main() {
         team: 'Team Pupinsuds',
         tagline: 'Inaugural Champion — In Loving Memory of Tre',
         record: 'Inaugural Title',
+        photoUrl: '/images/champions/2022-tre.jpeg',
       },
     ],
   };

@@ -1,0 +1,5238 @@
+{
+  "updatedAt": "2026-09-04T07:36:13.510Z",
+  "leagueId": "1326430815118163968",
+  "draftRounds": 4,
+  "rosterPositions": [
+    "QB",
+    "RB",
+    "RB",
+    "WR",
+    "WR",
+    "TE",
+    "FLEX",
+    "FLEX",
+    "FLEX",
+    "SUPER_FLEX",
+    "DL",
+    "LB",
+    "DB",
+    "BN",
+    "BN",
+    "BN",
+    "BN",
+    "BN",
+    "BN",
+    "BN",
+    "BN",
+    "BN",
+    "BN",
+    "BN",
+    "BN",
+    "BN",
+    "BN",
+    "BN",
+    "BN",
+    "BN",
+    "BN"
+  ],
+  "franchises": {
+    "Rhymenoceros": {
+      "franchiseKey": "Rhymenoceros",
+      "rosterId": 1,
+      "teamName": "Scott's Totts",
+      "starters": [
+        {
+          "slot": "QB",
+          "playerId": "7523",
+          "name": "Trevor Lawrence",
+          "position": "QB",
+          "nflTeam": "JAX",
+          "age": 26,
+          "number": 16,
+          "status": "Active",
+          "yearsExp": 5,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/7523.jpg"
+        },
+        {
+          "slot": "RB",
+          "playerId": "6790",
+          "name": "D'Andre Swift",
+          "position": "RB",
+          "nflTeam": "CHI",
+          "age": 27,
+          "number": 4,
+          "status": "Active",
+          "yearsExp": 6,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/6790.jpg"
+        },
+        {
+          "slot": "RB",
+          "playerId": "12490",
+          "name": "Bhayshul Tuten",
+          "position": "RB",
+          "nflTeam": "JAX",
+          "age": 23,
+          "number": 33,
+          "status": "Active",
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12490.jpg"
+        },
+        {
+          "slot": "WR",
+          "playerId": "7564",
+          "name": "Ja'Marr Chase",
+          "position": "WR",
+          "nflTeam": "CIN",
+          "age": 26,
+          "number": 1,
+          "status": "Active",
+          "yearsExp": 5,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/7564.jpg"
+        },
+        {
+          "slot": "WR",
+          "playerId": "5859",
+          "name": "A.J. Brown",
+          "position": "WR",
+          "nflTeam": "NE",
+          "age": 29,
+          "number": 1,
+          "status": "Active",
+          "yearsExp": 7,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/5859.jpg"
+        },
+        {
+          "slot": "TE",
+          "playerId": "12506",
+          "name": "Harold Fannin",
+          "position": "TE",
+          "nflTeam": "CLE",
+          "age": 22,
+          "number": 44,
+          "status": "Active",
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12506.jpg"
+        },
+        {
+          "slot": "FLEX",
+          "playerId": "12526",
+          "name": "Tetairoa McMillan",
+          "position": "WR",
+          "nflTeam": "CAR",
+          "age": 23,
+          "number": 4,
+          "status": "Active",
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12526.jpg"
+        },
+        {
+          "slot": "FLEX",
+          "playerId": "12514",
+          "name": "Emeka Egbuka",
+          "position": "WR",
+          "nflTeam": "TB",
+          "age": 23,
+          "number": 2,
+          "status": "Active",
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12514.jpg"
+        },
+        {
+          "slot": "FLEX",
+          "playerId": "11628",
+          "name": "Marvin Harrison",
+          "position": "WR",
+          "nflTeam": "ARI",
+          "age": 24,
+          "number": 18,
+          "status": "Active",
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11628.jpg"
+        },
+        {
+          "slot": "SUPER_FLEX",
+          "playerId": "5849",
+          "name": "Kyler Murray",
+          "position": "QB",
+          "nflTeam": "MIN",
+          "age": 29,
+          "number": 1,
+          "status": "Active",
+          "yearsExp": 7,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/5849.jpg"
+        },
+        {
+          "slot": "DL",
+          "playerId": "5840",
+          "name": "Josh Hines-Allen",
+          "position": "DE",
+          "nflTeam": "JAX",
+          "age": 29,
+          "number": 41,
+          "status": "Active",
+          "yearsExp": 7,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/5840.jpg"
+        },
+        {
+          "slot": "LB",
+          "playerId": "11687",
+          "name": "Edgerrin Cooper",
+          "position": "LB",
+          "nflTeam": "GB",
+          "age": 24,
+          "number": 56,
+          "status": "Active",
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11687.jpg"
+        },
+        {
+          "slot": "DB",
+          "playerId": "0",
+          "name": "Empty Slot",
+          "position": "DB",
+          "nflTeam": "FA",
+          "age": null,
+          "number": null,
+          "status": "Active",
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/0.jpg"
+        }
+      ],
+      "bench": [
+        {
+          "playerId": "7527",
+          "name": "Mac Jones",
+          "position": "QB",
+          "nflTeam": "SF",
+          "age": 27,
+          "number": 10,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 5,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/7527.jpg"
+        },
+        {
+          "playerId": "11562",
+          "name": "Spencer Rattler",
+          "position": "QB",
+          "nflTeam": "NO",
+          "age": 25,
+          "number": 2,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11562.jpg"
+        },
+        {
+          "playerId": "2306",
+          "name": "Jameis Winston",
+          "position": "QB",
+          "nflTeam": "NYG",
+          "age": 32,
+          "number": 19,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 11,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/2306.jpg"
+        },
+        {
+          "playerId": "2028",
+          "name": "Derek Carr",
+          "position": "QB",
+          "nflTeam": "FA",
+          "age": 34,
+          "number": 4,
+          "status": "IR",
+          "isIR": true,
+          "yearsExp": 11,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/2028.jpg"
+        },
+        {
+          "playerId": "1166",
+          "name": "Kirk Cousins",
+          "position": "QB",
+          "nflTeam": "LV",
+          "age": 38,
+          "number": 8,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 14,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/1166.jpg"
+        },
+        {
+          "playerId": "10235",
+          "name": "Roschon Johnson",
+          "position": "RB",
+          "nflTeam": "CHI",
+          "age": 25,
+          "number": 23,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/10235.jpg"
+        },
+        {
+          "playerId": "12467",
+          "name": "Jordan James",
+          "position": "RB",
+          "nflTeam": "SF",
+          "age": 22,
+          "number": 29,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12467.jpg"
+        },
+        {
+          "playerId": "13348",
+          "name": "J'Mari Taylor",
+          "position": "RB",
+          "nflTeam": "JAX",
+          "age": 24,
+          "number": 30,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13348.jpg"
+        },
+        {
+          "playerId": "5967",
+          "name": "Tony Pollard",
+          "position": "RB",
+          "nflTeam": "TEN",
+          "age": 29,
+          "number": 20,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 7,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/5967.jpg"
+        },
+        {
+          "playerId": "5045",
+          "name": "Courtland Sutton",
+          "position": "WR",
+          "nflTeam": "DEN",
+          "age": 30,
+          "number": 14,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 8,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/5045.jpg"
+        },
+        {
+          "playerId": "11625",
+          "name": "Adonai Mitchell",
+          "position": "WR",
+          "nflTeam": "NYJ",
+          "age": 23,
+          "number": 15,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11625.jpg"
+        },
+        {
+          "playerId": "8121",
+          "name": "Romeo Doubs",
+          "position": "WR",
+          "nflTeam": "NE",
+          "age": 26,
+          "number": 87,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8121.jpg"
+        },
+        {
+          "playerId": "12536",
+          "name": "Jaylin Noel",
+          "position": "WR",
+          "nflTeam": "HOU",
+          "age": 23,
+          "number": 13,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12536.jpg"
+        },
+        {
+          "playerId": "12482",
+          "name": "Savion Williams",
+          "position": "WR",
+          "nflTeam": "GB",
+          "age": 24,
+          "number": 83,
+          "status": "IR",
+          "isIR": true,
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12482.jpg"
+        },
+        {
+          "playerId": "8210",
+          "name": "Chig Okonkwo",
+          "position": "TE",
+          "nflTeam": "WAS",
+          "age": 26,
+          "number": 85,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8210.jpg"
+        },
+        {
+          "playerId": "4217",
+          "name": "George Kittle",
+          "position": "TE",
+          "nflTeam": "SF",
+          "age": 32,
+          "number": 85,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 9,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/4217.jpg"
+        },
+        {
+          "playerId": "9480",
+          "name": "Brenton Strange",
+          "position": "TE",
+          "nflTeam": "JAX",
+          "age": 25,
+          "number": 85,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/9480.jpg"
+        },
+        {
+          "playerId": "10880",
+          "name": "Jack Campbell",
+          "position": "LB",
+          "nflTeam": "DET",
+          "age": 26,
+          "number": 46,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/10880.jpg"
+        },
+        {
+          "playerId": "8267",
+          "name": "Nakobe Dean",
+          "position": "LB",
+          "nflTeam": "LV",
+          "age": 25,
+          "number": 17,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8267.jpg"
+        },
+        {
+          "playerId": "13377",
+          "name": "Arvell Reese",
+          "position": "LB",
+          "nflTeam": "NYG",
+          "age": 21,
+          "number": 52,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13377.jpg"
+        },
+        {
+          "playerId": "10949",
+          "name": "Chamarri Conner",
+          "position": "DB",
+          "nflTeam": "KC",
+          "age": 26,
+          "number": 27,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/10949.jpg"
+        }
+      ],
+      "taxi": [
+        {
+          "playerId": "12521",
+          "name": "Elijah Arroyo",
+          "position": "TE",
+          "nflTeam": "SEA",
+          "age": 23,
+          "number": 18,
+          "status": "Active",
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12521.jpg"
+        },
+        {
+          "playerId": "13289",
+          "name": "Drew Allar",
+          "position": "QB",
+          "nflTeam": "PIT",
+          "age": 22,
+          "number": 16,
+          "status": "Active",
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13289.jpg"
+        },
+        {
+          "playerId": "13533",
+          "name": "Barion Brown",
+          "position": "WR",
+          "nflTeam": "NO",
+          "age": 22,
+          "number": 19,
+          "status": "Active",
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13533.jpg"
+        }
+      ],
+      "draftPicks": [
+        {
+          "season": "2027",
+          "round": 1,
+          "originalRosterId": 1,
+          "originalFranchiseKey": "Rhymenoceros",
+          "originalTeamName": "Scott's Totts"
+        },
+        {
+          "season": "2027",
+          "round": 1,
+          "originalRosterId": 3,
+          "originalFranchiseKey": "LMcVicker",
+          "originalTeamName": "Laces Out, Ladies"
+        },
+        {
+          "season": "2027",
+          "round": 2,
+          "originalRosterId": 3,
+          "originalFranchiseKey": "LMcVicker",
+          "originalTeamName": "Laces Out, Ladies"
+        },
+        {
+          "season": "2027",
+          "round": 2,
+          "originalRosterId": 5,
+          "originalFranchiseKey": "MaffuJames",
+          "originalTeamName": "I don't Gibbs a Shough"
+        },
+        {
+          "season": "2028",
+          "round": 2,
+          "originalRosterId": 1,
+          "originalFranchiseKey": "Rhymenoceros",
+          "originalTeamName": "Scott's Totts"
+        },
+        {
+          "season": "2028",
+          "round": 2,
+          "originalRosterId": 3,
+          "originalFranchiseKey": "LMcVicker",
+          "originalTeamName": "Laces Out, Ladies"
+        },
+        {
+          "season": "2028",
+          "round": 4,
+          "originalRosterId": 1,
+          "originalFranchiseKey": "Rhymenoceros",
+          "originalTeamName": "Scott's Totts"
+        },
+        {
+          "season": "2029",
+          "round": 1,
+          "originalRosterId": 1,
+          "originalFranchiseKey": "Rhymenoceros",
+          "originalTeamName": "Scott's Totts"
+        },
+        {
+          "season": "2029",
+          "round": 2,
+          "originalRosterId": 1,
+          "originalFranchiseKey": "Rhymenoceros",
+          "originalTeamName": "Scott's Totts"
+        },
+        {
+          "season": "2029",
+          "round": 3,
+          "originalRosterId": 1,
+          "originalFranchiseKey": "Rhymenoceros",
+          "originalTeamName": "Scott's Totts"
+        },
+        {
+          "season": "2029",
+          "round": 4,
+          "originalRosterId": 1,
+          "originalFranchiseKey": "Rhymenoceros",
+          "originalTeamName": "Scott's Totts"
+        }
+      ],
+      "totalPlayers": 36
+    },
+    "PoppinChunkies": {
+      "franchiseKey": "PoppinChunkies",
+      "rosterId": 2,
+      "teamName": "Poppin' Chunkies",
+      "starters": [
+        {
+          "slot": "QB",
+          "playerId": "6797",
+          "name": "Justin Herbert",
+          "position": "QB",
+          "nflTeam": "LAC",
+          "age": 28,
+          "number": 10,
+          "status": "Active",
+          "yearsExp": 6,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/6797.jpg"
+        },
+        {
+          "slot": "RB",
+          "playerId": "8138",
+          "name": "James Cook",
+          "position": "RB",
+          "nflTeam": "BUF",
+          "age": 26,
+          "number": 4,
+          "status": "Active",
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8138.jpg"
+        },
+        {
+          "slot": "RB",
+          "playerId": "8155",
+          "name": "Breece Hall",
+          "position": "RB",
+          "nflTeam": "NYJ",
+          "age": 25,
+          "number": 20,
+          "status": "Active",
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8155.jpg"
+        },
+        {
+          "slot": "WR",
+          "playerId": "9488",
+          "name": "Jaxon Smith-Njigba",
+          "position": "WR",
+          "nflTeam": "SEA",
+          "age": 24,
+          "number": 11,
+          "status": "Active",
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/9488.jpg"
+        },
+        {
+          "slot": "WR",
+          "playerId": "6786",
+          "name": "CeeDee Lamb",
+          "position": "WR",
+          "nflTeam": "DAL",
+          "age": 27,
+          "number": 88,
+          "status": "Active",
+          "yearsExp": 6,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/6786.jpg"
+        },
+        {
+          "slot": "TE",
+          "playerId": "8130",
+          "name": "Trey McBride",
+          "position": "TE",
+          "nflTeam": "ARI",
+          "age": 26,
+          "number": 85,
+          "status": "Active",
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8130.jpg"
+        },
+        {
+          "slot": "FLEX",
+          "playerId": "7567",
+          "name": "Kenny Gainwell",
+          "position": "RB",
+          "nflTeam": "TB",
+          "age": 27,
+          "number": 1,
+          "status": "Active",
+          "yearsExp": 5,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/7567.jpg"
+        },
+        {
+          "slot": "FLEX",
+          "playerId": "7021",
+          "name": "Rico Dowdle",
+          "position": "RB",
+          "nflTeam": "PIT",
+          "age": 28,
+          "number": 13,
+          "status": "Active",
+          "yearsExp": 6,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/7021.jpg"
+        },
+        {
+          "slot": "FLEX",
+          "playerId": "9754",
+          "name": "Quentin Johnston",
+          "position": "WR",
+          "nflTeam": "LAC",
+          "age": 24,
+          "number": 1,
+          "status": "Active",
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/9754.jpg"
+        },
+        {
+          "slot": "SUPER_FLEX",
+          "playerId": "3294",
+          "name": "Dak Prescott",
+          "position": "QB",
+          "nflTeam": "DAL",
+          "age": 33,
+          "number": 4,
+          "status": "Active",
+          "yearsExp": 10,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/3294.jpg"
+        },
+        {
+          "slot": "DL",
+          "playerId": "4070",
+          "name": "T.J. Watt",
+          "position": "LB",
+          "nflTeam": "PIT",
+          "age": 31,
+          "number": 90,
+          "status": "Active",
+          "yearsExp": 9,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/4070.jpg"
+        },
+        {
+          "slot": "LB",
+          "playerId": "6815",
+          "name": "Zack Baun",
+          "position": "LB",
+          "nflTeam": "PHI",
+          "age": 29,
+          "number": 53,
+          "status": "Active",
+          "yearsExp": 6,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/6815.jpg"
+        },
+        {
+          "slot": "DB",
+          "playerId": "7669",
+          "name": "Paulson Adebo",
+          "position": "CB",
+          "nflTeam": "NYG",
+          "age": 27,
+          "number": 21,
+          "status": "Active",
+          "yearsExp": 5,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/7669.jpg"
+        }
+      ],
+      "bench": [
+        {
+          "playerId": "8160",
+          "name": "Kenny Pickett",
+          "position": "QB",
+          "nflTeam": "CAR",
+          "age": 28,
+          "number": 12,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8160.jpg"
+        },
+        {
+          "playerId": "13272",
+          "name": "Carson Beck",
+          "position": "QB",
+          "nflTeam": "ARI",
+          "age": 23,
+          "number": 19,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13272.jpg"
+        },
+        {
+          "playerId": "12524",
+          "name": "Shedeur Sanders",
+          "position": "QB",
+          "nflTeam": "CLE",
+          "age": 24,
+          "number": 2,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12524.jpg"
+        },
+        {
+          "playerId": "1373",
+          "name": "Geno Smith",
+          "position": "QB",
+          "nflTeam": "NYJ",
+          "age": 35,
+          "number": 7,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 13,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/1373.jpg"
+        },
+        {
+          "playerId": "5850",
+          "name": "Josh Jacobs",
+          "position": "RB",
+          "nflTeam": "GB",
+          "age": 28,
+          "number": 8,
+          "status": "IR",
+          "isIR": true,
+          "yearsExp": 7,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/5850.jpg"
+        },
+        {
+          "playerId": "8800",
+          "name": "Malik Davis",
+          "position": "RB",
+          "nflTeam": "DAL",
+          "age": 27,
+          "number": 20,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8800.jpg"
+        },
+        {
+          "playerId": "4219",
+          "name": "Jeremy McNichols",
+          "position": "RB",
+          "nflTeam": "WAS",
+          "age": 30,
+          "number": 26,
+          "status": "Inactive",
+          "isIR": false,
+          "yearsExp": 9,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/4219.jpg"
+        },
+        {
+          "playerId": "8154",
+          "name": "Brian Robinson",
+          "position": "RB",
+          "nflTeam": "ATL",
+          "age": 27,
+          "number": 15,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8154.jpg"
+        },
+        {
+          "playerId": "9502",
+          "name": "Tank Dell",
+          "position": "WR",
+          "nflTeam": "HOU",
+          "age": 26,
+          "number": 1,
+          "status": "Inactive",
+          "isIR": false,
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/9502.jpg"
+        },
+        {
+          "playerId": "11637",
+          "name": "Keon Coleman",
+          "position": "WR",
+          "nflTeam": "BUF",
+          "age": 23,
+          "number": null,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11637.jpg"
+        },
+        {
+          "playerId": "8676",
+          "name": "Rashid Shaheed",
+          "position": "WR",
+          "nflTeam": "SEA",
+          "age": 28,
+          "number": 22,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8676.jpg"
+        },
+        {
+          "playerId": "13353",
+          "name": "Chris Brazzell",
+          "position": "WR",
+          "nflTeam": "CAR",
+          "age": 22,
+          "number": 19,
+          "status": "IR",
+          "isIR": true,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13353.jpg"
+        },
+        {
+          "playerId": "11630",
+          "name": "Roman Wilson",
+          "position": "WR",
+          "nflTeam": "PIT",
+          "age": 25,
+          "number": 14,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11630.jpg"
+        },
+        {
+          "playerId": "6783",
+          "name": "Jerry Jeudy",
+          "position": "WR",
+          "nflTeam": "CLE",
+          "age": 27,
+          "number": 3,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 6,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/6783.jpg"
+        },
+        {
+          "playerId": "11603",
+          "name": "AJ Barner",
+          "position": "TE",
+          "nflTeam": "SEA",
+          "age": 24,
+          "number": 88,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11603.jpg"
+        },
+        {
+          "playerId": "6826",
+          "name": "Cole Kmet",
+          "position": "TE",
+          "nflTeam": "CHI",
+          "age": 27,
+          "number": 85,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 6,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/6826.jpg"
+        },
+        {
+          "playerId": "11597",
+          "name": "Theo Johnson",
+          "position": "TE",
+          "nflTeam": "NYG",
+          "age": 25,
+          "number": 84,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11597.jpg"
+        },
+        {
+          "playerId": "7113",
+          "name": "Alex Highsmith",
+          "position": "LB",
+          "nflTeam": "PIT",
+          "age": 29,
+          "number": 56,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 6,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/7113.jpg"
+        }
+      ],
+      "taxi": [
+        {
+          "playerId": "11629",
+          "name": "Devontez Walker",
+          "position": "WR",
+          "nflTeam": "BAL",
+          "age": 25,
+          "number": 81,
+          "status": "Active",
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11629.jpg"
+        },
+        {
+          "playerId": "12486",
+          "name": "Dillon Gabriel",
+          "position": "QB",
+          "nflTeam": "CLE",
+          "age": 25,
+          "number": 6,
+          "status": "Inactive",
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12486.jpg"
+        },
+        {
+          "playerId": "12670",
+          "name": "KeAndre Lambert-Smith",
+          "position": "WR",
+          "nflTeam": "LAC",
+          "age": 24,
+          "number": 84,
+          "status": "Active",
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12670.jpg"
+        }
+      ],
+      "draftPicks": [
+        {
+          "season": "2027",
+          "round": 4,
+          "originalRosterId": 2,
+          "originalFranchiseKey": "PoppinChunkies",
+          "originalTeamName": "Poppin' Chunkies"
+        },
+        {
+          "season": "2028",
+          "round": 2,
+          "originalRosterId": 2,
+          "originalFranchiseKey": "PoppinChunkies",
+          "originalTeamName": "Poppin' Chunkies"
+        },
+        {
+          "season": "2028",
+          "round": 3,
+          "originalRosterId": 2,
+          "originalFranchiseKey": "PoppinChunkies",
+          "originalTeamName": "Poppin' Chunkies"
+        },
+        {
+          "season": "2028",
+          "round": 4,
+          "originalRosterId": 2,
+          "originalFranchiseKey": "PoppinChunkies",
+          "originalTeamName": "Poppin' Chunkies"
+        },
+        {
+          "season": "2028",
+          "round": 4,
+          "originalRosterId": 10,
+          "originalFranchiseKey": "JayZone13",
+          "originalTeamName": "Ronin"
+        },
+        {
+          "season": "2029",
+          "round": 1,
+          "originalRosterId": 2,
+          "originalFranchiseKey": "PoppinChunkies",
+          "originalTeamName": "Poppin' Chunkies"
+        },
+        {
+          "season": "2029",
+          "round": 2,
+          "originalRosterId": 2,
+          "originalFranchiseKey": "PoppinChunkies",
+          "originalTeamName": "Poppin' Chunkies"
+        },
+        {
+          "season": "2029",
+          "round": 3,
+          "originalRosterId": 2,
+          "originalFranchiseKey": "PoppinChunkies",
+          "originalTeamName": "Poppin' Chunkies"
+        },
+        {
+          "season": "2029",
+          "round": 4,
+          "originalRosterId": 2,
+          "originalFranchiseKey": "PoppinChunkies",
+          "originalTeamName": "Poppin' Chunkies"
+        }
+      ],
+      "totalPlayers": 34
+    },
+    "LMcVicker": {
+      "franchiseKey": "LMcVicker",
+      "rosterId": 3,
+      "teamName": "Laces Out, Ladies",
+      "starters": [
+        {
+          "slot": "QB",
+          "playerId": "12508",
+          "name": "Jaxson Dart",
+          "position": "QB",
+          "nflTeam": "NYG",
+          "age": 23,
+          "number": 6,
+          "status": "Active",
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12508.jpg"
+        },
+        {
+          "slot": "RB",
+          "playerId": "4034",
+          "name": "Christian McCaffrey",
+          "position": "RB",
+          "nflTeam": "SF",
+          "age": 30,
+          "number": 23,
+          "status": "Active",
+          "yearsExp": 9,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/4034.jpg"
+        },
+        {
+          "slot": "RB",
+          "playerId": "9509",
+          "name": "Bijan Robinson",
+          "position": "RB",
+          "nflTeam": "ATL",
+          "age": 24,
+          "number": 7,
+          "status": "Active",
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/9509.jpg"
+        },
+        {
+          "slot": "WR",
+          "playerId": "7526",
+          "name": "Jaylen Waddle",
+          "position": "WR",
+          "nflTeam": "DEN",
+          "age": 27,
+          "number": 17,
+          "status": "Active",
+          "yearsExp": 5,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/7526.jpg"
+        },
+        {
+          "slot": "WR",
+          "playerId": "8148",
+          "name": "Jameson Williams",
+          "position": "WR",
+          "nflTeam": "DET",
+          "age": 25,
+          "number": 1,
+          "status": "Active",
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8148.jpg"
+        },
+        {
+          "slot": "TE",
+          "playerId": "12517",
+          "name": "Colston Loveland",
+          "position": "TE",
+          "nflTeam": "CHI",
+          "age": 22,
+          "number": 84,
+          "status": "Active",
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12517.jpg"
+        },
+        {
+          "slot": "FLEX",
+          "playerId": "7594",
+          "name": "Chuba Hubbard",
+          "position": "RB",
+          "nflTeam": "CAR",
+          "age": 27,
+          "number": 30,
+          "status": "Active",
+          "yearsExp": 5,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/7594.jpg"
+        },
+        {
+          "slot": "FLEX",
+          "playerId": "12512",
+          "name": "Quinshon Judkins",
+          "position": "RB",
+          "nflTeam": "CLE",
+          "age": 22,
+          "number": 10,
+          "status": "Active",
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12512.jpg"
+        },
+        {
+          "slot": "FLEX",
+          "playerId": "8167",
+          "name": "Christian Watson",
+          "position": "WR",
+          "nflTeam": "GB",
+          "age": 27,
+          "number": 9,
+          "status": "Active",
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8167.jpg"
+        },
+        {
+          "slot": "SUPER_FLEX",
+          "playerId": "421",
+          "name": "Matthew Stafford",
+          "position": "QB",
+          "nflTeam": "LAR",
+          "age": 38,
+          "number": 9,
+          "status": "Active",
+          "yearsExp": 17,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/421.jpg"
+        },
+        {
+          "slot": "DL",
+          "playerId": "10898",
+          "name": "Tuli Tuipulotu",
+          "position": "DL",
+          "nflTeam": "LAC",
+          "age": 24,
+          "number": 45,
+          "status": "Active",
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/10898.jpg"
+        },
+        {
+          "slot": "LB",
+          "playerId": "7841",
+          "name": "Jamien Sherwood",
+          "position": "LB",
+          "nflTeam": "NYJ",
+          "age": 26,
+          "number": 44,
+          "status": "Active",
+          "yearsExp": 5,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/7841.jpg"
+        },
+        {
+          "slot": "DB",
+          "playerId": "7811",
+          "name": "Talanoa Hufanga",
+          "position": "DB",
+          "nflTeam": "DEN",
+          "age": 26,
+          "number": 9,
+          "status": "Active",
+          "yearsExp": 5,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/7811.jpg"
+        }
+      ],
+      "bench": [
+        {
+          "playerId": "12522",
+          "name": "Cam Ward",
+          "position": "QB",
+          "nflTeam": "TEN",
+          "age": 24,
+          "number": 1,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12522.jpg"
+        },
+        {
+          "playerId": "6768",
+          "name": "Tua Tagovailoa",
+          "position": "QB",
+          "nflTeam": "ATL",
+          "age": 28,
+          "number": 1,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 6,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/6768.jpg"
+        },
+        {
+          "playerId": "13288",
+          "name": "Nicholas Singleton",
+          "position": "RB",
+          "nflTeam": "TEN",
+          "age": 22,
+          "number": 32,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13288.jpg"
+        },
+        {
+          "playerId": "8132",
+          "name": "Tyler Allgeier",
+          "position": "RB",
+          "nflTeam": "ARI",
+          "age": 26,
+          "number": 22,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8132.jpg"
+        },
+        {
+          "playerId": "11586",
+          "name": "Blake Corum",
+          "position": "RB",
+          "nflTeam": "LAR",
+          "age": 25,
+          "number": 24,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11586.jpg"
+        },
+        {
+          "playerId": "9756",
+          "name": "Jordan Addison",
+          "position": "WR",
+          "nflTeam": "MIN",
+          "age": 24,
+          "number": 3,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/9756.jpg"
+        },
+        {
+          "playerId": "13329",
+          "name": "Malik Benson",
+          "position": "WR",
+          "nflTeam": "LV",
+          "age": 23,
+          "number": 19,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13329.jpg"
+        },
+        {
+          "playerId": "8126",
+          "name": "Wan'Dale Robinson",
+          "position": "WR",
+          "nflTeam": "TEN",
+          "age": 25,
+          "number": 4,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8126.jpg"
+        },
+        {
+          "playerId": "8142",
+          "name": "Alec Pierce",
+          "position": "WR",
+          "nflTeam": "IND",
+          "age": 26,
+          "number": 14,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8142.jpg"
+        },
+        {
+          "playerId": "10213",
+          "name": "Tre Tucker",
+          "position": "WR",
+          "nflTeam": "LV",
+          "age": 25,
+          "number": 1,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/10213.jpg"
+        },
+        {
+          "playerId": "12509",
+          "name": "Tre' Harris",
+          "position": "WR",
+          "nflTeam": "LAC",
+          "age": 24,
+          "number": 9,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12509.jpg"
+        },
+        {
+          "playerId": "8134",
+          "name": "Khalil Shakir",
+          "position": "WR",
+          "nflTeam": "BUF",
+          "age": 26,
+          "number": 10,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8134.jpg"
+        },
+        {
+          "playerId": "12502",
+          "name": "Gunnar Helm",
+          "position": "TE",
+          "nflTeam": "TEN",
+          "age": 23,
+          "number": 84,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12502.jpg"
+        },
+        {
+          "playerId": "9484",
+          "name": "Tucker Kraft",
+          "position": "TE",
+          "nflTeam": "GB",
+          "age": 25,
+          "number": 85,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/9484.jpg"
+        },
+        {
+          "playerId": "13340",
+          "name": "Rueben Bain",
+          "position": "DL",
+          "nflTeam": "TB",
+          "age": 21,
+          "number": 3,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13340.jpg"
+        },
+        {
+          "playerId": "6315",
+          "name": "Tyrel Dodson",
+          "position": "LB",
+          "nflTeam": "CAR",
+          "age": 28,
+          "number": 25,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 7,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/6315.jpg"
+        },
+        {
+          "playerId": "8359",
+          "name": "Marcus Jones",
+          "position": "DB",
+          "nflTeam": "NE",
+          "age": 27,
+          "number": 25,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8359.jpg"
+        },
+        {
+          "playerId": "6124",
+          "name": "Montez Sweat",
+          "position": "DE",
+          "nflTeam": "CHI",
+          "age": 29,
+          "number": 98,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 7,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/6124.jpg"
+        }
+      ],
+      "taxi": [
+        {
+          "playerId": "13303",
+          "name": "Cade Klubnik",
+          "position": "QB",
+          "nflTeam": "NYJ",
+          "age": 22,
+          "number": 10,
+          "status": "Active",
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13303.jpg"
+        },
+        {
+          "playerId": "13337",
+          "name": "Emmett Johnson",
+          "position": "RB",
+          "nflTeam": "KC",
+          "age": 22,
+          "number": 10,
+          "status": "Active",
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13337.jpg"
+        },
+        {
+          "playerId": "13404",
+          "name": "Garrett Nussmeier",
+          "position": "QB",
+          "nflTeam": "KC",
+          "age": 24,
+          "number": 14,
+          "status": "Active",
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13404.jpg"
+        }
+      ],
+      "draftPicks": [
+        {
+          "season": "2027",
+          "round": 2,
+          "originalRosterId": 2,
+          "originalFranchiseKey": "PoppinChunkies",
+          "originalTeamName": "Poppin' Chunkies"
+        },
+        {
+          "season": "2027",
+          "round": 3,
+          "originalRosterId": 3,
+          "originalFranchiseKey": "LMcVicker",
+          "originalTeamName": "Laces Out, Ladies"
+        },
+        {
+          "season": "2027",
+          "round": 3,
+          "originalRosterId": 1,
+          "originalFranchiseKey": "Rhymenoceros",
+          "originalTeamName": "Scott's Totts"
+        },
+        {
+          "season": "2027",
+          "round": 3,
+          "originalRosterId": 2,
+          "originalFranchiseKey": "PoppinChunkies",
+          "originalTeamName": "Poppin' Chunkies"
+        },
+        {
+          "season": "2027",
+          "round": 4,
+          "originalRosterId": 3,
+          "originalFranchiseKey": "LMcVicker",
+          "originalTeamName": "Laces Out, Ladies"
+        },
+        {
+          "season": "2027",
+          "round": 4,
+          "originalRosterId": 1,
+          "originalFranchiseKey": "Rhymenoceros",
+          "originalTeamName": "Scott's Totts"
+        },
+        {
+          "season": "2027",
+          "round": 4,
+          "originalRosterId": 10,
+          "originalFranchiseKey": "JayZone13",
+          "originalTeamName": "Ronin"
+        },
+        {
+          "season": "2028",
+          "round": 1,
+          "originalRosterId": 3,
+          "originalFranchiseKey": "LMcVicker",
+          "originalTeamName": "Laces Out, Ladies"
+        },
+        {
+          "season": "2028",
+          "round": 1,
+          "originalRosterId": 1,
+          "originalFranchiseKey": "Rhymenoceros",
+          "originalTeamName": "Scott's Totts"
+        },
+        {
+          "season": "2028",
+          "round": 3,
+          "originalRosterId": 3,
+          "originalFranchiseKey": "LMcVicker",
+          "originalTeamName": "Laces Out, Ladies"
+        },
+        {
+          "season": "2028",
+          "round": 3,
+          "originalRosterId": 1,
+          "originalFranchiseKey": "Rhymenoceros",
+          "originalTeamName": "Scott's Totts"
+        },
+        {
+          "season": "2028",
+          "round": 4,
+          "originalRosterId": 3,
+          "originalFranchiseKey": "LMcVicker",
+          "originalTeamName": "Laces Out, Ladies"
+        },
+        {
+          "season": "2029",
+          "round": 1,
+          "originalRosterId": 3,
+          "originalFranchiseKey": "LMcVicker",
+          "originalTeamName": "Laces Out, Ladies"
+        },
+        {
+          "season": "2029",
+          "round": 2,
+          "originalRosterId": 3,
+          "originalFranchiseKey": "LMcVicker",
+          "originalTeamName": "Laces Out, Ladies"
+        },
+        {
+          "season": "2029",
+          "round": 3,
+          "originalRosterId": 3,
+          "originalFranchiseKey": "LMcVicker",
+          "originalTeamName": "Laces Out, Ladies"
+        },
+        {
+          "season": "2029",
+          "round": 4,
+          "originalRosterId": 3,
+          "originalFranchiseKey": "LMcVicker",
+          "originalTeamName": "Laces Out, Ladies"
+        }
+      ],
+      "totalPlayers": 34
+    },
+    "DukeofWales": {
+      "franchiseKey": "DukeofWales",
+      "rosterId": 4,
+      "teamName": "Hands for Jobs",
+      "starters": [
+        {
+          "slot": "QB",
+          "playerId": "4881",
+          "name": "Lamar Jackson",
+          "position": "QB",
+          "nflTeam": "BAL",
+          "age": 29,
+          "number": 8,
+          "status": "Active",
+          "yearsExp": 8,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/4881.jpg"
+        },
+        {
+          "slot": "RB",
+          "playerId": "12527",
+          "name": "Ashton Jeanty",
+          "position": "RB",
+          "nflTeam": "LV",
+          "age": 22,
+          "number": 2,
+          "status": "Active",
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12527.jpg"
+        },
+        {
+          "slot": "RB",
+          "playerId": "11584",
+          "name": "Bucky Irving",
+          "position": "RB",
+          "nflTeam": "TB",
+          "age": 24,
+          "number": 7,
+          "status": "Active",
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11584.jpg"
+        },
+        {
+          "slot": "WR",
+          "playerId": "11635",
+          "name": "Ladd McConkey",
+          "position": "WR",
+          "nflTeam": "LAC",
+          "age": 24,
+          "number": 15,
+          "status": "Active",
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11635.jpg"
+        },
+        {
+          "slot": "WR",
+          "playerId": "9997",
+          "name": "Zay Flowers",
+          "position": "WR",
+          "nflTeam": "BAL",
+          "age": 25,
+          "number": 4,
+          "status": "Active",
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/9997.jpg"
+        },
+        {
+          "slot": "TE",
+          "playerId": "5022",
+          "name": "Dallas Goedert",
+          "position": "TE",
+          "nflTeam": "PHI",
+          "age": 31,
+          "number": 88,
+          "status": "Active",
+          "yearsExp": 8,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/5022.jpg"
+        },
+        {
+          "slot": "FLEX",
+          "playerId": "6806",
+          "name": "J.K. Dobbins",
+          "position": "RB",
+          "nflTeam": "DEN",
+          "age": 27,
+          "number": 27,
+          "status": "Active",
+          "yearsExp": 6,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/6806.jpg"
+        },
+        {
+          "slot": "FLEX",
+          "playerId": "4037",
+          "name": "Chris Godwin",
+          "position": "WR",
+          "nflTeam": "TB",
+          "age": 30,
+          "number": 14,
+          "status": "Active",
+          "yearsExp": 9,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/4037.jpg"
+        },
+        {
+          "slot": "FLEX",
+          "playerId": "10222",
+          "name": "Jayden Reed",
+          "position": "WR",
+          "nflTeam": "GB",
+          "age": 26,
+          "number": 11,
+          "status": "Active",
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/10222.jpg"
+        },
+        {
+          "slot": "SUPER_FLEX",
+          "playerId": "96",
+          "name": "Aaron Rodgers",
+          "position": "QB",
+          "nflTeam": "PIT",
+          "age": 42,
+          "number": 8,
+          "status": "Active",
+          "yearsExp": 21,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/96.jpg"
+        },
+        {
+          "slot": "DL",
+          "playerId": "11665",
+          "name": "Jared Verse",
+          "position": "DL",
+          "nflTeam": "CLE",
+          "age": 25,
+          "number": 8,
+          "status": "Active",
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11665.jpg"
+        },
+        {
+          "slot": "LB",
+          "playerId": "8280",
+          "name": "Nik Bonitto",
+          "position": "LB",
+          "nflTeam": "DEN",
+          "age": 26,
+          "number": 15,
+          "status": "Active",
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8280.jpg"
+        },
+        {
+          "slot": "DB",
+          "playerId": "12530",
+          "name": "Travis Hunter",
+          "position": "WR",
+          "nflTeam": "JAX",
+          "age": 23,
+          "number": 12,
+          "status": "Active",
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12530.jpg"
+        }
+      ],
+      "bench": [
+        {
+          "playerId": "4017",
+          "name": "Deshaun Watson",
+          "position": "QB",
+          "nflTeam": "CLE",
+          "age": 30,
+          "number": 4,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 9,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/4017.jpg"
+        },
+        {
+          "playerId": "11559",
+          "name": "Michael Penix",
+          "position": "QB",
+          "nflTeam": "ATL",
+          "age": 26,
+          "number": 9,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11559.jpg"
+        },
+        {
+          "playerId": "5870",
+          "name": "Daniel Jones",
+          "position": "QB",
+          "nflTeam": "IND",
+          "age": 29,
+          "number": 17,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 7,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/5870.jpg"
+        },
+        {
+          "playerId": "7528",
+          "name": "Najee Harris",
+          "position": "RB",
+          "nflTeam": "NYG",
+          "age": 28,
+          "number": 22,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 5,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/7528.jpg"
+        },
+        {
+          "playerId": "10219",
+          "name": "Chris Rodriguez",
+          "position": "RB",
+          "nflTeam": "JAX",
+          "age": 26,
+          "number": 24,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/10219.jpg"
+        },
+        {
+          "playerId": "12504",
+          "name": "Kaleb Johnson",
+          "position": "RB",
+          "nflTeam": "GB",
+          "age": 23,
+          "number": 26,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12504.jpg"
+        },
+        {
+          "playerId": "11370",
+          "name": "Chris Brooks",
+          "position": "RB",
+          "nflTeam": "GB",
+          "age": 26,
+          "number": 30,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11370.jpg"
+        },
+        {
+          "playerId": "13294",
+          "name": "Makai Lemon",
+          "position": "WR",
+          "nflTeam": "PHI",
+          "age": 22,
+          "number": 9,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13294.jpg"
+        },
+        {
+          "playerId": "12484",
+          "name": "Jayden Higgins",
+          "position": "WR",
+          "nflTeam": "HOU",
+          "age": 23,
+          "number": 81,
+          "status": "IR",
+          "isIR": true,
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12484.jpg"
+        },
+        {
+          "playerId": "10218",
+          "name": "Xavier Hutchinson",
+          "position": "WR",
+          "nflTeam": "HOU",
+          "age": 26,
+          "number": 19,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/10218.jpg"
+        },
+        {
+          "playerId": "13420",
+          "name": "Bryce Lance",
+          "position": "WR",
+          "nflTeam": "NO",
+          "age": 24,
+          "number": 18,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13420.jpg"
+        },
+        {
+          "playerId": "1479",
+          "name": "Keenan Allen",
+          "position": "WR",
+          "nflTeam": "IND",
+          "age": 34,
+          "number": 10,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 13,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/1479.jpg"
+        },
+        {
+          "playerId": "4039",
+          "name": "Cooper Kupp",
+          "position": "WR",
+          "nflTeam": "SEA",
+          "age": 33,
+          "number": 10,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 9,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/4039.jpg"
+        },
+        {
+          "playerId": "10226",
+          "name": "Andrei Iosivas",
+          "position": "WR",
+          "nflTeam": "CIN",
+          "age": 26,
+          "number": 80,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/10226.jpg"
+        },
+        {
+          "playerId": "13311",
+          "name": "Chris Bell",
+          "position": "WR",
+          "nflTeam": "MIA",
+          "age": 22,
+          "number": 18,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13311.jpg"
+        },
+        {
+          "playerId": "5872",
+          "name": "Deebo Samuel",
+          "position": "WR",
+          "nflTeam": "SF",
+          "age": 30,
+          "number": 19,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 7,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/5872.jpg"
+        },
+        {
+          "playerId": "13380",
+          "name": "Brenen Thompson",
+          "position": "WR",
+          "nflTeam": "LAC",
+          "age": 23,
+          "number": 89,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13380.jpg"
+        },
+        {
+          "playerId": "4066",
+          "name": "Evan Engram",
+          "position": "TE",
+          "nflTeam": "DEN",
+          "age": 32,
+          "number": 1,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 9,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/4066.jpg"
+        },
+        {
+          "playerId": "13349",
+          "name": "Eli Stowers",
+          "position": "TE",
+          "nflTeam": "PHI",
+          "age": 23,
+          "number": 87,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13349.jpg"
+        }
+      ],
+      "taxi": [
+        {
+          "playerId": "12511",
+          "name": "Will Howard",
+          "position": "QB",
+          "nflTeam": "PIT",
+          "age": 24,
+          "number": 18,
+          "status": "Active",
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12511.jpg"
+        },
+        {
+          "playerId": "12547",
+          "name": "Kyle Williams",
+          "position": "WR",
+          "nflTeam": "NE",
+          "age": 23,
+          "number": 18,
+          "status": "Active",
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12547.jpg"
+        },
+        {
+          "playerId": "12641",
+          "name": "Jaylin Lane",
+          "position": "WR",
+          "nflTeam": "WAS",
+          "age": 24,
+          "number": 83,
+          "status": "Active",
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12641.jpg"
+        }
+      ],
+      "draftPicks": [
+        {
+          "season": "2027",
+          "round": 1,
+          "originalRosterId": 4,
+          "originalFranchiseKey": "DukeofWales",
+          "originalTeamName": "Hands for Jobs"
+        },
+        {
+          "season": "2027",
+          "round": 3,
+          "originalRosterId": 4,
+          "originalFranchiseKey": "DukeofWales",
+          "originalTeamName": "Hands for Jobs"
+        },
+        {
+          "season": "2027",
+          "round": 4,
+          "originalRosterId": 4,
+          "originalFranchiseKey": "DukeofWales",
+          "originalTeamName": "Hands for Jobs"
+        },
+        {
+          "season": "2027",
+          "round": 4,
+          "originalRosterId": 7,
+          "originalFranchiseKey": "Tklumb86",
+          "originalTeamName": "Who Dey"
+        },
+        {
+          "season": "2028",
+          "round": 2,
+          "originalRosterId": 4,
+          "originalFranchiseKey": "DukeofWales",
+          "originalTeamName": "Hands for Jobs"
+        },
+        {
+          "season": "2028",
+          "round": 4,
+          "originalRosterId": 4,
+          "originalFranchiseKey": "DukeofWales",
+          "originalTeamName": "Hands for Jobs"
+        },
+        {
+          "season": "2029",
+          "round": 1,
+          "originalRosterId": 4,
+          "originalFranchiseKey": "DukeofWales",
+          "originalTeamName": "Hands for Jobs"
+        },
+        {
+          "season": "2029",
+          "round": 2,
+          "originalRosterId": 4,
+          "originalFranchiseKey": "DukeofWales",
+          "originalTeamName": "Hands for Jobs"
+        },
+        {
+          "season": "2029",
+          "round": 3,
+          "originalRosterId": 4,
+          "originalFranchiseKey": "DukeofWales",
+          "originalTeamName": "Hands for Jobs"
+        },
+        {
+          "season": "2029",
+          "round": 4,
+          "originalRosterId": 4,
+          "originalFranchiseKey": "DukeofWales",
+          "originalTeamName": "Hands for Jobs"
+        }
+      ],
+      "totalPlayers": 35
+    },
+    "MaffuJames": {
+      "franchiseKey": "MaffuJames",
+      "rosterId": 5,
+      "teamName": "I don't Gibbs a Shough",
+      "starters": [
+        {
+          "slot": "QB",
+          "playerId": "11564",
+          "name": "Drake Maye",
+          "position": "QB",
+          "nflTeam": "NE",
+          "age": 24,
+          "number": 10,
+          "status": "Active",
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11564.jpg"
+        },
+        {
+          "slot": "RB",
+          "playerId": "9221",
+          "name": "Jahmyr Gibbs",
+          "position": "RB",
+          "nflTeam": "DET",
+          "age": 24,
+          "number": null,
+          "status": "Active",
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/9221.jpg"
+        },
+        {
+          "slot": "RB",
+          "playerId": "4866",
+          "name": "Saquon Barkley",
+          "position": "RB",
+          "nflTeam": "PHI",
+          "age": 29,
+          "number": 26,
+          "status": "Active",
+          "yearsExp": 8,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/4866.jpg"
+        },
+        {
+          "slot": "WR",
+          "playerId": "8112",
+          "name": "Drake London",
+          "position": "WR",
+          "nflTeam": "ATL",
+          "age": 25,
+          "number": 5,
+          "status": "Active",
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8112.jpg"
+        },
+        {
+          "slot": "WR",
+          "playerId": "7547",
+          "name": "Amon-Ra St. Brown",
+          "position": "WR",
+          "nflTeam": "DET",
+          "age": 26,
+          "number": 14,
+          "status": "Active",
+          "yearsExp": 5,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/7547.jpg"
+        },
+        {
+          "slot": "TE",
+          "playerId": "7002",
+          "name": "Juwan Johnson",
+          "position": "TE",
+          "nflTeam": "NO",
+          "age": 29,
+          "number": 83,
+          "status": "Active",
+          "yearsExp": 6,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/7002.jpg"
+        },
+        {
+          "slot": "FLEX",
+          "playerId": "8144",
+          "name": "Chris Olave",
+          "position": "WR",
+          "nflTeam": "NO",
+          "age": 26,
+          "number": 12,
+          "status": "Active",
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8144.jpg"
+        },
+        {
+          "slot": "FLEX",
+          "playerId": "7569",
+          "name": "Nico Collins",
+          "position": "WR",
+          "nflTeam": "HOU",
+          "age": 27,
+          "number": 12,
+          "status": "Active",
+          "yearsExp": 5,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/7569.jpg"
+        },
+        {
+          "slot": "FLEX",
+          "playerId": "7588",
+          "name": "Javonte Williams",
+          "position": "RB",
+          "nflTeam": "DAL",
+          "age": 26,
+          "number": 33,
+          "status": "Active",
+          "yearsExp": 5,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/7588.jpg"
+        },
+        {
+          "slot": "SUPER_FLEX",
+          "playerId": "12545",
+          "name": "Tyler Shough",
+          "position": "QB",
+          "nflTeam": "NO",
+          "age": 26,
+          "number": 6,
+          "status": "Active",
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12545.jpg"
+        },
+        {
+          "slot": "DL",
+          "playerId": "10892",
+          "name": "Will Anderson",
+          "position": "DL",
+          "nflTeam": "HOU",
+          "age": 25,
+          "number": 51,
+          "status": "Active",
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/10892.jpg"
+        },
+        {
+          "slot": "LB",
+          "playerId": "5041",
+          "name": "Fred Warner",
+          "position": "LB",
+          "nflTeam": "SF",
+          "age": 29,
+          "number": 54,
+          "status": "Active",
+          "yearsExp": 8,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/5041.jpg"
+        },
+        {
+          "slot": "DB",
+          "playerId": "8392",
+          "name": "Nick Cross",
+          "position": "DB",
+          "nflTeam": "WAS",
+          "age": 24,
+          "number": 25,
+          "status": "Active",
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8392.jpg"
+        }
+      ],
+      "bench": [
+        {
+          "playerId": "2307",
+          "name": "Marcus Mariota",
+          "position": "QB",
+          "nflTeam": "WAS",
+          "age": 32,
+          "number": 8,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 11,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/2307.jpg"
+        },
+        {
+          "playerId": "3257",
+          "name": "Jacoby Brissett",
+          "position": "QB",
+          "nflTeam": "ARI",
+          "age": 33,
+          "number": 7,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 10,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/3257.jpg"
+        },
+        {
+          "playerId": "9229",
+          "name": "Anthony Richardson",
+          "position": "QB",
+          "nflTeam": "IND",
+          "age": 24,
+          "number": 5,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/9229.jpg"
+        },
+        {
+          "playerId": "11570",
+          "name": "Rasheen Ali",
+          "position": "RB",
+          "nflTeam": "BAL",
+          "age": 25,
+          "number": 26,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11570.jpg"
+        },
+        {
+          "playerId": "11581",
+          "name": "MarShawn Lloyd",
+          "position": "RB",
+          "nflTeam": "GB",
+          "age": 25,
+          "number": 32,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11581.jpg"
+        },
+        {
+          "playerId": "12048",
+          "name": "George Holani",
+          "position": "RB",
+          "nflTeam": "SEA",
+          "age": 26,
+          "number": 36,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12048.jpg"
+        },
+        {
+          "playerId": "8205",
+          "name": "Isiah Pacheco",
+          "position": "RB",
+          "nflTeam": "DET",
+          "age": 27,
+          "number": 10,
+          "status": "IR",
+          "isIR": true,
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8205.jpg"
+        },
+        {
+          "playerId": "13333",
+          "name": "Deion Burks",
+          "position": "WR",
+          "nflTeam": "IND",
+          "age": 23,
+          "number": 80,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13333.jpg"
+        },
+        {
+          "playerId": "6803",
+          "name": "Brandon Aiyuk",
+          "position": "WR",
+          "nflTeam": "SF",
+          "age": 28,
+          "number": 11,
+          "status": "IR",
+          "isIR": true,
+          "yearsExp": 6,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/6803.jpg"
+        },
+        {
+          "playerId": "13281",
+          "name": "Jordyn Tyson",
+          "position": "WR",
+          "nflTeam": "NO",
+          "age": 22,
+          "number": null,
+          "status": "IR",
+          "isIR": true,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13281.jpg"
+        },
+        {
+          "playerId": "13413",
+          "name": "Cyrus Allen",
+          "position": "WR",
+          "nflTeam": "KC",
+          "age": 23,
+          "number": 13,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13413.jpg"
+        },
+        {
+          "playerId": "12483",
+          "name": "Jack Bech",
+          "position": "WR",
+          "nflTeam": "LV",
+          "age": 23,
+          "number": 18,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12483.jpg"
+        },
+        {
+          "playerId": "4983",
+          "name": "DJ Moore",
+          "position": "WR",
+          "nflTeam": "BUF",
+          "age": 29,
+          "number": 2,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 8,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/4983.jpg"
+        },
+        {
+          "playerId": "2216",
+          "name": "Mike Evans",
+          "position": "WR",
+          "nflTeam": "SF",
+          "age": 33,
+          "number": 5,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 12,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/2216.jpg"
+        },
+        {
+          "playerId": "2133",
+          "name": "Davante Adams",
+          "position": "WR",
+          "nflTeam": "LAR",
+          "age": 33,
+          "number": 17,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 12,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/2133.jpg"
+        },
+        {
+          "playerId": "3214",
+          "name": "Hunter Henry",
+          "position": "TE",
+          "nflTeam": "NE",
+          "age": 31,
+          "number": 85,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 10,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/3214.jpg"
+        },
+        {
+          "playerId": "8225",
+          "name": "Daniel Bellinger",
+          "position": "TE",
+          "nflTeam": "TEN",
+          "age": 25,
+          "number": 82,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8225.jpg"
+        },
+        {
+          "playerId": "12493",
+          "name": "Oronde Gadsden",
+          "position": "TE",
+          "nflTeam": "LAC",
+          "age": 23,
+          "number": 86,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12493.jpg"
+        },
+        {
+          "playerId": "5862",
+          "name": "Brian Burns",
+          "position": "DE",
+          "nflTeam": "NYG",
+          "age": 28,
+          "number": null,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 7,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/5862.jpg"
+        },
+        {
+          "playerId": "2393",
+          "name": "Danielle Hunter",
+          "position": "DE",
+          "nflTeam": "HOU",
+          "age": 31,
+          "number": 55,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 11,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/2393.jpg"
+        },
+        {
+          "playerId": "6125",
+          "name": "Jeffery Simmons",
+          "position": "DT",
+          "nflTeam": "TEN",
+          "age": 29,
+          "number": 98,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 7,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/6125.jpg"
+        }
+      ],
+      "taxi": [
+        {
+          "playerId": "11565",
+          "name": "J.J. McCarthy",
+          "position": "QB",
+          "nflTeam": "MIN",
+          "age": 23,
+          "number": 9,
+          "status": "Active",
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11565.jpg"
+        },
+        {
+          "playerId": "12497",
+          "name": "Tory Horton",
+          "position": "WR",
+          "nflTeam": "SEA",
+          "age": 23,
+          "number": 15,
+          "status": "Active",
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12497.jpg"
+        },
+        {
+          "playerId": "13421",
+          "name": "Eli Raridon",
+          "position": "TE",
+          "nflTeam": "NE",
+          "age": 22,
+          "number": 82,
+          "status": "Active",
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13421.jpg"
+        }
+      ],
+      "draftPicks": [
+        {
+          "season": "2027",
+          "round": 3,
+          "originalRosterId": 5,
+          "originalFranchiseKey": "MaffuJames",
+          "originalTeamName": "I don't Gibbs a Shough"
+        },
+        {
+          "season": "2027",
+          "round": 3,
+          "originalRosterId": 9,
+          "originalFranchiseKey": "MattyiceR",
+          "originalTeamName": "Heisenberg's Hitmen"
+        },
+        {
+          "season": "2027",
+          "round": 4,
+          "originalRosterId": 5,
+          "originalFranchiseKey": "MaffuJames",
+          "originalTeamName": "I don't Gibbs a Shough"
+        },
+        {
+          "season": "2028",
+          "round": 3,
+          "originalRosterId": 5,
+          "originalFranchiseKey": "MaffuJames",
+          "originalTeamName": "I don't Gibbs a Shough"
+        },
+        {
+          "season": "2028",
+          "round": 4,
+          "originalRosterId": 5,
+          "originalFranchiseKey": "MaffuJames",
+          "originalTeamName": "I don't Gibbs a Shough"
+        },
+        {
+          "season": "2029",
+          "round": 2,
+          "originalRosterId": 5,
+          "originalFranchiseKey": "MaffuJames",
+          "originalTeamName": "I don't Gibbs a Shough"
+        },
+        {
+          "season": "2029",
+          "round": 3,
+          "originalRosterId": 5,
+          "originalFranchiseKey": "MaffuJames",
+          "originalTeamName": "I don't Gibbs a Shough"
+        },
+        {
+          "season": "2029",
+          "round": 4,
+          "originalRosterId": 5,
+          "originalFranchiseKey": "MaffuJames",
+          "originalTeamName": "I don't Gibbs a Shough"
+        }
+      ],
+      "totalPlayers": 37
+    },
+    "doesntfleeze": {
+      "franchiseKey": "doesntfleeze",
+      "rosterId": 6,
+      "teamName": "Washed🫩",
+      "starters": [
+        {
+          "slot": "QB",
+          "playerId": "11560",
+          "name": "Caleb Williams",
+          "position": "QB",
+          "nflTeam": "CHI",
+          "age": 24,
+          "number": 18,
+          "status": "Active",
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11560.jpg"
+        },
+        {
+          "slot": "RB",
+          "playerId": "8151",
+          "name": "Kenneth Walker",
+          "position": "RB",
+          "nflTeam": "KC",
+          "age": 25,
+          "number": 9,
+          "status": "Active",
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8151.jpg"
+        },
+        {
+          "slot": "RB",
+          "playerId": "12481",
+          "name": "Cam Skattebo",
+          "position": "RB",
+          "nflTeam": "NYG",
+          "age": 24,
+          "number": 44,
+          "status": "Active",
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12481.jpg"
+        },
+        {
+          "slot": "WR",
+          "playerId": "9493",
+          "name": "Puka Nacua",
+          "position": "WR",
+          "nflTeam": "LAR",
+          "age": 25,
+          "number": 12,
+          "status": "Active",
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/9493.jpg"
+        },
+        {
+          "slot": "WR",
+          "playerId": "6794",
+          "name": "Justin Jefferson",
+          "position": "WR",
+          "nflTeam": "MIN",
+          "age": 27,
+          "number": 18,
+          "status": "Active",
+          "yearsExp": 6,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/6794.jpg"
+        },
+        {
+          "slot": "TE",
+          "playerId": "11604",
+          "name": "Brock Bowers",
+          "position": "TE",
+          "nflTeam": "LV",
+          "age": 23,
+          "number": 89,
+          "status": "Active",
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11604.jpg"
+        },
+        {
+          "slot": "FLEX",
+          "playerId": "8146",
+          "name": "Garrett Wilson",
+          "position": "WR",
+          "nflTeam": "NYJ",
+          "age": 26,
+          "number": 5,
+          "status": "Active",
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8146.jpg"
+        },
+        {
+          "slot": "FLEX",
+          "playerId": "12519",
+          "name": "Luther Burden",
+          "position": "WR",
+          "nflTeam": "CHI",
+          "age": 22,
+          "number": 10,
+          "status": "Active",
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12519.jpg"
+        },
+        {
+          "slot": "FLEX",
+          "playerId": "11632",
+          "name": "Malik Nabers",
+          "position": "WR",
+          "nflTeam": "NYG",
+          "age": 23,
+          "number": 1,
+          "status": "Active",
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11632.jpg"
+        },
+        {
+          "slot": "SUPER_FLEX",
+          "playerId": "6804",
+          "name": "Jordan Love",
+          "position": "QB",
+          "nflTeam": "GB",
+          "age": 27,
+          "number": 10,
+          "status": "Active",
+          "yearsExp": 6,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/6804.jpg"
+        },
+        {
+          "slot": "DL",
+          "playerId": "5991",
+          "name": "Maxx Crosby",
+          "position": "DE",
+          "nflTeam": "LV",
+          "age": 29,
+          "number": 98,
+          "status": "Active",
+          "yearsExp": 7,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/5991.jpg"
+        },
+        {
+          "slot": "LB",
+          "playerId": "13375",
+          "name": "Sonny Styles",
+          "position": "LB",
+          "nflTeam": "WAS",
+          "age": 21,
+          "number": 52,
+          "status": "Active",
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13375.jpg"
+        },
+        {
+          "slot": "DB",
+          "playerId": "8339",
+          "name": "Kyle Hamilton",
+          "position": "DB",
+          "nflTeam": "BAL",
+          "age": 25,
+          "number": 14,
+          "status": "Active",
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8339.jpg"
+        }
+      ],
+      "bench": [
+        {
+          "playerId": "9228",
+          "name": "Bryce Young",
+          "position": "QB",
+          "nflTeam": "CAR",
+          "age": 25,
+          "number": 9,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/9228.jpg"
+        },
+        {
+          "playerId": "11575",
+          "name": "Ray Davis",
+          "position": "RB",
+          "nflTeam": "BUF",
+          "age": 26,
+          "number": 7,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11575.jpg"
+        },
+        {
+          "playerId": "9753",
+          "name": "Zach Charbonnet",
+          "position": "RB",
+          "nflTeam": "SEA",
+          "age": 25,
+          "number": 26,
+          "status": "IR",
+          "isIR": true,
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/9753.jpg"
+        },
+        {
+          "playerId": "4199",
+          "name": "Aaron Jones",
+          "position": "RB",
+          "nflTeam": "MIN",
+          "age": 31,
+          "number": 33,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 9,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/4199.jpg"
+        },
+        {
+          "playerId": "12469",
+          "name": "Dylan Sampson",
+          "position": "RB",
+          "nflTeam": "CLE",
+          "age": 21,
+          "number": 22,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12469.jpg"
+        },
+        {
+          "playerId": "11583",
+          "name": "Jonathon Brooks",
+          "position": "RB",
+          "nflTeam": "CAR",
+          "age": 23,
+          "number": 25,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11583.jpg"
+        },
+        {
+          "playerId": "12534",
+          "name": "Kyle Monangai",
+          "position": "RB",
+          "nflTeam": "CHI",
+          "age": 24,
+          "number": 25,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12534.jpg"
+        },
+        {
+          "playerId": "11655",
+          "name": "Tyrone Tracy",
+          "position": "RB",
+          "nflTeam": "NYG",
+          "age": 26,
+          "number": 29,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11655.jpg"
+        },
+        {
+          "playerId": "8408",
+          "name": "Jordan Mason",
+          "position": "RB",
+          "nflTeam": "MIN",
+          "age": 27,
+          "number": 27,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8408.jpg"
+        },
+        {
+          "playerId": "6819",
+          "name": "Michael Pittman",
+          "position": "WR",
+          "nflTeam": "PIT",
+          "age": 28,
+          "number": 11,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 6,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/6819.jpg"
+        },
+        {
+          "playerId": "13417",
+          "name": "De'Zhaun Stribling",
+          "position": "WR",
+          "nflTeam": "SF",
+          "age": 23,
+          "number": 15,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13417.jpg"
+        },
+        {
+          "playerId": "11618",
+          "name": "Jalen McMillan",
+          "position": "WR",
+          "nflTeam": "TB",
+          "age": 24,
+          "number": 11,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11618.jpg"
+        },
+        {
+          "playerId": "9487",
+          "name": "Parker Washington",
+          "position": "WR",
+          "nflTeam": "JAX",
+          "age": 24,
+          "number": 11,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/9487.jpg"
+        },
+        {
+          "playerId": "9482",
+          "name": "Michael Mayer",
+          "position": "TE",
+          "nflTeam": "LV",
+          "age": 25,
+          "number": 87,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/9482.jpg"
+        },
+        {
+          "playerId": "5012",
+          "name": "Mark Andrews",
+          "position": "TE",
+          "nflTeam": "BAL",
+          "age": 30,
+          "number": 89,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 8,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/5012.jpg"
+        },
+        {
+          "playerId": "12487",
+          "name": "Terrance Ferguson",
+          "position": "TE",
+          "nflTeam": "LAR",
+          "age": 23,
+          "number": 18,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12487.jpg"
+        },
+        {
+          "playerId": "7640",
+          "name": "Micah Parsons",
+          "position": "LB",
+          "nflTeam": "GB",
+          "age": 27,
+          "number": 1,
+          "status": "IR",
+          "isIR": true,
+          "yearsExp": 5,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/7640.jpg"
+        },
+        {
+          "playerId": "12597",
+          "name": "Nick Emmanwori",
+          "position": "DB",
+          "nflTeam": "SEA",
+          "age": 22,
+          "number": 3,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12597.jpg"
+        },
+        {
+          "playerId": "10905",
+          "name": "Brian Branch",
+          "position": "DB",
+          "nflTeam": "DET",
+          "age": 24,
+          "number": 32,
+          "status": "IR",
+          "isIR": true,
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/10905.jpg"
+        },
+        {
+          "playerId": "2227",
+          "name": "Aaron Donald",
+          "position": "DT",
+          "nflTeam": "LAR",
+          "age": 35,
+          "number": 99,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 12,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/2227.jpg"
+        },
+        {
+          "playerId": "5816",
+          "name": "Nick Bosa",
+          "position": "DE",
+          "nflTeam": "SF",
+          "age": 28,
+          "number": 97,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 7,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/5816.jpg"
+        }
+      ],
+      "taxi": [
+        {
+          "playerId": "11589",
+          "name": "Trey Benson",
+          "position": "RB",
+          "nflTeam": "ARI",
+          "age": 24,
+          "number": 33,
+          "status": "Inactive",
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11589.jpg"
+        },
+        {
+          "playerId": "12574",
+          "name": "Abdul Carter",
+          "position": "DL",
+          "nflTeam": "NYG",
+          "age": 22,
+          "number": 3,
+          "status": "Active",
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12574.jpg"
+        },
+        {
+          "playerId": "13602",
+          "name": "Jack Strand",
+          "position": "QB",
+          "nflTeam": "ATL",
+          "age": 22,
+          "number": 18,
+          "status": "Active",
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13602.jpg"
+        }
+      ],
+      "draftPicks": [
+        {
+          "season": "2027",
+          "round": 1,
+          "originalRosterId": 6,
+          "originalFranchiseKey": "doesntfleeze",
+          "originalTeamName": "Washed🫩"
+        },
+        {
+          "season": "2027",
+          "round": 1,
+          "originalRosterId": 2,
+          "originalFranchiseKey": "PoppinChunkies",
+          "originalTeamName": "Poppin' Chunkies"
+        },
+        {
+          "season": "2027",
+          "round": 1,
+          "originalRosterId": 9,
+          "originalFranchiseKey": "MattyiceR",
+          "originalTeamName": "Heisenberg's Hitmen"
+        },
+        {
+          "season": "2027",
+          "round": 3,
+          "originalRosterId": 6,
+          "originalFranchiseKey": "doesntfleeze",
+          "originalTeamName": "Washed🫩"
+        },
+        {
+          "season": "2027",
+          "round": 4,
+          "originalRosterId": 6,
+          "originalFranchiseKey": "doesntfleeze",
+          "originalTeamName": "Washed🫩"
+        },
+        {
+          "season": "2028",
+          "round": 1,
+          "originalRosterId": 6,
+          "originalFranchiseKey": "doesntfleeze",
+          "originalTeamName": "Washed🫩"
+        },
+        {
+          "season": "2028",
+          "round": 2,
+          "originalRosterId": 6,
+          "originalFranchiseKey": "doesntfleeze",
+          "originalTeamName": "Washed🫩"
+        },
+        {
+          "season": "2028",
+          "round": 4,
+          "originalRosterId": 6,
+          "originalFranchiseKey": "doesntfleeze",
+          "originalTeamName": "Washed🫩"
+        },
+        {
+          "season": "2029",
+          "round": 1,
+          "originalRosterId": 6,
+          "originalFranchiseKey": "doesntfleeze",
+          "originalTeamName": "Washed🫩"
+        },
+        {
+          "season": "2029",
+          "round": 2,
+          "originalRosterId": 6,
+          "originalFranchiseKey": "doesntfleeze",
+          "originalTeamName": "Washed🫩"
+        },
+        {
+          "season": "2029",
+          "round": 3,
+          "originalRosterId": 6,
+          "originalFranchiseKey": "doesntfleeze",
+          "originalTeamName": "Washed🫩"
+        },
+        {
+          "season": "2029",
+          "round": 4,
+          "originalRosterId": 6,
+          "originalFranchiseKey": "doesntfleeze",
+          "originalTeamName": "Washed🫩"
+        }
+      ],
+      "totalPlayers": 37
+    },
+    "Tklumb86": {
+      "franchiseKey": "Tklumb86",
+      "rosterId": 7,
+      "teamName": "Who Dey",
+      "starters": [
+        {
+          "slot": "QB",
+          "playerId": "4046",
+          "name": "Patrick Mahomes",
+          "position": "QB",
+          "nflTeam": "KC",
+          "age": 30,
+          "number": 15,
+          "status": "Active",
+          "yearsExp": 9,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/4046.jpg"
+        },
+        {
+          "slot": "RB",
+          "playerId": "13287",
+          "name": "Jeremiyah Love",
+          "position": "RB",
+          "nflTeam": "ARI",
+          "age": 21,
+          "number": 4,
+          "status": "Active",
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13287.jpg"
+        },
+        {
+          "slot": "RB",
+          "playerId": "12507",
+          "name": "Omarion Hampton",
+          "position": "RB",
+          "nflTeam": "LAC",
+          "age": 23,
+          "number": 8,
+          "status": "Active",
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12507.jpg"
+        },
+        {
+          "slot": "WR",
+          "playerId": "13298",
+          "name": "KC Concepcion",
+          "position": "WR",
+          "nflTeam": "CLE",
+          "age": 21,
+          "number": 1,
+          "status": "Active",
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13298.jpg"
+        },
+        {
+          "slot": "WR",
+          "playerId": "7525",
+          "name": "DeVonta Smith",
+          "position": "WR",
+          "nflTeam": "PHI",
+          "age": 27,
+          "number": 6,
+          "status": "Active",
+          "yearsExp": 5,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/7525.jpg"
+        },
+        {
+          "slot": "TE",
+          "playerId": "10859",
+          "name": "Sam LaPorta",
+          "position": "TE",
+          "nflTeam": "DET",
+          "age": 25,
+          "number": 87,
+          "status": "Active",
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/10859.jpg"
+        },
+        {
+          "slot": "FLEX",
+          "playerId": "8228",
+          "name": "Jaylen Warren",
+          "position": "RB",
+          "nflTeam": "PIT",
+          "age": 27,
+          "number": 30,
+          "status": "Active",
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8228.jpg"
+        },
+        {
+          "slot": "FLEX",
+          "playerId": "8131",
+          "name": "Isaiah Likely",
+          "position": "TE",
+          "nflTeam": "NYG",
+          "age": 26,
+          "number": 9,
+          "status": "Active",
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8131.jpg"
+        },
+        {
+          "slot": "FLEX",
+          "playerId": "2449",
+          "name": "Stefon Diggs",
+          "position": "WR",
+          "nflTeam": "WAS",
+          "age": 32,
+          "number": 3,
+          "status": "Active",
+          "yearsExp": 11,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/2449.jpg"
+        },
+        {
+          "slot": "SUPER_FLEX",
+          "playerId": "3163",
+          "name": "Jared Goff",
+          "position": "QB",
+          "nflTeam": "DET",
+          "age": 31,
+          "number": 16,
+          "status": "Active",
+          "yearsExp": 10,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/3163.jpg"
+        },
+        {
+          "slot": "DL",
+          "playerId": "8289",
+          "name": "Aidan Hutchinson",
+          "position": "DL",
+          "nflTeam": "DET",
+          "age": 26,
+          "number": 97,
+          "status": "Active",
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8289.jpg"
+        },
+        {
+          "slot": "LB",
+          "playerId": "4960",
+          "name": "Roquan Smith",
+          "position": "LB",
+          "nflTeam": "BAL",
+          "age": 29,
+          "number": null,
+          "status": "Active",
+          "yearsExp": 8,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/4960.jpg"
+        },
+        {
+          "slot": "DB",
+          "playerId": "7136",
+          "name": "Kam Curl",
+          "position": "DB",
+          "nflTeam": "LAR",
+          "age": 27,
+          "number": 3,
+          "status": "Active",
+          "yearsExp": 6,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/7136.jpg"
+        }
+      ],
+      "bench": [
+        {
+          "playerId": "8161",
+          "name": "Malik Willis",
+          "position": "QB",
+          "nflTeam": "MIA",
+          "age": 27,
+          "number": 2,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8161.jpg"
+        },
+        {
+          "playerId": "9508",
+          "name": "Tyjae Spears",
+          "position": "RB",
+          "nflTeam": "TEN",
+          "age": 25,
+          "number": 2,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/9508.jpg"
+        },
+        {
+          "playerId": "9506",
+          "name": "Sean Tucker",
+          "position": "RB",
+          "nflTeam": "TB",
+          "age": 24,
+          "number": 44,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/9506.jpg"
+        },
+        {
+          "playerId": "11237",
+          "name": "Jacob Saylors",
+          "position": "RB",
+          "nflTeam": "DET",
+          "age": 25,
+          "number": 25,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11237.jpg"
+        },
+        {
+          "playerId": "11647",
+          "name": "Kimani Vidal",
+          "position": "RB",
+          "nflTeam": "LAC",
+          "age": 25,
+          "number": 28,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11647.jpg"
+        },
+        {
+          "playerId": "12505",
+          "name": "Jalen Royals",
+          "position": "WR",
+          "nflTeam": "KC",
+          "age": 23,
+          "number": 11,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12505.jpg"
+        },
+        {
+          "playerId": "13274",
+          "name": "Germie Bernard",
+          "position": "WR",
+          "nflTeam": "PIT",
+          "age": 22,
+          "number": 17,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13274.jpg"
+        },
+        {
+          "playerId": "13285",
+          "name": "Malachi Fields",
+          "position": "WR",
+          "nflTeam": "NYG",
+          "age": 23,
+          "number": 88,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13285.jpg"
+        },
+        {
+          "playerId": "12540",
+          "name": "Chimere Dike",
+          "position": "WR",
+          "nflTeam": "TEN",
+          "age": 24,
+          "number": 17,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12540.jpg"
+        },
+        {
+          "playerId": "4981",
+          "name": "Calvin Ridley",
+          "position": "WR",
+          "nflTeam": "TEN",
+          "age": 31,
+          "number": null,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 8,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/4981.jpg"
+        },
+        {
+          "playerId": "3321",
+          "name": "Tyreek Hill",
+          "position": "WR",
+          "nflTeam": "FA",
+          "age": 31,
+          "number": 10,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 10,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/3321.jpg"
+        },
+        {
+          "playerId": "9486",
+          "name": "Dontayvion Wicks",
+          "position": "WR",
+          "nflTeam": "PHI",
+          "age": 25,
+          "number": 13,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/9486.jpg"
+        },
+        {
+          "playerId": "8180",
+          "name": "Jalen Nailor",
+          "position": "WR",
+          "nflTeam": "LV",
+          "age": 27,
+          "number": 9,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8180.jpg"
+        },
+        {
+          "playerId": "7049",
+          "name": "Jauan Jennings",
+          "position": "WR",
+          "nflTeam": "MIN",
+          "age": 29,
+          "number": 14,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 6,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/7049.jpg"
+        },
+        {
+          "playerId": "9504",
+          "name": "Kayshon Boutte",
+          "position": "WR",
+          "nflTeam": "HOU",
+          "age": 24,
+          "number": 14,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/9504.jpg"
+        },
+        {
+          "playerId": "9479",
+          "name": "Darnell Washington",
+          "position": "TE",
+          "nflTeam": "PIT",
+          "age": 25,
+          "number": 80,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/9479.jpg"
+        },
+        {
+          "playerId": "5844",
+          "name": "T.J. Hockenson",
+          "position": "TE",
+          "nflTeam": "MIN",
+          "age": 29,
+          "number": 87,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 7,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/5844.jpg"
+        },
+        {
+          "playerId": "8111",
+          "name": "Cade Otton",
+          "position": "TE",
+          "nflTeam": "TB",
+          "age": 27,
+          "number": 88,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8111.jpg"
+        }
+      ],
+      "taxi": [
+        {
+          "playerId": "11592",
+          "name": "Erick All",
+          "position": "TE",
+          "nflTeam": "CIN",
+          "age": 25,
+          "number": 83,
+          "status": "Active",
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11592.jpg"
+        },
+        {
+          "playerId": "13402",
+          "name": "Skyler Bell",
+          "position": "WR",
+          "nflTeam": "BUF",
+          "age": 24,
+          "number": 13,
+          "status": "Active",
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13402.jpg"
+        },
+        {
+          "playerId": "13414",
+          "name": "Kaelon Black",
+          "position": "RB",
+          "nflTeam": "SF",
+          "age": 24,
+          "number": 26,
+          "status": "Active",
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13414.jpg"
+        }
+      ],
+      "draftPicks": [
+        {
+          "season": "2027",
+          "round": 1,
+          "originalRosterId": 7,
+          "originalFranchiseKey": "Tklumb86",
+          "originalTeamName": "Who Dey"
+        },
+        {
+          "season": "2027",
+          "round": 2,
+          "originalRosterId": 4,
+          "originalFranchiseKey": "DukeofWales",
+          "originalTeamName": "Hands for Jobs"
+        },
+        {
+          "season": "2027",
+          "round": 2,
+          "originalRosterId": 6,
+          "originalFranchiseKey": "doesntfleeze",
+          "originalTeamName": "Washed🫩"
+        },
+        {
+          "season": "2027",
+          "round": 2,
+          "originalRosterId": 7,
+          "originalFranchiseKey": "Tklumb86",
+          "originalTeamName": "Who Dey"
+        },
+        {
+          "season": "2027",
+          "round": 2,
+          "originalRosterId": 8,
+          "originalFranchiseKey": "SamBaugh",
+          "originalTeamName": "Dude, Where's Lamar?"
+        },
+        {
+          "season": "2027",
+          "round": 3,
+          "originalRosterId": 7,
+          "originalFranchiseKey": "Tklumb86",
+          "originalTeamName": "Who Dey"
+        },
+        {
+          "season": "2028",
+          "round": 1,
+          "originalRosterId": 7,
+          "originalFranchiseKey": "Tklumb86",
+          "originalTeamName": "Who Dey"
+        },
+        {
+          "season": "2028",
+          "round": 1,
+          "originalRosterId": 2,
+          "originalFranchiseKey": "PoppinChunkies",
+          "originalTeamName": "Poppin' Chunkies"
+        },
+        {
+          "season": "2028",
+          "round": 1,
+          "originalRosterId": 4,
+          "originalFranchiseKey": "DukeofWales",
+          "originalTeamName": "Hands for Jobs"
+        },
+        {
+          "season": "2028",
+          "round": 1,
+          "originalRosterId": 5,
+          "originalFranchiseKey": "MaffuJames",
+          "originalTeamName": "I don't Gibbs a Shough"
+        },
+        {
+          "season": "2028",
+          "round": 2,
+          "originalRosterId": 7,
+          "originalFranchiseKey": "Tklumb86",
+          "originalTeamName": "Who Dey"
+        },
+        {
+          "season": "2028",
+          "round": 3,
+          "originalRosterId": 7,
+          "originalFranchiseKey": "Tklumb86",
+          "originalTeamName": "Who Dey"
+        },
+        {
+          "season": "2028",
+          "round": 3,
+          "originalRosterId": 6,
+          "originalFranchiseKey": "doesntfleeze",
+          "originalTeamName": "Washed🫩"
+        },
+        {
+          "season": "2028",
+          "round": 4,
+          "originalRosterId": 7,
+          "originalFranchiseKey": "Tklumb86",
+          "originalTeamName": "Who Dey"
+        },
+        {
+          "season": "2029",
+          "round": 1,
+          "originalRosterId": 7,
+          "originalFranchiseKey": "Tklumb86",
+          "originalTeamName": "Who Dey"
+        },
+        {
+          "season": "2029",
+          "round": 2,
+          "originalRosterId": 7,
+          "originalFranchiseKey": "Tklumb86",
+          "originalTeamName": "Who Dey"
+        },
+        {
+          "season": "2029",
+          "round": 3,
+          "originalRosterId": 7,
+          "originalFranchiseKey": "Tklumb86",
+          "originalTeamName": "Who Dey"
+        },
+        {
+          "season": "2029",
+          "round": 4,
+          "originalRosterId": 7,
+          "originalFranchiseKey": "Tklumb86",
+          "originalTeamName": "Who Dey"
+        }
+      ],
+      "totalPlayers": 34
+    },
+    "SamBaugh": {
+      "franchiseKey": "SamBaugh",
+      "rosterId": 8,
+      "teamName": "Dude, Where's Lamar?",
+      "starters": [
+        {
+          "slot": "QB",
+          "playerId": "6904",
+          "name": "Jalen Hurts",
+          "position": "QB",
+          "nflTeam": "PHI",
+          "age": 28,
+          "number": 1,
+          "status": "Active",
+          "yearsExp": 6,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/6904.jpg"
+        },
+        {
+          "slot": "RB",
+          "playerId": "12489",
+          "name": "RJ Harvey",
+          "position": "RB",
+          "nflTeam": "DEN",
+          "age": 25,
+          "number": 12,
+          "status": "Active",
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12489.jpg"
+        },
+        {
+          "slot": "RB",
+          "playerId": "5892",
+          "name": "David Montgomery",
+          "position": "RB",
+          "nflTeam": "HOU",
+          "age": 29,
+          "number": 32,
+          "status": "Active",
+          "yearsExp": 7,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/5892.jpg"
+        },
+        {
+          "slot": "WR",
+          "playerId": "10229",
+          "name": "Rashee Rice",
+          "position": "WR",
+          "nflTeam": "KC",
+          "age": 26,
+          "number": 4,
+          "status": "Active",
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/10229.jpg"
+        },
+        {
+          "slot": "WR",
+          "playerId": "5846",
+          "name": "DK Metcalf",
+          "position": "WR",
+          "nflTeam": "PIT",
+          "age": 28,
+          "number": 4,
+          "status": "Active",
+          "yearsExp": 7,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/5846.jpg"
+        },
+        {
+          "slot": "TE",
+          "playerId": "10236",
+          "name": "Dalton Kincaid",
+          "position": "TE",
+          "nflTeam": "BUF",
+          "age": 26,
+          "number": 86,
+          "status": "Active",
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/10236.jpg"
+        },
+        {
+          "slot": "FLEX",
+          "playerId": "9500",
+          "name": "Josh Downs",
+          "position": "WR",
+          "nflTeam": "IND",
+          "age": 25,
+          "number": 2,
+          "status": "Active",
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/9500.jpg"
+        },
+        {
+          "slot": "FLEX",
+          "playerId": "11646",
+          "name": "Jalen Coker",
+          "position": "WR",
+          "nflTeam": "CAR",
+          "age": 24,
+          "number": 18,
+          "status": "Active",
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11646.jpg"
+        },
+        {
+          "slot": "FLEX",
+          "playerId": "1466",
+          "name": "Travis Kelce",
+          "position": "TE",
+          "nflTeam": "KC",
+          "age": 36,
+          "number": 87,
+          "status": "Active",
+          "yearsExp": 13,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/1466.jpg"
+        },
+        {
+          "slot": "SUPER_FLEX",
+          "playerId": "11563",
+          "name": "Bo Nix",
+          "position": "QB",
+          "nflTeam": "DEN",
+          "age": 26,
+          "number": 10,
+          "status": "Active",
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11563.jpg"
+        },
+        {
+          "slot": "DL",
+          "playerId": "4135",
+          "name": "Trey Hendrickson",
+          "position": "DE",
+          "nflTeam": "BAL",
+          "age": 31,
+          "number": 91,
+          "status": "Active",
+          "yearsExp": 9,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/4135.jpg"
+        },
+        {
+          "slot": "LB",
+          "playerId": "12578",
+          "name": "Carson Schwesinger",
+          "position": "LB",
+          "nflTeam": "CLE",
+          "age": 23,
+          "number": 49,
+          "status": "Active",
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12578.jpg"
+        },
+        {
+          "slot": "DB",
+          "playerId": "13376",
+          "name": "Caleb Downs",
+          "position": "DB",
+          "nflTeam": "DAL",
+          "age": 21,
+          "number": 13,
+          "status": "Active",
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13376.jpg"
+        }
+      ],
+      "bench": [
+        {
+          "playerId": "13269",
+          "name": "Fernando Mendoza",
+          "position": "QB",
+          "nflTeam": "LV",
+          "age": 22,
+          "number": 15,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13269.jpg"
+        },
+        {
+          "playerId": "7591",
+          "name": "Justin Fields",
+          "position": "QB",
+          "nflTeam": "KC",
+          "age": 27,
+          "number": 6,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 5,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/7591.jpg"
+        },
+        {
+          "playerId": "12544",
+          "name": "LeQuint Allen",
+          "position": "RB",
+          "nflTeam": "JAX",
+          "age": 22,
+          "number": 5,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12544.jpg"
+        },
+        {
+          "playerId": "13305",
+          "name": "Mike Washington",
+          "position": "RB",
+          "nflTeam": "LV",
+          "age": 23,
+          "number": 30,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13305.jpg"
+        },
+        {
+          "playerId": "7611",
+          "name": "Rhamondre Stevenson",
+          "position": "RB",
+          "nflTeam": "NE",
+          "age": 28,
+          "number": 38,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 5,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/7611.jpg"
+        },
+        {
+          "playerId": "12533",
+          "name": "Jacory Croskey-Merritt",
+          "position": "RB",
+          "nflTeam": "WAS",
+          "age": 25,
+          "number": 22,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12533.jpg"
+        },
+        {
+          "playerId": "9511",
+          "name": "Keaton Mitchell",
+          "position": "RB",
+          "nflTeam": "LAC",
+          "age": 24,
+          "number": 34,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/9511.jpg"
+        },
+        {
+          "playerId": "8136",
+          "name": "Rachaad White",
+          "position": "RB",
+          "nflTeam": "WAS",
+          "age": 27,
+          "number": 1,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8136.jpg"
+        },
+        {
+          "playerId": "13338",
+          "name": "Kevin Coleman",
+          "position": "WR",
+          "nflTeam": "MIA",
+          "age": 22,
+          "number": 83,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13338.jpg"
+        },
+        {
+          "playerId": "13317",
+          "name": "Ted Hurst",
+          "position": "WR",
+          "nflTeam": "TB",
+          "age": 22,
+          "number": 17,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13317.jpg"
+        },
+        {
+          "playerId": "13346",
+          "name": "Denzel Boston",
+          "position": "WR",
+          "nflTeam": "CLE",
+          "age": 22,
+          "number": 12,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13346.jpg"
+        },
+        {
+          "playerId": "13276",
+          "name": "Omar Cooper",
+          "position": "WR",
+          "nflTeam": "NYJ",
+          "age": 22,
+          "number": 83,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13276.jpg"
+        },
+        {
+          "playerId": "12492",
+          "name": "Pat Bryant",
+          "position": "WR",
+          "nflTeam": "DEN",
+          "age": 23,
+          "number": 13,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12492.jpg"
+        },
+        {
+          "playerId": "13320",
+          "name": "Zachariah Branch",
+          "position": "WR",
+          "nflTeam": "ATL",
+          "age": 22,
+          "number": 17,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13320.jpg"
+        },
+        {
+          "playerId": "5848",
+          "name": "Marquise Brown",
+          "position": "WR",
+          "nflTeam": "PHI",
+          "age": 29,
+          "number": null,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 7,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/5848.jpg"
+        },
+        {
+          "playerId": "11610",
+          "name": "Malik Washington",
+          "position": "WR",
+          "nflTeam": "MIA",
+          "age": 25,
+          "number": 6,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11610.jpg"
+        },
+        {
+          "playerId": "13330",
+          "name": "Kenyon Sadiq",
+          "position": "TE",
+          "nflTeam": "NYJ",
+          "age": 21,
+          "number": 16,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13330.jpg"
+        },
+        {
+          "playerId": "8110",
+          "name": "Jake Ferguson",
+          "position": "TE",
+          "nflTeam": "DAL",
+          "age": 27,
+          "number": 87,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8110.jpg"
+        }
+      ],
+      "taxi": [
+        {
+          "playerId": "13293",
+          "name": "Ja'Kobi Lane",
+          "position": "WR",
+          "nflTeam": "BAL",
+          "age": 22,
+          "number": 6,
+          "status": "Active",
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13293.jpg"
+        },
+        {
+          "playerId": "13302",
+          "name": "Adam Randall",
+          "position": "RB",
+          "nflTeam": "BAL",
+          "age": 22,
+          "number": 23,
+          "status": "Inactive",
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13302.jpg"
+        },
+        {
+          "playerId": "13322",
+          "name": "Sam Roush",
+          "position": "TE",
+          "nflTeam": "CHI",
+          "age": 22,
+          "number": 87,
+          "status": "Active",
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13322.jpg"
+        }
+      ],
+      "draftPicks": [
+        {
+          "season": "2027",
+          "round": 4,
+          "originalRosterId": 8,
+          "originalFranchiseKey": "SamBaugh",
+          "originalTeamName": "Dude, Where's Lamar?"
+        },
+        {
+          "season": "2029",
+          "round": 1,
+          "originalRosterId": 8,
+          "originalFranchiseKey": "SamBaugh",
+          "originalTeamName": "Dude, Where's Lamar?"
+        },
+        {
+          "season": "2029",
+          "round": 1,
+          "originalRosterId": 5,
+          "originalFranchiseKey": "MaffuJames",
+          "originalTeamName": "I don't Gibbs a Shough"
+        },
+        {
+          "season": "2029",
+          "round": 2,
+          "originalRosterId": 8,
+          "originalFranchiseKey": "SamBaugh",
+          "originalTeamName": "Dude, Where's Lamar?"
+        },
+        {
+          "season": "2029",
+          "round": 3,
+          "originalRosterId": 8,
+          "originalFranchiseKey": "SamBaugh",
+          "originalTeamName": "Dude, Where's Lamar?"
+        },
+        {
+          "season": "2029",
+          "round": 4,
+          "originalRosterId": 8,
+          "originalFranchiseKey": "SamBaugh",
+          "originalTeamName": "Dude, Where's Lamar?"
+        }
+      ],
+      "totalPlayers": 34
+    },
+    "MattyiceR": {
+      "franchiseKey": "MattyiceR",
+      "rosterId": 9,
+      "teamName": "Heisenberg's Hitmen",
+      "starters": [
+        {
+          "slot": "QB",
+          "playerId": "4984",
+          "name": "Josh Allen",
+          "position": "QB",
+          "nflTeam": "BUF",
+          "age": 30,
+          "number": 17,
+          "status": "Active",
+          "yearsExp": 8,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/4984.jpg"
+        },
+        {
+          "slot": "RB",
+          "playerId": "6813",
+          "name": "Jonathan Taylor",
+          "position": "RB",
+          "nflTeam": "IND",
+          "age": 27,
+          "number": 28,
+          "status": "Active",
+          "yearsExp": 6,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/6813.jpg"
+        },
+        {
+          "slot": "RB",
+          "playerId": "9226",
+          "name": "De'Von Achane",
+          "position": "RB",
+          "nflTeam": "MIA",
+          "age": 24,
+          "number": 28,
+          "status": "Active",
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/9226.jpg"
+        },
+        {
+          "slot": "WR",
+          "playerId": "8137",
+          "name": "George Pickens",
+          "position": "WR",
+          "nflTeam": "DAL",
+          "age": 25,
+          "number": 3,
+          "status": "Active",
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8137.jpg"
+        },
+        {
+          "slot": "WR",
+          "playerId": "5927",
+          "name": "Terry McLaurin",
+          "position": "WR",
+          "nflTeam": "WAS",
+          "age": 30,
+          "number": 17,
+          "status": "Active",
+          "yearsExp": 7,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/5927.jpg"
+        },
+        {
+          "slot": "TE",
+          "playerId": "7553",
+          "name": "Kyle Pitts",
+          "position": "TE",
+          "nflTeam": "ATL",
+          "age": 25,
+          "number": 8,
+          "status": "Active",
+          "yearsExp": 5,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/7553.jpg"
+        },
+        {
+          "slot": "FLEX",
+          "playerId": "3198",
+          "name": "Derrick Henry",
+          "position": "RB",
+          "nflTeam": "BAL",
+          "age": 32,
+          "number": 22,
+          "status": "Active",
+          "yearsExp": 10,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/3198.jpg"
+        },
+        {
+          "slot": "FLEX",
+          "playerId": "7543",
+          "name": "Travis Etienne",
+          "position": "RB",
+          "nflTeam": "NO",
+          "age": 27,
+          "number": 3,
+          "status": "Active",
+          "yearsExp": 5,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/7543.jpg"
+        },
+        {
+          "slot": "FLEX",
+          "playerId": "10232",
+          "name": "Michael Wilson",
+          "position": "WR",
+          "nflTeam": "ARI",
+          "age": 26,
+          "number": 14,
+          "status": "Active",
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/10232.jpg"
+        },
+        {
+          "slot": "SUPER_FLEX",
+          "playerId": "11566",
+          "name": "Jayden Daniels",
+          "position": "QB",
+          "nflTeam": "WAS",
+          "age": 25,
+          "number": 5,
+          "status": "Active",
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11566.jpg"
+        },
+        {
+          "slot": "DL",
+          "playerId": "3973",
+          "name": "Myles Garrett",
+          "position": "DE",
+          "nflTeam": "LAR",
+          "age": 30,
+          "number": 95,
+          "status": "Active",
+          "yearsExp": 9,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/3973.jpg"
+        },
+        {
+          "slot": "LB",
+          "playerId": "0",
+          "name": "Empty Slot",
+          "position": "LB",
+          "nflTeam": "FA",
+          "age": null,
+          "number": null,
+          "status": "Active",
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/0.jpg"
+        },
+        {
+          "slot": "DB",
+          "playerId": "4971",
+          "name": "Derwin James",
+          "position": "DB",
+          "nflTeam": "LAC",
+          "age": 30,
+          "number": 3,
+          "status": "Active",
+          "yearsExp": 8,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/4971.jpg"
+        }
+      ],
+      "bench": [
+        {
+          "playerId": "8183",
+          "name": "Brock Purdy",
+          "position": "QB",
+          "nflTeam": "SF",
+          "age": 26,
+          "number": 13,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8183.jpg"
+        },
+        {
+          "playerId": "4943",
+          "name": "Sam Darnold",
+          "position": "QB",
+          "nflTeam": "SEA",
+          "age": 29,
+          "number": 14,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 8,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/4943.jpg"
+        },
+        {
+          "playerId": "4035",
+          "name": "Alvin Kamara",
+          "position": "RB",
+          "nflTeam": "NO",
+          "age": 31,
+          "number": 41,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 9,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/4035.jpg"
+        },
+        {
+          "playerId": "9225",
+          "name": "Tank Bigsby",
+          "position": "RB",
+          "nflTeam": "PHI",
+          "age": 24,
+          "number": 8,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/9225.jpg"
+        },
+        {
+          "playerId": "13424",
+          "name": "Seth McGowan",
+          "position": "RB",
+          "nflTeam": "IND",
+          "age": 24,
+          "number": 20,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13424.jpg"
+        },
+        {
+          "playerId": "12529",
+          "name": "TreVeyon Henderson",
+          "position": "RB",
+          "nflTeam": "NE",
+          "age": 23,
+          "number": 32,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12529.jpg"
+        },
+        {
+          "playerId": "8188",
+          "name": "Tyquan Thornton",
+          "position": "WR",
+          "nflTeam": "KC",
+          "age": 26,
+          "number": 2,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8188.jpg"
+        },
+        {
+          "playerId": "11834",
+          "name": "Devaughn Vele",
+          "position": "WR",
+          "nflTeam": "NO",
+          "age": 28,
+          "number": 14,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11834.jpg"
+        },
+        {
+          "playerId": "13477",
+          "name": "Colbie Young",
+          "position": "WR",
+          "nflTeam": "CIN",
+          "age": 24,
+          "number": 86,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13477.jpg"
+        },
+        {
+          "playerId": "13411",
+          "name": "Zavion Thomas",
+          "position": "WR",
+          "nflTeam": "CHI",
+          "age": 22,
+          "number": 81,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13411.jpg"
+        },
+        {
+          "playerId": "11627",
+          "name": "Troy Franklin",
+          "position": "WR",
+          "nflTeam": "DEN",
+          "age": 23,
+          "number": 11,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11627.jpg"
+        },
+        {
+          "playerId": "11638",
+          "name": "Ricky Pearsall",
+          "position": "WR",
+          "nflTeam": "SF",
+          "age": 25,
+          "number": 1,
+          "status": "IR",
+          "isIR": true,
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11638.jpg"
+        },
+        {
+          "playerId": "5947",
+          "name": "Jakobi Meyers",
+          "position": "WR",
+          "nflTeam": "JAX",
+          "age": 29,
+          "number": 3,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 7,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/5947.jpg"
+        },
+        {
+          "playerId": "11608",
+          "name": "Isaiah Williams",
+          "position": "WR",
+          "nflTeam": "NYJ",
+          "age": 25,
+          "number": 18,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11608.jpg"
+        },
+        {
+          "playerId": "11620",
+          "name": "Rome Odunze",
+          "position": "WR",
+          "nflTeam": "CHI",
+          "age": 24,
+          "number": 15,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11620.jpg"
+        },
+        {
+          "playerId": "13268",
+          "name": "Elijah Sarratt",
+          "position": "WR",
+          "nflTeam": "BAL",
+          "age": 23,
+          "number": 13,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13268.jpg"
+        },
+        {
+          "playerId": "4033",
+          "name": "David Njoku",
+          "position": "TE",
+          "nflTeam": "LAC",
+          "age": 30,
+          "number": 83,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 9,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/4033.jpg"
+        },
+        {
+          "playerId": "5001",
+          "name": "Dalton Schultz",
+          "position": "TE",
+          "nflTeam": "HOU",
+          "age": 30,
+          "number": 86,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 8,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/5001.jpg"
+        },
+        {
+          "playerId": "2505",
+          "name": "Darren Waller",
+          "position": "TE",
+          "nflTeam": "CAR",
+          "age": 33,
+          "number": 88,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 11,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/2505.jpg"
+        },
+        {
+          "playerId": "8698",
+          "name": "Jake Tonges",
+          "position": "TE",
+          "nflTeam": "SF",
+          "age": 27,
+          "number": 88,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8698.jpg"
+        }
+      ],
+      "taxi": [
+        {
+          "playerId": "11576",
+          "name": "Braelon Allen",
+          "position": "RB",
+          "nflTeam": "NYJ",
+          "age": 22,
+          "number": null,
+          "status": "Active",
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11576.jpg"
+        },
+        {
+          "playerId": "13275",
+          "name": "Ty Simpson",
+          "position": "QB",
+          "nflTeam": "LAR",
+          "age": 23,
+          "number": 15,
+          "status": "Active",
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13275.jpg"
+        },
+        {
+          "playerId": "13319",
+          "name": "Oscar Delp",
+          "position": "TE",
+          "nflTeam": "NO",
+          "age": 23,
+          "number": 4,
+          "status": "Active",
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13319.jpg"
+        }
+      ],
+      "draftPicks": [
+        {
+          "season": "2027",
+          "round": 2,
+          "originalRosterId": 1,
+          "originalFranchiseKey": "Rhymenoceros",
+          "originalTeamName": "Scott's Totts"
+        },
+        {
+          "season": "2027",
+          "round": 4,
+          "originalRosterId": 9,
+          "originalFranchiseKey": "MattyiceR",
+          "originalTeamName": "Heisenberg's Hitmen"
+        },
+        {
+          "season": "2028",
+          "round": 1,
+          "originalRosterId": 9,
+          "originalFranchiseKey": "MattyiceR",
+          "originalTeamName": "Heisenberg's Hitmen"
+        },
+        {
+          "season": "2028",
+          "round": 3,
+          "originalRosterId": 9,
+          "originalFranchiseKey": "MattyiceR",
+          "originalTeamName": "Heisenberg's Hitmen"
+        },
+        {
+          "season": "2028",
+          "round": 3,
+          "originalRosterId": 8,
+          "originalFranchiseKey": "SamBaugh",
+          "originalTeamName": "Dude, Where's Lamar?"
+        },
+        {
+          "season": "2028",
+          "round": 4,
+          "originalRosterId": 9,
+          "originalFranchiseKey": "MattyiceR",
+          "originalTeamName": "Heisenberg's Hitmen"
+        },
+        {
+          "season": "2028",
+          "round": 4,
+          "originalRosterId": 8,
+          "originalFranchiseKey": "SamBaugh",
+          "originalTeamName": "Dude, Where's Lamar?"
+        },
+        {
+          "season": "2029",
+          "round": 1,
+          "originalRosterId": 9,
+          "originalFranchiseKey": "MattyiceR",
+          "originalTeamName": "Heisenberg's Hitmen"
+        },
+        {
+          "season": "2029",
+          "round": 2,
+          "originalRosterId": 9,
+          "originalFranchiseKey": "MattyiceR",
+          "originalTeamName": "Heisenberg's Hitmen"
+        },
+        {
+          "season": "2029",
+          "round": 3,
+          "originalRosterId": 9,
+          "originalFranchiseKey": "MattyiceR",
+          "originalTeamName": "Heisenberg's Hitmen"
+        },
+        {
+          "season": "2029",
+          "round": 4,
+          "originalRosterId": 9,
+          "originalFranchiseKey": "MattyiceR",
+          "originalTeamName": "Heisenberg's Hitmen"
+        }
+      ],
+      "totalPlayers": 35
+    },
+    "JayZone13": {
+      "franchiseKey": "JayZone13",
+      "rosterId": 10,
+      "teamName": "Ronin",
+      "starters": [
+        {
+          "slot": "QB",
+          "playerId": "6770",
+          "name": "Joe Burrow",
+          "position": "QB",
+          "nflTeam": "CIN",
+          "age": 29,
+          "number": 9,
+          "status": "Active",
+          "yearsExp": 6,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/6770.jpg"
+        },
+        {
+          "slot": "RB",
+          "playerId": "8150",
+          "name": "Kyren Williams",
+          "position": "RB",
+          "nflTeam": "LAR",
+          "age": 26,
+          "number": 23,
+          "status": "Active",
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8150.jpg"
+        },
+        {
+          "slot": "RB",
+          "playerId": "9224",
+          "name": "Chase Brown",
+          "position": "RB",
+          "nflTeam": "CIN",
+          "age": 26,
+          "number": 30,
+          "status": "Active",
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/9224.jpg"
+        },
+        {
+          "slot": "WR",
+          "playerId": "6801",
+          "name": "Tee Higgins",
+          "position": "WR",
+          "nflTeam": "CIN",
+          "age": 27,
+          "number": 5,
+          "status": "Active",
+          "yearsExp": 6,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/6801.jpg"
+        },
+        {
+          "slot": "WR",
+          "playerId": "13279",
+          "name": "Carnell Tate",
+          "position": "WR",
+          "nflTeam": "TEN",
+          "age": 21,
+          "number": 14,
+          "status": "Active",
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13279.jpg"
+        },
+        {
+          "slot": "TE",
+          "playerId": "12518",
+          "name": "Tyler Warren",
+          "position": "TE",
+          "nflTeam": "IND",
+          "age": 24,
+          "number": 84,
+          "status": "Active",
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12518.jpg"
+        },
+        {
+          "slot": "FLEX",
+          "playerId": "11631",
+          "name": "Brian Thomas",
+          "position": "WR",
+          "nflTeam": "JAX",
+          "age": 23,
+          "number": 7,
+          "status": "Active",
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11631.jpg"
+        },
+        {
+          "slot": "FLEX",
+          "playerId": "11624",
+          "name": "Xavier Worthy",
+          "position": "WR",
+          "nflTeam": "KC",
+          "age": 23,
+          "number": 1,
+          "status": "Active",
+          "yearsExp": 2,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/11624.jpg"
+        },
+        {
+          "slot": "FLEX",
+          "playerId": "13286",
+          "name": "Jadarian Price",
+          "position": "RB",
+          "nflTeam": "SEA",
+          "age": 22,
+          "number": 8,
+          "status": "Active",
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13286.jpg"
+        },
+        {
+          "slot": "SUPER_FLEX",
+          "playerId": "4892",
+          "name": "Baker Mayfield",
+          "position": "QB",
+          "nflTeam": "TB",
+          "age": 31,
+          "number": 6,
+          "status": "Active",
+          "yearsExp": 8,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/4892.jpg"
+        },
+        {
+          "slot": "DL",
+          "playerId": "13363",
+          "name": "David Bailey",
+          "position": "LB",
+          "nflTeam": "NYJ",
+          "age": 23,
+          "number": 31,
+          "status": "Active",
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13363.jpg"
+        },
+        {
+          "slot": "LB",
+          "playerId": "7648",
+          "name": "Nick Bolton",
+          "position": "LB",
+          "nflTeam": "KC",
+          "age": 26,
+          "number": 32,
+          "status": "Active",
+          "yearsExp": 5,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/7648.jpg"
+        },
+        {
+          "slot": "DB",
+          "playerId": "13371",
+          "name": "Dillon Thieneman",
+          "position": "DB",
+          "nflTeam": "CHI",
+          "age": 22,
+          "number": 31,
+          "status": "Active",
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13371.jpg"
+        }
+      ],
+      "bench": [
+        {
+          "playerId": "9758",
+          "name": "C.J. Stroud",
+          "position": "QB",
+          "nflTeam": "HOU",
+          "age": 24,
+          "number": 7,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 3,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/9758.jpg"
+        },
+        {
+          "playerId": "12494",
+          "name": "Kyle McCord",
+          "position": "QB",
+          "nflTeam": "MIA",
+          "age": 23,
+          "number": 18,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12494.jpg"
+        },
+        {
+          "playerId": "13345",
+          "name": "Jonah Coleman",
+          "position": "RB",
+          "nflTeam": "DEN",
+          "age": 23,
+          "number": 20,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13345.jpg"
+        },
+        {
+          "playerId": "13405",
+          "name": "Kaytron Allen",
+          "position": "RB",
+          "nflTeam": "WAS",
+          "age": 23,
+          "number": 31,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13405.jpg"
+        },
+        {
+          "playerId": "12495",
+          "name": "Ollie Gordon",
+          "position": "RB",
+          "nflTeam": "MIA",
+          "age": 22,
+          "number": null,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12495.jpg"
+        },
+        {
+          "playerId": "12474",
+          "name": "Woody Marks",
+          "position": "RB",
+          "nflTeam": "HOU",
+          "age": 25,
+          "number": 4,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12474.jpg"
+        },
+        {
+          "playerId": "13347",
+          "name": "Demond Claiborne",
+          "position": "RB",
+          "nflTeam": "MIN",
+          "age": 22,
+          "number": 21,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13347.jpg"
+        },
+        {
+          "playerId": "12501",
+          "name": "Matthew Golden",
+          "position": "WR",
+          "nflTeam": "GB",
+          "age": 23,
+          "number": null,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12501.jpg"
+        },
+        {
+          "playerId": "12541",
+          "name": "Dont'e Thornton",
+          "position": "WR",
+          "nflTeam": "LV",
+          "age": 23,
+          "number": 10,
+          "status": "IR",
+          "isIR": true,
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12541.jpg"
+        },
+        {
+          "playerId": "12499",
+          "name": "Elic Ayomanor",
+          "position": "WR",
+          "nflTeam": "TEN",
+          "age": 23,
+          "number": 5,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12499.jpg"
+        },
+        {
+          "playerId": "13296",
+          "name": "Caleb Douglas",
+          "position": "WR",
+          "nflTeam": "MIA",
+          "age": 22,
+          "number": 7,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13296.jpg"
+        },
+        {
+          "playerId": "12535",
+          "name": "Isaac TeSlaa",
+          "position": "WR",
+          "nflTeam": "DET",
+          "age": 24,
+          "number": 18,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12535.jpg"
+        },
+        {
+          "playerId": "13301",
+          "name": "Antonio Williams",
+          "position": "WR",
+          "nflTeam": "WAS",
+          "age": 22,
+          "number": 14,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13301.jpg"
+        },
+        {
+          "playerId": "13324",
+          "name": "Matt Hibner",
+          "position": "TE",
+          "nflTeam": "BAL",
+          "age": 24,
+          "number": 88,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13324.jpg"
+        },
+        {
+          "playerId": "8172",
+          "name": "Greg Dulcich",
+          "position": "TE",
+          "nflTeam": "MIA",
+          "age": 26,
+          "number": 85,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 4,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/8172.jpg"
+        },
+        {
+          "playerId": "13307",
+          "name": "Marlin Klein",
+          "position": "TE",
+          "nflTeam": "HOU",
+          "age": 23,
+          "number": 83,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13307.jpg"
+        },
+        {
+          "playerId": "13342",
+          "name": "John Michael Gyllenborg",
+          "position": "TE",
+          "nflTeam": "KC",
+          "age": 24,
+          "number": 84,
+          "status": "IR",
+          "isIR": true,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13342.jpg"
+        },
+        {
+          "playerId": "13400",
+          "name": "Justin Joly",
+          "position": "TE",
+          "nflTeam": "FA",
+          "age": 22,
+          "number": 80,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13400.jpg"
+        },
+        {
+          "playerId": "13359",
+          "name": "Malachi Lawrence",
+          "position": "DL",
+          "nflTeam": "DAL",
+          "age": 23,
+          "number": 57,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13359.jpg"
+        },
+        {
+          "playerId": "12567",
+          "name": "Malaki Starks",
+          "position": "DB",
+          "nflTeam": "BAL",
+          "age": 22,
+          "number": 24,
+          "status": "Active",
+          "isIR": false,
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12567.jpg"
+        }
+      ],
+      "taxi": [
+        {
+          "playerId": "12510",
+          "name": "Jalen Milroe",
+          "position": "QB",
+          "nflTeam": "SEA",
+          "age": 23,
+          "number": 6,
+          "status": "Active",
+          "yearsExp": 1,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/12510.jpg"
+        },
+        {
+          "playerId": "13306",
+          "name": "Taylen Green",
+          "position": "QB",
+          "nflTeam": "CLE",
+          "age": 23,
+          "number": 15,
+          "status": "Active",
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13306.jpg"
+        },
+        {
+          "playerId": "13335",
+          "name": "Cole Payton",
+          "position": "QB",
+          "nflTeam": "PHI",
+          "age": 23,
+          "number": 18,
+          "status": "Active",
+          "yearsExp": 0,
+          "headshotUrl": "https://sleepercdn.com/content/nfl/players/thumb/13335.jpg"
+        }
+      ],
+      "draftPicks": [
+        {
+          "season": "2027",
+          "round": 1,
+          "originalRosterId": 10,
+          "originalFranchiseKey": "JayZone13",
+          "originalTeamName": "Ronin"
+        },
+        {
+          "season": "2027",
+          "round": 1,
+          "originalRosterId": 5,
+          "originalFranchiseKey": "MaffuJames",
+          "originalTeamName": "I don't Gibbs a Shough"
+        },
+        {
+          "season": "2027",
+          "round": 1,
+          "originalRosterId": 8,
+          "originalFranchiseKey": "SamBaugh",
+          "originalTeamName": "Dude, Where's Lamar?"
+        },
+        {
+          "season": "2027",
+          "round": 2,
+          "originalRosterId": 10,
+          "originalFranchiseKey": "JayZone13",
+          "originalTeamName": "Ronin"
+        },
+        {
+          "season": "2027",
+          "round": 2,
+          "originalRosterId": 9,
+          "originalFranchiseKey": "MattyiceR",
+          "originalTeamName": "Heisenberg's Hitmen"
+        },
+        {
+          "season": "2027",
+          "round": 3,
+          "originalRosterId": 10,
+          "originalFranchiseKey": "JayZone13",
+          "originalTeamName": "Ronin"
+        },
+        {
+          "season": "2027",
+          "round": 3,
+          "originalRosterId": 8,
+          "originalFranchiseKey": "SamBaugh",
+          "originalTeamName": "Dude, Where's Lamar?"
+        },
+        {
+          "season": "2028",
+          "round": 1,
+          "originalRosterId": 10,
+          "originalFranchiseKey": "JayZone13",
+          "originalTeamName": "Ronin"
+        },
+        {
+          "season": "2028",
+          "round": 1,
+          "originalRosterId": 8,
+          "originalFranchiseKey": "SamBaugh",
+          "originalTeamName": "Dude, Where's Lamar?"
+        },
+        {
+          "season": "2028",
+          "round": 2,
+          "originalRosterId": 10,
+          "originalFranchiseKey": "JayZone13",
+          "originalTeamName": "Ronin"
+        },
+        {
+          "season": "2028",
+          "round": 2,
+          "originalRosterId": 5,
+          "originalFranchiseKey": "MaffuJames",
+          "originalTeamName": "I don't Gibbs a Shough"
+        },
+        {
+          "season": "2028",
+          "round": 2,
+          "originalRosterId": 8,
+          "originalFranchiseKey": "SamBaugh",
+          "originalTeamName": "Dude, Where's Lamar?"
+        },
+        {
+          "season": "2028",
+          "round": 2,
+          "originalRosterId": 9,
+          "originalFranchiseKey": "MattyiceR",
+          "originalTeamName": "Heisenberg's Hitmen"
+        },
+        {
+          "season": "2028",
+          "round": 3,
+          "originalRosterId": 10,
+          "originalFranchiseKey": "JayZone13",
+          "originalTeamName": "Ronin"
+        },
+        {
+          "season": "2028",
+          "round": 3,
+          "originalRosterId": 4,
+          "originalFranchiseKey": "DukeofWales",
+          "originalTeamName": "Hands for Jobs"
+        },
+        {
+          "season": "2029",
+          "round": 1,
+          "originalRosterId": 10,
+          "originalFranchiseKey": "JayZone13",
+          "originalTeamName": "Ronin"
+        },
+        {
+          "season": "2029",
+          "round": 2,
+          "originalRosterId": 10,
+          "originalFranchiseKey": "JayZone13",
+          "originalTeamName": "Ronin"
+        },
+        {
+          "season": "2029",
+          "round": 3,
+          "originalRosterId": 10,
+          "originalFranchiseKey": "JayZone13",
+          "originalTeamName": "Ronin"
+        },
+        {
+          "season": "2029",
+          "round": 4,
+          "originalRosterId": 10,
+          "originalFranchiseKey": "JayZone13",
+          "originalTeamName": "Ronin"
+        }
+      ],
+      "totalPlayers": 36
+    }
+  }
+}

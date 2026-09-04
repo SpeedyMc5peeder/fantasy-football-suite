@@ -48,3 +48,531 @@ body {
   border-color: rgba(56, 189, 248, 0.4);
   transform: translateY(-2px);
 }
+
+/* ==========================================================
+   LIGHT MODE THEME SYSTEM
+   ========================================================== */
+html.theme-light,
+body.theme-light,
+.theme-light {
+  color-scheme: light;
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+.theme-light ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+.theme-light ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+}
+.theme-light ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Base backgrounds */
+.theme-light .bg-\[\#0a0d14\] {
+  background-color: #f8fafc !important;
+}
+
+.theme-light header,
+.theme-light .bg-\[\#0c101a\]\/95 {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-color: #e2e8f0 !important;
+}
+
+.theme-light footer,
+.theme-light .bg-\[\#080b11\] {
+  background-color: #f1f5f9 !important;
+  border-top-color: #e2e8f0 !important;
+}
+
+.theme-light .bg-\[\#111726\] {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+}
+
+.theme-light .glass-panel {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+}
+
+.theme-light .glass-panel-hover:hover {
+  background: #ffffff !important;
+  border-color: #0284c7 !important;
+  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.08);
+}
+
+/* Dark utility background overrides for Light Mode */
+.theme-light [class*="bg-slate-900"] {
+  background-color: #f8fafc !important;
+}
+
+.theme-light [class*="bg-slate-950"] {
+  background-color: #ffffff !important;
+}
+
+.theme-light [class*="bg-slate-800"] {
+  background-color: #f1f5f9 !important;
+}
+
+/* Border overrides */
+.theme-light [class*="border-slate-800"],
+.theme-light [class*="border-slate-700"] {
+  border-color: #cbd5e1 !important;
+}
+
+/* Text contrast overrides */
+.theme-light .text-white {
+  color: #0f172a !important;
+}
+
+.theme-light .text-slate-100,
+.theme-light .text-slate-200,
+.theme-light .text-slate-300 {
+  color: #1e293b !important;
+}
+
+.theme-light .text-slate-400 {
+  color: #475569 !important;
+}
+
+.theme-light .text-slate-500 {
+  color: #334155 !important;
+}
+
+.theme-light .text-slate-600 {
+  color: #475569 !important;
+}
+
+/* Colored accent contrast boosters in light mode (WCAG AAA compliant) */
+.theme-light .text-emerald-400,
+.theme-light .text-emerald-300 {
+  color: #047857 !important;
+}
+
+.theme-light .text-amber-400,
+.theme-light .text-amber-300 {
+  color: #b45309 !important;
+}
+
+.theme-light .text-cyan-400,
+.theme-light .text-cyan-300 {
+  color: #0369a1 !important;
+}
+
+.theme-light .text-rose-400,
+.theme-light .text-rose-300 {
+  color: #be123c !important;
+}
+
+.theme-light .text-teal-400,
+.theme-light .text-teal-300 {
+  color: #0f766e !important;
+}
+
+/* Badges in light mode */
+.theme-light .bg-emerald-500\/15,
+.theme-light .bg-emerald-500\/20 {
+  background-color: #ecfdf5 !important;
+  color: #047857 !important;
+  border-color: #a7f3d0 !important;
+}
+
+.theme-light .bg-amber-500\/15,
+.theme-light .bg-amber-500\/20 {
+  background-color: #fffbeb !important;
+  color: #b45309 !important;
+  border-color: #fde68a !important;
+}
+
+.theme-light .bg-cyan-500\/10,
+.theme-light .bg-cyan-500\/15,
+.theme-light .bg-cyan-500\/20 {
+  background-color: #f0f9ff !important;
+  color: #0369a1 !important;
+  border-color: #bae6fd !important;
+}
+
+.theme-light .bg-rose-500\/15,
+.theme-light .bg-rose-500\/20 {
+  background-color: #fff1f2 !important;
+  color: #be123c !important;
+  border-color: #fecdd3 !important;
+}
+
+.theme-light .bg-blue-500\/20 {
+  background-color: #eff6ff !important;
+  color: #1d4ed8 !important;
+  border-color: #bfdbfe !important;
+}
+
+/* ==========================================================
+   FORECAST & SPORTSBOOK TILES CONTRAST (LIGHT MODE)
+   ========================================================== */
+.theme-light .forecast-card {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05) !important;
+}
+
+.theme-light .forecast-card span.text-slate-400 {
+  color: #475569 !important;
+  font-weight: 700 !important;
+}
+
+.theme-light .forecast-card strong {
+  font-weight: 800 !important;
+}
+
+.theme-light .forecast-card strong.text-amber-300 {
+  color: #b45309 !important;
+}
+
+.theme-light .forecast-card strong.text-slate-200 {
+  color: #0f172a !important;
+}
+
+.theme-light .forecast-card strong.text-cyan-300 {
+  color: #0369a1 !important;
+}
+
+.theme-light .forecast-card strong.text-rose-300,
+.theme-light .forecast-card strong.text-rose-400 {
+  color: #be123c !important;
+}
+
+.theme-light .forecast-card .text-teal-300 {
+  color: #047857 !important;
+  font-weight: 600 !important;
+}
+
+.theme-light .sportsbook-card,
+.theme-light .sportsbook-settled-card {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.06) !important;
+}
+
+.theme-light .sportsbook-matchup-box,
+.theme-light .sportsbook-receipt-box,
+.theme-light .sportsbook-single-receipt {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+.theme-light .sportsbook-pool-box {
+  background-color: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+}
+
+.theme-light .sportsbook-side-a,
+.theme-light .sportsbook-winner-box {
+  background-color: #ecfdf5 !important;
+  border-color: #a7f3d0 !important;
+}
+
+.theme-light .sportsbook-side-a span.text-emerald-400,
+.theme-light .sportsbook-winner-box span.text-emerald-400 {
+  color: #065f46 !important;
+  font-weight: 900 !important;
+}
+
+.theme-light .sportsbook-side-b {
+  background-color: #fffbeb !important;
+  border-color: #fde68a !important;
+}
+
+.theme-light .sportsbook-side-b span.text-amber-400 {
+  color: #92400e !important;
+  font-weight: 900 !important;
+}
+
+.theme-light .sportsbook-loser-box {
+  background-color: #fff1f2 !important;
+  border-color: #fecdd3 !important;
+}
+
+.theme-light .sportsbook-loser-box span.text-rose-400 {
+  color: #9f1239 !important;
+  font-weight: 900 !important;
+}
+
+.theme-light .sportsbook-manager-tag {
+  background-color: #e2e8f0 !important;
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+.theme-light .sportsbook-stake-badge {
+  background-color: #ecfdf5 !important;
+  color: #047857 !important;
+  border-color: #a7f3d0 !important;
+}
+
+.theme-light .sportsbook-pot-pill {
+  background: #fffbeb !important;
+  color: #b45309 !important;
+  border-color: #fde68a !important;
+}
+
+.theme-light .sportsbook-pays-a {
+  background-color: #065f46 !important; /* Deep forest green */
+  color: #ffffff !important;           /* Crisp bright white text */
+  border-color: #047857 !important;
+  font-weight: 900 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) !important;
+}
+
+.theme-light .sportsbook-pays-b {
+  background-color: #b45309 !important; /* Deep warm amber */
+  color: #ffffff !important;           /* Crisp bright white text */
+  border-color: #92400e !important;
+  font-weight: 900 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) !important;
+}
+
+.theme-light .sportsbook-profit-text-a {
+  color: #475569 !important;
+}
+.theme-light .sportsbook-profit-text-a strong {
+  color: #047857 !important;
+  font-weight: 900 !important;
+}
+
+.theme-light .sportsbook-profit-text-b {
+  color: #475569 !important;
+}
+.theme-light .sportsbook-profit-text-b strong {
+  color: #b45309 !important;
+  font-weight: 900 !important;
+}
+.theme-light .sportsbook-profit-text-b span.italic {
+  color: #b45309 !important;
+  font-weight: 800 !important;
+}
+
+.theme-light .sportsbook-creator-tag {
+  background-color: #d1fae5 !important;
+  color: #065f46 !important;
+  border: 1px solid #6ee7b7 !important;
+}
+
+.theme-light .sportsbook-settled-winner-tag {
+  background-color: #d1fae5 !important;
+  color: #065f46 !important;
+  border: 1px solid #a7f3d0 !important;
+}
+.theme-light .sportsbook-settled-winner-tag span {
+  color: #065f46 !important;
+}
+
+.theme-light .sportsbook-modal-pays-a {
+  color: #047857 !important;
+  font-weight: 900 !important;
+}
+
+.theme-light .sportsbook-modal-pays-b {
+  color: #b45309 !important;
+  font-weight: 900 !important;
+}
+
+.theme-light .sportsbook-odds-title {
+  color: #0369a1 !important;
+  font-weight: 800 !important;
+}
+
+.theme-light .sportsbook-entry-info {
+  color: #475569 !important;
+  font-weight: 700 !important;
+}
+
+.theme-light .sportsbook-leaderboard-card {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+}
+
+.theme-light .rivalry-header-card,
+.theme-light .rivalry-row-header {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.04) !important;
+}
+
+.theme-light .rivalry-header-card span,
+.theme-light .rivalry-row-header span.text-white {
+  color: #0f172a !important;
+  font-weight: 900 !important;
+}
+
+/* Form inputs in light mode */
+.theme-light input,
+.theme-light select,
+.theme-light textarea {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+/* Buttons with text-black should retain text-black */
+.theme-light .text-black {
+  color: #000000 !important;
+}
+
+/* ==========================================================
+   CHAMPION TILES & HALL OF CHAMPIONS CONTRAST
+   ========================================================== */
+.theme-light .from-amber-950\/40 {
+  background: linear-gradient(to bottom, #fef3c7, #ffffff) !important;
+  border-color: #f59e0b !important;
+}
+
+.theme-light .from-purple-950\/40 {
+  background: linear-gradient(to bottom, #f3e8ff, #ffffff) !important;
+  border-color: #c084fc !important;
+}
+
+.theme-light .text-amber-400 {
+  color: #b45309 !important; /* Rich amber for high contrast on light */
+}
+
+.theme-light .border-amber-500\/60,
+.theme-light .border-amber-500\/50,
+.theme-light .border-amber-500\/40 {
+  border-color: #f59e0b !important;
+}
+
+.theme-light .border-purple-500\/40,
+.theme-light .border-purple-500\/30 {
+  border-color: #d8b4fe !important;
+}
+
+.theme-light .bg-purple-950\/40,
+.theme-light .bg-purple-950\/25 {
+  background-color: #f5f3ff !important;
+}
+
+.theme-light .text-purple-300,
+.theme-light .text-purple-200 {
+  color: #581c87 !important; /* Deep royal purple */
+}
+
+/* 2024 Cinderella Champion card in Light Mode */
+.theme-light .from-rose-950\/40 {
+  background: linear-gradient(to bottom, #ffe4e6, #ffffff) !important;
+  border-color: #f43f5e !important;
+}
+.theme-light .text-rose-400 {
+  color: #be123c !important;
+}
+.theme-light .border-rose-500\/60,
+.theme-light .border-rose-500\/50,
+.theme-light .border-rose-500\/40 {
+  border-color: #fb7185 !important;
+}
+
+/* 2023 Undefeated Champion card in Light Mode */
+.theme-light .from-emerald-950\/40 {
+  background: linear-gradient(to bottom, #dcfce7, #ffffff) !important;
+  border-color: #10b981 !important;
+}
+.theme-light .text-emerald-400 {
+  color: #047857 !important;
+}
+.theme-light .border-emerald-500\/60,
+.theme-light .border-emerald-500\/50,
+.theme-light .border-emerald-500\/40 {
+  border-color: #34d399 !important;
+}
+
+/* Navbar EST 2022 badge */
+.theme-light .bg-cyan-950 {
+  background-color: #e0f2fe !important;
+  color: #0369a1 !important;
+  border-color: #7dd3fc !important;
+}
+
+/* ==========================================================
+   RIVALRY MATRIX NUMBERS CONTRAST (BOLD BLACK IN LIGHT MODE)
+   ========================================================== */
+.theme-light .rivalry-cell-win {
+  background-color: #dcfce7 !important;
+  border-color: #86efac !important;
+  color: #000000 !important;
+  font-weight: 900 !important;
+}
+
+.theme-light .rivalry-cell-loss {
+  background-color: #ffe4e6 !important;
+  border-color: #fca5a5 !important;
+  color: #000000 !important;
+  font-weight: 900 !important;
+}
+
+.theme-light .rivalry-cell-tie {
+  background-color: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+  color: #000000 !important;
+  font-weight: 900 !important;
+}
+
+.theme-light .rivalry-cell-empty {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  color: #94a3b8 !important;
+}
+
+/* ==========================================================
+   DYNASTY CUP & 4-YEAR MEGA POT IN LIGHT MODE
+   ========================================================== */
+.theme-light .dynasty-vault-card {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 40%, #ffffff 100%) !important;
+  border-color: #f59e0b !important;
+  box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.15) !important;
+}
+
+.theme-light .dynasty-vault-card h2 {
+  color: #0f172a !important;
+}
+
+.theme-light .dynasty-vault-card p {
+  color: #475569 !important;
+}
+
+.theme-light .dynasty-vault-meter {
+  background-color: #ffffff !important;
+  border-color: #fcd34d !important;
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.05) !important;
+}
+
+.theme-light .dynasty-payout-pill {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+}
+
+.theme-light .dynasty-rules-card {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+}
+
+.theme-light .dynasty-podium-gold {
+  background: linear-gradient(to bottom, #fffbeb, #ffffff) !important;
+  border-color: #f59e0b !important;
+}
+
+.theme-light .dynasty-podium-silver {
+  background: linear-gradient(to bottom, #f1f5f9, #ffffff) !important;
+  border-color: #94a3b8 !important;
+}
+
+.theme-light .dynasty-podium-bronze {
+  background: linear-gradient(to bottom, #fff7ed, #ffffff) !important;
+  border-color: #fdba74 !important;
+}
+
+.theme-light .dynasty-standings-card {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+}
+
