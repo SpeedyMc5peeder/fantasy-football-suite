@@ -191,7 +191,7 @@ export default function Navbar({
         </div>
 
         {/* Desktop Navigation Tabs Bar */}
-        <nav className="hidden md:flex space-x-1 sm:space-x-2 overflow-x-auto no-scrollbar py-2.5 border-t border-slate-800/80">
+        <nav className="hidden md:flex items-center justify-between space-x-1 lg:space-x-1.5 overflow-x-auto no-scrollbar py-2 border-t border-slate-800/80">
           {navItems.map(item => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
@@ -199,13 +199,13 @@ export default function Navbar({
               <button
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
-                className={`flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all ${
+                className={`flex items-center space-x-1.5 lg:space-x-2 px-2.5 xl:px-3.5 py-1.5 lg:py-2 rounded-xl text-xs xl:text-sm font-semibold whitespace-nowrap transition-all ${
                   isActive
                     ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 shadow-glow-cyan'
                     : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent'
                 }`}
               >
-                <Icon className={`w-4 h-4 ${isActive ? 'text-cyan-400' : 'text-slate-400'}`} />
+                <Icon className={`w-3.5 h-3.5 xl:w-4 xl:h-4 ${isActive ? 'text-cyan-400' : 'text-slate-400'}`} />
                 <span>{item.label}</span>
               </button>
             );
