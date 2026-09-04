@@ -1210,7 +1210,7 @@ async function generateSeasonPreview(options) {
 
     teamEvaluations.push({
       rosterId: r.roster_id,
-      teamName: details.teamName,
+      teamName: details.teamName.replace(/🫩/g, '').trim(),
       ownerName: details.ownerName,
       username: details.username,
       rosterMode: getRosterMode(lore),
