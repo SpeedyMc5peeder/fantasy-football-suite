@@ -73,11 +73,12 @@ const PART_3_CHALLENGE = `🗳️ THE COMMISSIONER'S CHALLENGE
 
 Think you know better than JARVIS?
 
-Dom is setting up an official league prediction portal to track everyone's picks on the ledger all season long. You will be submitting your locked OVER or UNDER for all 10 teams.
+Submit your locked OVER or UNDER predictions for all 10 teams on the new official DFL League Hub:
+👉 https://dfl-legacy.onrender.com/
 
-Winner takes the 2026 DFL Prophet Crown. Loser gets publicly roasted by JARVIS at the end-of-season banquet.
+Dom will be officially tracking everyone's picks on the ledger all season long.
 
-Stay tuned for the link before Week 1 kickoff!`;
+Winner takes the 2026 DFL Prophet Crown. Loser gets publicly roasted by JARVIS at the end-of-season banquet. Get your picks locked in before Week 1 kickoff!`;
 
 async function run(dryRun = false) {
   console.log('🚀 Executing 3-Part Season Preview Post (dryRun=' + dryRun + ')...');
