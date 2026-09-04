@@ -74,9 +74,11 @@ export default function LoginModal({ isOpen, onClose, franchises, onLoginSuccess
 
         {/* Header */}
         <div className="flex items-center space-x-3 mb-6">
-          <div className="w-12 h-12 rounded-xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-400">
-            <Shield className="w-6 h-6" />
-          </div>
+          <img
+            src="/images/league-logo.png"
+            alt="DFL Logo"
+            className="w-12 h-12 rounded-xl object-cover border border-cyan-500/40 shadow-glow-cyan flex-shrink-0"
+          />
           <div>
             <h3 className="text-xl font-bold font-display tracking-wide text-white">DFL MANAGER ACCESS</h3>
             <p className="text-xs text-slate-400">Select your franchise to place bets and lock in picks</p>
@@ -144,8 +146,8 @@ export default function LoginModal({ isOpen, onClose, franchises, onLoginSuccess
                 className="w-full pl-10 pr-4 py-2.5 bg-slate-900 border border-slate-700 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 rounded-xl text-center text-lg font-mono tracking-widest text-white placeholder-slate-500 outline-none transition"
               />
             </div>
-            <p className="mt-1.5 text-[11px] text-slate-500 text-center">
-              Hint: All managers start with default PIN <code className="text-cyan-400 font-bold">1234</code>
+            <p className="mt-2 text-[11px] text-slate-400 text-center leading-relaxed">
+              Default PIN is <code className="text-cyan-400 font-bold px-1.5 py-0.5 bg-slate-900 border border-slate-800 rounded">1234</code>. Please change your PIN once logged in!
             </p>
           </div>
 
