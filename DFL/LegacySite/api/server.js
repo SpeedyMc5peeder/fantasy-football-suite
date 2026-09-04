@@ -571,9 +571,24 @@ app.post('/api/sync/sleeper', async (req, res) => {
 // Serve frontend in production build
 const distDir = path.join(__dirname, '..', 'dist');
 if (fs.existsSync(distDir)) {
-  app.use(express.static(distDir));
+  // Serve static assets without auto-serving index.html so we can inject dynamic OG metadata
+  app.use(express.static(distDir, { index: false }));
+
   app.get('*', (req, res) => {
-    res.sendFile(path.join(distDir, 'index.html'));
+    const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'https';
+    const host = req.get('host') || 'dfl-legacy.onrender.com';
+    const baseUrl = `${protocol}://${host}`;
+
+    try {
+      let html = fs.readFileSync(path.join(distDir, 'index.html'), 'utf8');
+      // Inject absolute URLs for social share crawlers (iMessage, WhatsApp, Slack, Discord, Twitter)
+      html = html.replace(/content="\/images\/og-preview\.png"/g, `content="${baseUrl}/images/og-preview.png"`);
+      html = html.replace(/content="https:\/\/dfl-legacy\.onrender\.com\/"/g, `content="${baseUrl}/"`);
+      res.setHeader('Content-Type', 'text/html; charset=utf-8');
+      res.send(html);
+    } catch (e) {
+      res.sendFile(path.join(distDir, 'index.html'));
+    }
   });
 }
 
