@@ -271,6 +271,7 @@ export default function App() {
               champions={masterData.champions}
               seasons={masterData.seasons}
               franchises={franchises}
+              theme={theme}
             />
           )}
 

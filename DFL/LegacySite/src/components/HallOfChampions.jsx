@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Trophy, Medal, Crown, Star, Sparkles, Heart, GitBranch, ChevronRight, Award, Flame } from 'lucide-react';
 
-export default function HallOfChampions({ champions, seasons, franchises }) {
+export default function HallOfChampions({ champions, seasons, franchises, theme }) {
   const [selectedSeason, setSelectedSeason] = useState('2025');
   const [showMickeyBanter, setShowMickeyBanter] = useState(false);
 
@@ -259,6 +259,18 @@ export default function HallOfChampions({ champions, seasons, franchises }) {
 
                 const seed1Num = getSeed(seed1?.franchiseKey) || '1';
                 const seed2Num = getSeed(seed2?.franchiseKey) || '2';
+                const isLight = theme === 'light';
+
+                // Helper to resolve team name consistently (teamName > franchise teamName > name)
+                const resolveTeamName = (team, fallbackSeed) => {
+                  if (!team) return fallbackSeed ? `Seed ${fallbackSeed}` : '';
+                  const fKey = team.franchiseKey;
+                  const f = fKey && franchises ? franchises[fKey] : null;
+                  if (is2022Season && (fKey === '1088497672153243648' || fKey === activeSeasonData.champion)) {
+                    return 'Team Pupinsuds';
+                  }
+                  return team.teamName || f?.teamName || fKey || team.name || (fallbackSeed ? `Seed ${fallbackSeed}` : 'Team');
+                };
 
                 // Sleeper-accurate Compact Match Card
                 const renderSleeperMatchCard = (match, label, isChamp = false) => {
@@ -268,24 +280,45 @@ export default function HallOfChampions({ champions, seasons, franchises }) {
                   const s1 = getSeed(match.team1?.franchiseKey);
                   const s2 = getSeed(match.team2?.franchiseKey);
 
+                  const t1Name = resolveTeamName(match.team1, match.t1);
+                  const t2Name = resolveTeamName(match.team2, match.t2);
+
                   return (
                     <div
                       className={`rounded-xl border transition overflow-hidden shadow-sm ${
                         isChamp
-                          ? 'bg-[#152033] border-amber-500/60 shadow-glow-gold'
-                          : 'bg-[#131b2a] border-slate-800 hover:border-slate-700'
+                          ? isLight
+                            ? 'bg-amber-50/90 border-amber-300 shadow-md'
+                            : 'bg-[#152033] border-amber-500/60 shadow-glow-gold'
+                          : isLight
+                            ? 'bg-white border-slate-300 hover:border-slate-400 shadow-sm'
+                            : 'bg-[#131b2a] border-slate-800 hover:border-slate-700'
                       }`}
                     >
                       {isChamp && (
-                        <div className="bg-amber-500/20 border-b border-amber-500/40 px-1 py-0.5 text-[8.5px] sm:text-[10px] font-black text-amber-300 text-center flex items-center justify-center space-x-1">
+                        <div
+                          className={`px-1 py-0.5 text-[8.5px] sm:text-[10px] font-black text-center flex items-center justify-center space-x-1 ${
+                            isLight
+                              ? 'bg-amber-100 text-amber-900 border-b border-amber-200'
+                              : 'bg-amber-500/20 border-b border-amber-500/40 text-amber-300'
+                          }`}
+                        >
                           <span>🏆 Championship</span>
                         </div>
                       )}
 
                       {/* Team 1 Row */}
                       <div
-                        className={`px-1.5 py-1.5 sm:px-2.5 sm:py-2 flex items-center justify-between border-b border-slate-800/60 ${
-                          t1Won ? 'bg-amber-500/15 text-white font-bold' : 'text-slate-300'
+                        className={`px-1.5 py-1.5 sm:px-2.5 sm:py-2 flex items-center justify-between ${
+                          isLight ? 'border-b border-slate-200' : 'border-b border-slate-800/60'
+                        } ${
+                          t1Won
+                            ? isLight
+                              ? 'bg-amber-100/60 text-slate-950 font-black'
+                              : 'bg-amber-500/15 text-white font-bold'
+                            : isLight
+                              ? 'text-slate-700 font-semibold'
+                              : 'text-slate-300'
                         }`}
                       >
                         <div className="flex items-center space-x-1 sm:space-x-1.5 min-w-0 flex-1">
@@ -293,20 +326,40 @@ export default function HallOfChampions({ champions, seasons, franchises }) {
                             <img
                               src={match.team1?.avatar || 'https://sleepercdn.com/images/v2/icons/player_default.webp'}
                               alt=""
-                              className="w-5 h-5 sm:w-6 sm:h-6 rounded-full object-cover border border-slate-700"
+                              className="w-5 h-5 sm:w-6 sm:h-6 rounded-full object-cover border border-slate-500/30"
                             />
                             {s1 && (
-                              <span className="absolute -bottom-1 -right-1 bg-black text-[7px] sm:text-[8px] font-mono font-bold text-slate-300 w-3 h-3 rounded-full flex items-center justify-center border border-slate-700">
+                              <span
+                                className={`absolute -bottom-1 -right-1 text-[7px] sm:text-[8px] font-mono font-bold w-3 h-3 rounded-full flex items-center justify-center border ${
+                                  isLight
+                                    ? 'bg-slate-200 text-slate-800 border-slate-300'
+                                    : 'bg-black text-slate-300 border-slate-700'
+                                }`}
+                              >
                                 {s1}
                               </span>
                             )}
                           </div>
-                          <span className="text-[9px] sm:text-[11px] font-bold truncate block leading-tight">
-                            {match.team1?.name || match.team1?.teamName || `Seed ${match.t1}`}
+                          <span
+                            className={`text-[9px] sm:text-[11px] truncate block leading-tight ${
+                              isLight
+                                ? t1Won
+                                  ? 'text-slate-950 font-black'
+                                  : 'text-slate-800 font-bold'
+                                : t1Won
+                                  ? 'text-white font-black'
+                                  : 'text-slate-200 font-semibold'
+                            }`}
+                          >
+                            {t1Name}
                           </span>
                         </div>
                         {t1Won && (
-                          <span className="text-[8px] sm:text-[9px] font-black text-amber-400 flex-shrink-0 ml-1">
+                          <span
+                            className={`text-[8px] sm:text-[9px] font-black flex-shrink-0 ml-1 ${
+                              isLight ? 'text-amber-700' : 'text-amber-400'
+                            }`}
+                          >
                             {isChamp ? 'CHAMP' : 'ADV'}
                           </span>
                         )}
@@ -315,7 +368,13 @@ export default function HallOfChampions({ champions, seasons, franchises }) {
                       {/* Team 2 Row */}
                       <div
                         className={`px-1.5 py-1.5 sm:px-2.5 sm:py-2 flex items-center justify-between ${
-                          t2Won ? 'bg-amber-500/15 text-white font-bold' : 'text-slate-300'
+                          t2Won
+                            ? isLight
+                              ? 'bg-amber-100/60 text-slate-950 font-black'
+                              : 'bg-amber-500/15 text-white font-bold'
+                            : isLight
+                              ? 'text-slate-700 font-semibold'
+                              : 'text-slate-300'
                         }`}
                       >
                         <div className="flex items-center space-x-1 sm:space-x-1.5 min-w-0 flex-1">
@@ -323,20 +382,40 @@ export default function HallOfChampions({ champions, seasons, franchises }) {
                             <img
                               src={match.team2?.avatar || 'https://sleepercdn.com/images/v2/icons/player_default.webp'}
                               alt=""
-                              className="w-5 h-5 sm:w-6 sm:h-6 rounded-full object-cover border border-slate-700"
+                              className="w-5 h-5 sm:w-6 sm:h-6 rounded-full object-cover border border-slate-500/30"
                             />
                             {s2 && (
-                              <span className="absolute -bottom-1 -right-1 bg-black text-[7px] sm:text-[8px] font-mono font-bold text-slate-300 w-3 h-3 rounded-full flex items-center justify-center border border-slate-700">
+                              <span
+                                className={`absolute -bottom-1 -right-1 text-[7px] sm:text-[8px] font-mono font-bold w-3 h-3 rounded-full flex items-center justify-center border ${
+                                  isLight
+                                    ? 'bg-slate-200 text-slate-800 border-slate-300'
+                                    : 'bg-black text-slate-300 border-slate-700'
+                                }`}
+                              >
                                 {s2}
                               </span>
                             )}
                           </div>
-                          <span className="text-[9px] sm:text-[11px] font-bold truncate block leading-tight">
-                            {match.team2?.name || match.team2?.teamName || `Seed ${match.t2}`}
+                          <span
+                            className={`text-[9px] sm:text-[11px] truncate block leading-tight ${
+                              isLight
+                                ? t2Won
+                                  ? 'text-slate-950 font-black'
+                                  : 'text-slate-800 font-bold'
+                                : t2Won
+                                  ? 'text-white font-black'
+                                  : 'text-slate-200 font-semibold'
+                            }`}
+                          >
+                            {t2Name}
                           </span>
                         </div>
                         {t2Won && (
-                          <span className="text-[8px] sm:text-[9px] font-black text-amber-400 flex-shrink-0 ml-1">
+                          <span
+                            className={`text-[8px] sm:text-[9px] font-black flex-shrink-0 ml-1 ${
+                              isLight ? 'text-amber-700' : 'text-amber-400'
+                            }`}
+                          >
                             {isChamp ? 'CHAMP' : 'ADV'}
                           </span>
                         )}
@@ -347,25 +426,48 @@ export default function HallOfChampions({ champions, seasons, franchises }) {
 
                 // Sleeper-accurate Bye Card
                 const renderByeCard = (team, seedNum) => {
+                  const tName = resolveTeamName(team, seedNum);
                   return (
-                    <div className="rounded-xl border border-slate-800/90 bg-[#131b2a] overflow-hidden shadow-sm">
+                    <div
+                      className={`rounded-xl border overflow-hidden shadow-sm ${
+                        isLight
+                          ? 'bg-white border-slate-300 shadow-sm'
+                          : 'bg-[#131b2a] border-slate-800/90'
+                      }`}
+                    >
                       <div className="px-1.5 py-1.5 sm:px-2.5 sm:py-2 flex items-center space-x-1 sm:space-x-1.5 min-w-0">
                         <div className="relative flex-shrink-0">
                           <img
                             src={team?.avatar || 'https://sleepercdn.com/images/v2/icons/player_default.webp'}
                             alt=""
-                            className="w-5 h-5 sm:w-6 sm:h-6 rounded-full object-cover border border-slate-700"
+                            className="w-5 h-5 sm:w-6 sm:h-6 rounded-full object-cover border border-slate-500/30"
                           />
-                          <span className="absolute -bottom-1 -right-1 bg-black text-[7px] sm:text-[8px] font-mono font-bold text-slate-300 w-3 h-3 rounded-full flex items-center justify-center border border-slate-700">
+                          <span
+                            className={`absolute -bottom-1 -right-1 text-[7px] sm:text-[8px] font-mono font-bold w-3 h-3 rounded-full flex items-center justify-center border ${
+                              isLight
+                                ? 'bg-slate-200 text-slate-800 border-slate-300'
+                                : 'bg-black text-slate-300 border-slate-700'
+                            }`}
+                          >
                             {seedNum}
                           </span>
                         </div>
-                        <span className="text-[9px] sm:text-[11px] font-bold text-white truncate block leading-tight">
-                          {team?.name || team?.teamName || `Seed ${seedNum}`}
+                        <span
+                          className={`text-[9px] sm:text-[11px] font-bold truncate block leading-tight ${
+                            isLight ? 'text-slate-900' : 'text-white'
+                          }`}
+                        >
+                          {tName}
                         </span>
                       </div>
-                      <div className="bg-cyan-500/10 border-t border-slate-800/60 py-0.5 text-center">
-                        <span className="text-[8px] sm:text-[9px] font-black tracking-wider text-cyan-400 uppercase">
+                      <div
+                        className={`py-0.5 text-center border-t ${
+                          isLight
+                            ? 'bg-cyan-50 border-slate-200 text-cyan-700'
+                            : 'bg-cyan-500/10 border-slate-800/60 text-cyan-400'
+                        }`}
+                      >
+                        <span className="text-[8px] sm:text-[9px] font-black tracking-wider uppercase">
                           BYE
                         </span>
                       </div>
@@ -380,11 +482,25 @@ export default function HallOfChampions({ champions, seasons, franchises }) {
                       <div className="grid grid-cols-3 gap-1.5 sm:gap-4 items-stretch">
                         {/* COLUMN 1: ROUND 1 (Week 15) */}
                         <div className="flex flex-col justify-between space-y-2 sm:space-y-3">
-                          <div className="text-center py-1 sm:py-1.5 px-1 rounded-xl bg-slate-900/90 border border-slate-800 shadow-sm">
-                            <span className="text-[9px] sm:text-xs font-black uppercase tracking-wider text-slate-300 block">
+                          <div
+                            className={`text-center py-1 sm:py-1.5 px-1 rounded-xl shadow-sm border ${
+                              isLight
+                                ? 'bg-slate-100 border-slate-300'
+                                : 'bg-slate-900/90 border-slate-800'
+                            }`}
+                          >
+                            <span
+                              className={`text-[9px] sm:text-xs font-black uppercase tracking-wider block ${
+                                isLight ? 'text-slate-800' : 'text-slate-300'
+                              }`}
+                            >
                               Round 1
                             </span>
-                            <span className="text-[7.5px] sm:text-[9px] text-slate-500 font-mono block">
+                            <span
+                              className={`text-[7.5px] sm:text-[9px] font-mono block ${
+                                isLight ? 'text-slate-500' : 'text-slate-500'
+                              }`}
+                            >
                               (Week 15)
                             </span>
                           </div>
@@ -402,11 +518,25 @@ export default function HallOfChampions({ champions, seasons, franchises }) {
 
                         {/* COLUMN 2: ROUND 2 (Week 16) */}
                         <div className="flex flex-col justify-between">
-                          <div className="text-center py-1 sm:py-1.5 px-1 rounded-xl bg-slate-900/90 border border-slate-800 shadow-sm mb-2">
-                            <span className="text-[9px] sm:text-xs font-black uppercase tracking-wider text-slate-300 block">
+                          <div
+                            className={`text-center py-1 sm:py-1.5 px-1 rounded-xl shadow-sm border mb-2 ${
+                              isLight
+                                ? 'bg-slate-100 border-slate-300'
+                                : 'bg-slate-900/90 border-slate-800'
+                            }`}
+                          >
+                            <span
+                              className={`text-[9px] sm:text-xs font-black uppercase tracking-wider block ${
+                                isLight ? 'text-slate-800' : 'text-slate-300'
+                              }`}
+                            >
                               Round 2
                             </span>
-                            <span className="text-[7.5px] sm:text-[9px] text-slate-500 font-mono block">
+                            <span
+                              className={`text-[7.5px] sm:text-[9px] font-mono block ${
+                                isLight ? 'text-slate-500' : 'text-slate-500'
+                              }`}
+                            >
                               (Week 16)
                             </span>
                           </div>
@@ -419,11 +549,25 @@ export default function HallOfChampions({ champions, seasons, franchises }) {
 
                         {/* COLUMN 3: FINALS (Week 17) */}
                         <div className="flex flex-col justify-between">
-                          <div className="text-center py-1 sm:py-1.5 px-1 rounded-xl bg-gradient-to-r from-amber-500/20 via-amber-400/25 to-amber-500/20 border border-amber-500/50 shadow-glow-gold mb-2">
-                            <span className="text-[9px] sm:text-xs font-black uppercase tracking-wider text-amber-300 block">
+                          <div
+                            className={`text-center py-1 sm:py-1.5 px-1 rounded-xl shadow-sm border mb-2 ${
+                              isLight
+                                ? 'bg-amber-100 border-amber-300'
+                                : 'bg-gradient-to-r from-amber-500/20 via-amber-400/25 to-amber-500/20 border-amber-500/50 shadow-glow-gold'
+                            }`}
+                          >
+                            <span
+                              className={`text-[9px] sm:text-xs font-black uppercase tracking-wider block ${
+                                isLight ? 'text-amber-900' : 'text-amber-300'
+                              }`}
+                            >
                               Finals
                             </span>
-                            <span className="text-[7.5px] sm:text-[9px] text-amber-400/70 font-mono block">
+                            <span
+                              className={`text-[7.5px] sm:text-[9px] font-mono block ${
+                                isLight ? 'text-amber-700 font-bold' : 'text-amber-400/70'
+                              }`}
+                            >
                               (Week 17)
                             </span>
                           </div>

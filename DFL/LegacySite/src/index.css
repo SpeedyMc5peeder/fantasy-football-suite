@@ -87,7 +87,9 @@ body.theme-light,
   border-top-color: #e2e8f0 !important;
 }
 
-.theme-light .bg-\[\#111726\] {
+.theme-light .bg-\[\#111726\],
+.theme-light .bg-\[\#131b2a\],
+.theme-light .bg-\[\#152033\] {
   background-color: #ffffff !important;
   border-color: #cbd5e1 !important;
 }
