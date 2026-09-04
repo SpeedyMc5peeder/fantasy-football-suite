@@ -81,8 +81,8 @@ export default function Navbar({
             </div>
           </div>
 
-          {/* User Auth Profile Badge & Theme Toggle */}
-          <div className="flex items-center space-x-2 sm:space-x-3">
+          {/* Desktop-Only User Auth Profile Badge, Sync & Theme Toggle (< md screens access all of this via the hamburger drawer) */}
+          <div className="hidden md:flex items-center space-x-2 sm:space-x-3">
             {/* Sleeper Auto-Sync Manual Trigger (Exclusively for Commissioner Dom) */}
             {currentUser && (currentUser.isCommissioner || currentUser.franchiseKey === 'Rhymenoceros') && (
               <button

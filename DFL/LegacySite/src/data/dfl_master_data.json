@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-04T06:37:52.385Z",
+  "generatedAt": "2026-09-04T18:00:21.486Z",
   "franchises": {
     "Rhymenoceros": {
       "name": "Dom",
@@ -8656,23 +8656,23 @@
           "r": 1,
           "l": null,
           "w": null,
-          "t1": 3,
-          "t2": 4,
+          "t1": 4,
+          "t2": 6,
           "matchLabel": "Quarterfinal (Match 1)",
           "team1": {
-            "rosterId": 3,
-            "franchiseKey": "LMcVicker",
-            "name": "Lauren",
-            "teamName": "Laces Out, Ladies",
-            "avatar": "https://sleepercdn.com/avatars/thumbs/1410ddbf97a0ae5ed7a142e35187dda9",
-            "legacyNote": null
-          },
-          "team2": {
             "rosterId": 4,
             "franchiseKey": "DukeofWales",
             "name": "David",
             "teamName": "Hands for Jobs",
             "avatar": "https://sleepercdn.com/avatars/thumbs/4d6cf47bab051984c2b6a79015e2c6a3",
+            "legacyNote": null
+          },
+          "team2": {
+            "rosterId": 6,
+            "franchiseKey": "doesntfleeze",
+            "name": "Trent",
+            "teamName": "Washed🫩",
+            "avatar": "https://sleepercdn.com/avatars/thumbs/6b9db816899ae82ccba6a3bab432b3d1",
             "legacyNote": null
           },
           "winner": {
@@ -8687,23 +8687,23 @@
           "r": 1,
           "l": null,
           "w": null,
-          "t1": 6,
-          "t2": 1,
+          "t1": 9,
+          "t2": 3,
           "matchLabel": "Quarterfinal (Match 2)",
           "team1": {
-            "rosterId": 6,
-            "franchiseKey": "doesntfleeze",
-            "name": "Trent",
-            "teamName": "Washed🫩",
-            "avatar": "https://sleepercdn.com/avatars/thumbs/6b9db816899ae82ccba6a3bab432b3d1",
+            "rosterId": 9,
+            "franchiseKey": "MattyiceR",
+            "name": "Matt",
+            "teamName": "Heisenberg’s Hitmen",
+            "avatar": "https://sleepercdn.com/avatars/thumbs/de4328a9d0f741ba4ccff12fdec4527f",
             "legacyNote": null
           },
           "team2": {
-            "rosterId": 1,
-            "franchiseKey": "Rhymenoceros",
-            "name": "Dom",
-            "teamName": "Scott’s Totts",
-            "avatar": "https://sleepercdn.com/avatars/thumbs/fe0b33ee8196d741d97d610660f5707a",
+            "rosterId": 3,
+            "franchiseKey": "LMcVicker",
+            "name": "Lauren",
+            "teamName": "Laces Out, Ladies",
+            "avatar": "https://sleepercdn.com/avatars/thumbs/1410ddbf97a0ae5ed7a142e35187dda9",
             "legacyNote": null
           },
           "winner": {
@@ -8762,7 +8762,7 @@
             "rosterId": 2,
             "franchiseKey": "PoppinChunkies",
             "name": "Tyler",
-            "teamName": "Poppin' Chunkies",
+            "teamName": "Poppinchunkies",
             "avatar": "https://sleepercdn.com/avatars/thumbs/031980475b3409dea05a0d70c39b64c3",
             "legacyNote": null
           },
@@ -8902,23 +8902,23 @@
           "r": 1,
           "l": null,
           "w": null,
-          "t1": 9,
-          "t2": 5,
+          "t1": 7,
+          "t2": 1,
           "matchLabel": "Quarterfinal (Match 1)",
           "team1": {
-            "rosterId": 9,
-            "franchiseKey": "MattyiceR",
-            "name": "Matt",
-            "teamName": "Heisenberg’s Hitmen",
-            "avatar": "https://sleepercdn.com/avatars/thumbs/de4328a9d0f741ba4ccff12fdec4527f",
+            "rosterId": 7,
+            "franchiseKey": "Tklumb86",
+            "name": "Tony",
+            "teamName": "Who Dey",
+            "avatar": "https://sleepercdn.com/avatars/thumbs/02272ab8bf8cc0ee85f62af86f06c3d3",
             "legacyNote": null
           },
           "team2": {
-            "rosterId": 5,
-            "franchiseKey": "MaffuJames",
-            "name": "Matt James",
-            "teamName": "I don't Gibbs a Shough",
-            "avatar": "https://sleepercdn.com/avatars/thumbs/c5406e980b39d8dacbaaf7b379fe1ac3",
+            "rosterId": 1,
+            "franchiseKey": "Rhymenoceros",
+            "name": "Dom",
+            "teamName": "Scott’s Totts",
+            "avatar": "https://sleepercdn.com/avatars/thumbs/fe0b33ee8196d741d97d610660f5707a",
             "legacyNote": null
           },
           "winner": {
@@ -8933,23 +8933,23 @@
           "r": 1,
           "l": null,
           "w": null,
-          "t1": 7,
-          "t2": 10,
+          "t1": 10,
+          "t2": 5,
           "matchLabel": "Quarterfinal (Match 2)",
           "team1": {
-            "rosterId": 7,
-            "franchiseKey": "Tklumb86",
-            "name": "Tony",
-            "teamName": "Who Dey",
-            "avatar": "https://sleepercdn.com/avatars/thumbs/02272ab8bf8cc0ee85f62af86f06c3d3",
-            "legacyNote": null
-          },
-          "team2": {
             "rosterId": 10,
             "franchiseKey": "JayZone13",
             "name": "Jason",
             "teamName": "Ronin",
             "avatar": "https://sleepercdn.com/avatars/thumbs/4f4090e5e9c3941414db40a871e3e909",
+            "legacyNote": null
+          },
+          "team2": {
+            "rosterId": 5,
+            "franchiseKey": "MaffuJames",
+            "name": "Matt James",
+            "teamName": "I don't Gibbs a Shough",
+            "avatar": "https://sleepercdn.com/avatars/thumbs/c5406e980b39d8dacbaaf7b379fe1ac3",
             "legacyNote": null
           },
           "winner": {
@@ -9232,7 +9232,7 @@
             "rosterId": 2,
             "franchiseKey": "PoppinChunkies",
             "name": "Tyler",
-            "teamName": "Poppin' Chunkies",
+            "teamName": "Poppinchunkies",
             "avatar": "https://sleepercdn.com/avatars/thumbs/031980475b3409dea05a0d70c39b64c3",
             "legacyNote": null
           },
@@ -9380,7 +9380,7 @@
             "rosterId": 2,
             "franchiseKey": "PoppinChunkies",
             "name": "Tyler",
-            "teamName": "Poppin' Chunkies",
+            "teamName": "Poppinchunkies",
             "avatar": "https://sleepercdn.com/avatars/thumbs/031980475b3409dea05a0d70c39b64c3",
             "legacyNote": null
           },
@@ -9917,7 +9917,7 @@
             "rosterId": 2,
             "franchiseKey": "PoppinChunkies",
             "name": "Tyler",
-            "teamName": "Poppin' Chunkies",
+            "teamName": "Poppinchunkies",
             "avatar": "https://sleepercdn.com/avatars/thumbs/031980475b3409dea05a0d70c39b64c3",
             "legacyNote": null
           },
@@ -9933,7 +9933,7 @@
             "rosterId": 2,
             "franchiseKey": "PoppinChunkies",
             "name": "Tyler",
-            "teamName": "Poppin' Chunkies"
+            "teamName": "Poppinchunkies"
           }
         },
         {
@@ -9986,7 +9986,7 @@
             "rosterId": 2,
             "franchiseKey": "PoppinChunkies",
             "name": "Tyler",
-            "teamName": "Poppin' Chunkies",
+            "teamName": "Poppinchunkies",
             "avatar": "https://sleepercdn.com/avatars/thumbs/031980475b3409dea05a0d70c39b64c3",
             "legacyNote": null
           },
@@ -10002,7 +10002,7 @@
             "rosterId": 2,
             "franchiseKey": "PoppinChunkies",
             "name": "Tyler",
-            "teamName": "Poppin' Chunkies"
+            "teamName": "Poppinchunkies"
           }
         },
         {
@@ -10240,7 +10240,7 @@
             "rosterId": 2,
             "franchiseKey": "PoppinChunkies",
             "name": "Tyler",
-            "teamName": "Poppin' Chunkies",
+            "teamName": "Poppinchunkies",
             "avatar": "https://sleepercdn.com/avatars/thumbs/031980475b3409dea05a0d70c39b64c3",
             "legacyNote": null
           },
@@ -10256,7 +10256,7 @@
             "rosterId": 2,
             "franchiseKey": "PoppinChunkies",
             "name": "Tyler",
-            "teamName": "Poppin' Chunkies"
+            "teamName": "Poppinchunkies"
           }
         },
         {
@@ -10350,7 +10350,7 @@
             "rosterId": 2,
             "franchiseKey": "PoppinChunkies",
             "name": "Tyler",
-            "teamName": "Poppin' Chunkies",
+            "teamName": "Poppinchunkies",
             "avatar": "https://sleepercdn.com/avatars/thumbs/031980475b3409dea05a0d70c39b64c3",
             "legacyNote": null
           },
@@ -10366,7 +10366,7 @@
             "rosterId": 2,
             "franchiseKey": "PoppinChunkies",
             "name": "Tyler",
-            "teamName": "Poppin' Chunkies"
+            "teamName": "Poppinchunkies"
           }
         },
         {
@@ -10744,7 +10744,7 @@
             "rosterId": 2,
             "franchiseKey": "PoppinChunkies",
             "name": "Tyler",
-            "teamName": "Poppin' Chunkies",
+            "teamName": "Poppinchunkies",
             "avatar": "https://sleepercdn.com/avatars/thumbs/031980475b3409dea05a0d70c39b64c3",
             "legacyNote": null
           },
@@ -10760,7 +10760,7 @@
             "rosterId": 2,
             "franchiseKey": "PoppinChunkies",
             "name": "Tyler",
-            "teamName": "Poppin' Chunkies"
+            "teamName": "Poppinchunkies"
           }
         },
         {
@@ -10854,7 +10854,7 @@
             "rosterId": 2,
             "franchiseKey": "PoppinChunkies",
             "name": "Tyler",
-            "teamName": "Poppin' Chunkies",
+            "teamName": "Poppinchunkies",
             "avatar": "https://sleepercdn.com/avatars/thumbs/031980475b3409dea05a0d70c39b64c3",
             "legacyNote": null
           },

@@ -4,6 +4,7 @@ import { Trophy, Medal, Crown, Star, Sparkles, Heart, GitBranch, ChevronRight, A
 export default function HallOfChampions({ champions, seasons, franchises }) {
   const [selectedSeason, setSelectedSeason] = useState('2025');
   const [showMickeyBanter, setShowMickeyBanter] = useState(false);
+  const [mobileBracketRound, setMobileBracketRound] = useState('champ'); // 'champ' | 'semi' | 'qf' | 'tree'
 
   const activeSeasonData = seasons.find(s => s.year === selectedSeason);
 
@@ -370,8 +371,171 @@ export default function HallOfChampions({ champions, seasons, franchises }) {
 
                 return (
                   <div className="space-y-6">
-                    {/* Horizontal Tournament Bracket Tree */}
-                    <div className="overflow-x-auto pb-4">
+                    {/* Mobile Round Switcher (< md screens) */}
+                    <div className="block md:hidden space-y-4">
+                      <div className="flex items-center justify-between bg-slate-900/90 border border-slate-800 p-1 rounded-2xl text-xs font-bold gap-1">
+                        <button
+                          type="button"
+                          onClick={() => setMobileBracketRound('champ')}
+                          className={`flex-1 py-2 px-2 rounded-xl transition text-center ${
+                            mobileBracketRound === 'champ'
+                              ? 'bg-gradient-to-r from-amber-500 to-amber-400 text-black font-black shadow-glow-gold'
+                              : 'text-slate-400 hover:text-white'
+                          }`}
+                        >
+                          🏆 Final
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setMobileBracketRound('semi')}
+                          className={`flex-1 py-2 px-2 rounded-xl transition text-center ${
+                            mobileBracketRound === 'semi'
+                              ? 'bg-amber-500 text-black font-black shadow-md'
+                              : 'text-slate-400 hover:text-white'
+                          }`}
+                        >
+                          ⚔️ Semis
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setMobileBracketRound('qf')}
+                          className={`flex-1 py-2 px-2 rounded-xl transition text-center ${
+                            mobileBracketRound === 'qf'
+                              ? 'bg-amber-500 text-black font-black shadow-md'
+                              : 'text-slate-400 hover:text-white'
+                          }`}
+                        >
+                          🎯 Quarters
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setMobileBracketRound('tree')}
+                          className={`py-2 px-2.5 rounded-xl transition text-center ${
+                            mobileBracketRound === 'tree'
+                              ? 'bg-cyan-500 text-black font-black shadow-md'
+                              : 'text-slate-400 hover:text-white'
+                          }`}
+                          title="Full Tree View"
+                        >
+                          Tree
+                        </button>
+                      </div>
+
+                      {/* Mobile Round Contents */}
+                      {mobileBracketRound === 'champ' && (
+                        <div className="space-y-4 animate-fadeIn">
+                          <div className="text-center py-2 px-3 rounded-xl bg-gradient-to-r from-amber-500/20 via-amber-400/25 to-amber-500/20 border border-amber-500/50 text-xs font-black uppercase tracking-wider text-amber-300 shadow-glow-gold">
+                            The Championship Match (Week 17)
+                          </div>
+                          {renderSleeperMatchCard(champMatch, '🏆 Championship Match', true)}
+
+                          {champMatch?.winner && (
+                            <div className="p-4 rounded-2xl bg-gradient-to-br from-amber-400 via-amber-500 to-yellow-500 text-black shadow-glow-gold flex items-center space-x-3.5 border-2 border-amber-300">
+                              <div className="w-12 h-12 rounded-xl bg-black/20 flex items-center justify-center text-2xl flex-shrink-0 shadow-inner">
+                                🏆
+                              </div>
+                              <div className="min-w-0">
+                                <span className="text-[10px] font-black uppercase tracking-widest text-black/75 block">
+                                  {activeSeasonData.year} DFL League Champion
+                                </span>
+                                <h4 className="text-xl font-black leading-tight font-display truncate">
+                                  {podiumTeamName}
+                                </h4>
+                                <p className="text-xs font-bold text-black/85 mt-0.5">
+                                  Manager: {podiumManagerName}
+                                </p>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      {mobileBracketRound === 'semi' && (
+                        <div className="space-y-4 animate-fadeIn">
+                          <div className="text-center py-2 px-3 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-black uppercase tracking-wider text-slate-300">
+                            Round 2: Semifinal Gauntlet (Week 16)
+                          </div>
+                          {renderSleeperMatchCard(sf1, 'Semifinal 1')}
+                          {renderSleeperMatchCard(sf2, 'Semifinal 2')}
+                        </div>
+                      )}
+
+                      {mobileBracketRound === 'qf' && (
+                        <div className="space-y-4 animate-fadeIn">
+                          <div className="text-center py-2 px-3 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-black uppercase tracking-wider text-slate-300">
+                            Round 1: Quarterfinals & Byes (Week 15)
+                          </div>
+                          <div className="space-y-3">
+                            <span className="text-[10px] uppercase font-black tracking-wider text-cyan-400 block">Top Seed Byes</span>
+                            {renderByeCard(seed1, 1)}
+                            {renderByeCard(seed2, 2)}
+                          </div>
+                          <div className="space-y-3 pt-2">
+                            <span className="text-[10px] uppercase font-black tracking-wider text-slate-400 block">Quarterfinal Matches</span>
+                            {renderSleeperMatchCard(qf1, 'Quarterfinal 1')}
+                            {renderSleeperMatchCard(qf2, 'Quarterfinal 2')}
+                          </div>
+                        </div>
+                      )}
+
+                      {mobileBracketRound === 'tree' && (
+                        <div className="overflow-x-auto pb-4">
+                          <div className="min-w-[1020px] flex items-stretch justify-between relative py-2">
+                            {/* COLUMN 1 */}
+                            <div className="w-[300px] flex flex-col justify-between space-y-3">
+                              <div className="text-center py-2 px-3 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-black uppercase tracking-wider text-slate-300 shadow-sm">
+                                Round 1 • (Week 15)
+                              </div>
+                              <div className="space-y-4">
+                                {renderByeCard(seed1, 1)}
+                                {renderSleeperMatchCard(qf1, 'Quarterfinal 1')}
+                              </div>
+                              <div className="space-y-4">
+                                {renderByeCard(seed2, 2)}
+                                {renderSleeperMatchCard(qf2, 'Quarterfinal 2')}
+                              </div>
+                            </div>
+                            <div className="w-12 flex flex-col justify-between py-10">
+                              <div className="h-44 flex items-center">
+                                <svg className="w-12 h-full text-slate-600" viewBox="0 0 48 160" fill="none" preserveAspectRatio="none">
+                                  <path d="M 0 20 H 24 V 140 H 0 M 24 80 H 48" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                                </svg>
+                              </div>
+                              <div className="h-44 flex items-center">
+                                <svg className="w-12 h-full text-slate-600" viewBox="0 0 48 160" fill="none" preserveAspectRatio="none">
+                                  <path d="M 0 20 H 24 V 140 H 0 M 24 80 H 48" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                                </svg>
+                              </div>
+                            </div>
+                            {/* COLUMN 2 */}
+                            <div className="w-[300px] flex flex-col justify-between">
+                              <div className="text-center py-2 px-3 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-black uppercase tracking-wider text-slate-300 shadow-sm mb-3">
+                                Round 2 • (Week 16)
+                              </div>
+                              <div className="flex-1 flex flex-col justify-around py-4">
+                                {renderSleeperMatchCard(sf1, 'Semifinal 1')}
+                                {renderSleeperMatchCard(sf2, 'Semifinal 2')}
+                              </div>
+                            </div>
+                            <div className="w-12 flex items-center justify-center">
+                              <svg className="w-12 h-72 text-amber-500/70" viewBox="0 0 48 260" fill="none" preserveAspectRatio="none">
+                                <path d="M 0 35 H 24 V 225 H 0 M 24 130 H 48" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+                              </svg>
+                            </div>
+                            {/* COLUMN 3 */}
+                            <div className="w-[320px] flex flex-col justify-center space-y-4">
+                              <div className="text-center py-2 px-3 rounded-xl bg-gradient-to-r from-amber-500/20 via-amber-400/25 to-amber-500/20 border border-amber-500/50 text-xs font-black uppercase tracking-wider text-amber-300 shadow-glow-gold">
+                                Round 3 • 🏆 The Championship (Week 17)
+                              </div>
+                              {renderSleeperMatchCard(champMatch, '🏆 Championship Match', true)}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Desktop Tournament Bracket Tree (>= md screens) */}
+                    <div className="hidden md:block overflow-x-auto pb-4">
                       <div className="min-w-[1020px] flex items-stretch justify-between relative py-2">
                         {/* COLUMN 1: WEEK 15 (Quarterfinals & Byes) */}
                         <div className="w-[300px] flex flex-col justify-between space-y-3">

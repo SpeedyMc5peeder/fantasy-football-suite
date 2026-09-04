@@ -7,6 +7,8 @@ const CYCLES = [
   {
     id: 'cycle-2',
     name: 'Cycle II (2026–2029)',
+    cycleTitle: 'Cycle II',
+    yearSpan: '2026 – 2029',
     status: 'Current Cycle',
     isCurrent: true,
     hasMoney: true,
@@ -21,6 +23,8 @@ const CYCLES = [
   {
     id: 'cycle-1',
     name: 'Cycle I (2022–2025)',
+    cycleTitle: 'Cycle I',
+    yearSpan: '2022 – 2025',
     status: 'Archived • Inaugural Era',
     isCurrent: false,
     hasMoney: false,
@@ -177,32 +181,44 @@ export default function DynastyEmpirePot({ franchises, seasons }) {
         </div>
 
         {/* Cycle Switcher Tabs */}
-        <div className="flex items-center space-x-2 bg-slate-900/80 p-1.5 rounded-2xl border border-slate-800 flex-shrink-0">
-          {CYCLES.map(c => (
-            <button
-              key={c.id}
-              onClick={() => {
-                setSelectedCycleId(c.id);
-                setExpandedTeamKey(null);
-              }}
-              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-2 ${
-                selectedCycleId === c.id
-                  ? 'bg-amber-500 text-black shadow-md font-black'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
-              }`}
-            >
-              <span>{c.name}</span>
-              {c.isCurrent ? (
-                <span className={`text-[9px] uppercase px-1.5 py-0.5 rounded font-black ${selectedCycleId === c.id ? 'bg-black/20 text-black' : 'bg-emerald-500/20 text-emerald-400'}`}>
-                  Live
+        <div className="flex items-center space-x-2 bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800 flex-shrink-0">
+          {CYCLES.map(c => {
+            const isSelected = selectedCycleId === c.id;
+            return (
+              <button
+                key={c.id}
+                onClick={() => {
+                  setSelectedCycleId(c.id);
+                  setExpandedTeamKey(null);
+                }}
+                className={`px-3.5 sm:px-4 py-2 rounded-xl transition text-left ${
+                  isSelected
+                    ? 'bg-gradient-to-r from-amber-500 to-amber-400 text-black shadow-glow-gold'
+                    : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+                }`}
+              >
+                <div className="flex items-center space-x-2">
+                  <span className={`text-xs sm:text-sm font-black tracking-wide font-display uppercase ${isSelected ? 'text-black' : 'text-white'}`}>
+                    {c.cycleTitle}
+                  </span>
+                  <span
+                    className={`text-[9px] uppercase px-1.5 py-0.2 rounded font-black ${
+                      isSelected
+                        ? 'bg-black/20 text-black'
+                        : c.isCurrent
+                        ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                        : 'bg-slate-800 text-slate-400'
+                    }`}
+                  >
+                    {c.isCurrent ? 'Live' : 'Archive'}
+                  </span>
+                </div>
+                <span className={`text-[10px] sm:text-[11px] font-mono block leading-tight mt-0.5 ${isSelected ? 'text-black/80 font-bold' : 'text-slate-400'}`}>
+                  {c.yearSpan}
                 </span>
-              ) : (
-                <span className={`text-[9px] uppercase px-1.5 py-0.5 rounded font-black ${selectedCycleId === c.id ? 'bg-black/20 text-black' : 'bg-slate-800 text-slate-400'}`}>
-                  Archive
-                </span>
-              )}
-            </button>
-          ))}
+              </button>
+            );
+          })}
         </div>
       </div>
 

@@ -217,16 +217,20 @@ export default function RivalryMatrix({ franchises, rivalries }) {
                     <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
                       Past Matchups ({data.matchups.length}):
                     </span>
-                    <div className="space-y-1.5 max-h-60 overflow-y-auto pr-1">
+                    <div className="space-y-1.5 max-h-72 overflow-y-auto pr-1">
                       {data.matchups.map((game, idx) => {
                         const won = game.winner === mobileTeamA;
                         const isTie = game.winner === 'TIE';
-                        const stage = game.stage || (game.week >= 15 ? 'Playoffs' : `Week ${game.week}`);
+                        const stage = game.stage || (
+                          game.week === 17 ? '🏆 Championship' :
+                          game.week === 16 ? '⚔️ Semifinal' :
+                          game.week === 15 ? '🎯 Quarterfinal' : `Week ${game.week}`
+                        );
 
                         return (
                           <div
                             key={idx}
-                            className={`p-2.5 rounded-xl border text-xs flex items-center justify-between ${
+                            className={`p-2.5 rounded-xl border text-xs flex items-center justify-between transition ${
                               won
                                 ? 'bg-emerald-950/20 border-emerald-500/30'
                                 : isTie
@@ -234,16 +238,21 @@ export default function RivalryMatrix({ franchises, rivalries }) {
                                 : 'bg-rose-950/20 border-rose-500/30'
                             }`}
                           >
-                            <div className="flex items-center space-x-2">
-                              <span className={`font-black font-mono text-xs ${won ? 'text-emerald-400' : isTie ? 'text-slate-400' : 'text-rose-400'}`}>
+                            <div className="flex items-center space-x-2 min-w-0 truncate">
+                              <span className={`font-black font-mono text-xs px-1.5 py-0.5 rounded ${won ? 'bg-emerald-500/20 text-emerald-300' : isTie ? 'bg-slate-800 text-slate-400' : 'bg-rose-500/20 text-rose-300'}`}>
                                 {won ? 'W' : isTie ? 'T' : 'L'}
                               </span>
-                              <span className="text-slate-400 text-[11px] font-mono">{game.year} {stage}</span>
+                              <span className="text-slate-400 text-[11px] font-mono truncate">{game.year} {stage}</span>
                             </div>
-                            <div className="font-mono font-bold text-slate-200 text-xs">
-                              <span className={won ? 'text-emerald-300' : 'text-slate-400'}>{game.score1}</span>
-                              <span className="text-slate-600 mx-1">-</span>
-                              <span className={!won && !isTie ? 'text-rose-300' : 'text-slate-400'}>{game.score2}</span>
+                            <div className="font-mono font-bold text-slate-200 text-xs flex-shrink-0 flex items-center space-x-1.5">
+                              <span className={won ? 'text-emerald-300 font-black' : 'text-slate-400'}>{game.pts1}</span>
+                              <span className="text-slate-600">—</span>
+                              <span className={!won && !isTie ? 'text-rose-300 font-black' : 'text-slate-400'}>{game.pts2}</span>
+                              {game.margin !== undefined && (
+                                <span className="text-slate-500 text-[10px] ml-1 font-normal">
+                                  (Δ{game.margin})
+                                </span>
+                              )}
                             </div>
                           </div>
                         );

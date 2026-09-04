@@ -14,6 +14,8 @@ export default function OverUnderHub({ franchises, lines, predictions, currentUs
   });
   const [savedSuccess, setSavedSuccess] = useState(false);
   const [activeSubTab, setActiveSubTab] = useState('ballot'); // 'ballot' or 'consensus'
+  const [mobileConsensusMode, setMobileConsensusMode] = useState('cards'); // 'cards' | 'grid'
+  const [expandedConsensusTeam, setExpandedConsensusTeam] = useState(null);
 
   // Sync state with current user's existing saved predictions
   useEffect(() => {
@@ -355,57 +357,180 @@ export default function OverUnderHub({ franchises, lines, predictions, currentUs
 
       {/* SUB-TAB 2: LEAGUE CONSENSUS GRID */}
       {activeSubTab === 'consensus' && (
-        <div className="glass-panel p-6 rounded-3xl border border-slate-800 overflow-x-auto space-y-6">
-          <div>
-            <h2 className="text-xl font-bold font-display tracking-wide uppercase text-white">
-              LEAGUE-WIDE CONSENSUS BOARD
-            </h2>
-            <p className="text-xs text-slate-400">Compare every manager's win-total picks side-by-side</p>
+        <div className="glass-panel p-4 sm:p-6 rounded-3xl border border-slate-800 space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-800">
+            <div>
+              <h2 className="text-xl font-bold font-display tracking-wide uppercase text-white">
+                LEAGUE-WIDE CONSENSUS BOARD
+              </h2>
+              <p className="text-xs text-slate-400">Compare every manager's win-total picks side-by-side</p>
+            </div>
+
+            {/* Mobile View Switcher */}
+            <div className="flex md:hidden items-center bg-slate-900 border border-slate-800 p-1 rounded-xl text-xs font-bold self-start">
+              <button
+                type="button"
+                onClick={() => setMobileConsensusMode('cards')}
+                className={`px-3 py-1 rounded-lg transition ${
+                  mobileConsensusMode === 'cards' ? 'bg-cyan-500 text-black font-black' : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                Summary Cards
+              </button>
+              <button
+                type="button"
+                onClick={() => setMobileConsensusMode('grid')}
+                className={`px-3 py-1 rounded-lg transition ${
+                  mobileConsensusMode === 'grid' ? 'bg-cyan-500 text-black font-black' : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                10-Manager Grid
+              </button>
+            </div>
           </div>
 
-          <div className="min-w-[800px]">
-            <table className="w-full text-left text-xs border-collapse">
-              <thead>
-                <tr className="bg-slate-900 border-b border-slate-800 text-[10px] font-black uppercase tracking-wider text-slate-400">
-                  <th className="py-3 px-4">Team & Line</th>
-                  {Object.keys(franchises).map(fKey => (
-                    <th key={fKey} className="py-3 px-2 text-center truncate max-w-[80px]">
-                      {franchises[fKey].name.split(' ')[0]}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-800/60 font-mono font-bold">
-                {lines.map(lineItem => {
-                  return (
-                    <tr key={lineItem.teamKey} className="hover:bg-slate-800/30">
-                      <td className="py-3 px-4 flex items-center space-x-2">
-                        <span className="text-white font-bold">{lineItem.teamName}</span>
-                        <span className="text-amber-400 text-[10px] font-black">({lineItem.line})</span>
-                      </td>
-                      {Object.keys(franchises).map(fKey => {
-                        const userPick = predictions[fKey]?.picks?.[lineItem.teamKey];
-                        return (
-                          <td key={fKey} className="py-3 px-2 text-center">
-                            {userPick === 'OVER' ? (
-                              <span className="px-2 py-0.5 rounded bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[10px]">
-                                OVER
-                              </span>
-                            ) : userPick === 'UNDER' ? (
-                              <span className="px-2 py-0.5 rounded bg-rose-500/20 border border-rose-500/40 text-rose-400 text-[10px]">
-                                UNDER
-                              </span>
-                            ) : (
-                              <span className="text-slate-600">—</span>
-                            )}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+          {/* Mobile Consensus Cards (< md screens and mode === 'cards') */}
+          {mobileConsensusMode === 'cards' && (
+            <div className="block md:hidden space-y-3">
+              {lines.map(lineItem => {
+                const overManagers = [];
+                const underManagers = [];
+
+                Object.keys(franchises).forEach(fKey => {
+                  const p = predictions[fKey]?.picks?.[lineItem.teamKey];
+                  const m = franchises[fKey];
+                  if (p === 'OVER') overManagers.push(m);
+                  else if (p === 'UNDER') underManagers.push(m);
+                });
+
+                const totalDecided = overManagers.length + underManagers.length;
+                const overPct = totalDecided > 0 ? Math.round((overManagers.length / totalDecided) * 100) : 50;
+                const underPct = 100 - overPct;
+                const isExpanded = expandedConsensusTeam === lineItem.teamKey;
+
+                return (
+                  <div
+                    key={lineItem.teamKey}
+                    className="p-3.5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-2.5 transition"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <span className="font-bold text-xs text-white block">{lineItem.teamName}</span>
+                        <span className="text-[10px] text-slate-400">{lineItem.manager}</span>
+                      </div>
+                      <div className="text-right">
+                        <span className="font-mono font-black text-sm text-amber-400">
+                          {Number(lineItem.line).toFixed(1)} Wins
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Consensus Split Bar */}
+                    <div className="space-y-1">
+                      <div className="flex justify-between text-[10px] font-mono font-bold">
+                        <span className="text-emerald-400">{overManagers.length} OVER ({totalDecided > 0 ? overPct : 0}%)</span>
+                        <span className="text-rose-400">{underManagers.length} UNDER ({totalDecided > 0 ? underPct : 0}%)</span>
+                      </div>
+                      <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden flex">
+                        <div className="bg-emerald-500 h-full transition-all" style={{ width: `${totalDecided > 0 ? overPct : 50}%` }} />
+                        <div className="bg-rose-500 h-full transition-all" style={{ width: `${totalDecided > 0 ? underPct : 50}%` }} />
+                      </div>
+                    </div>
+
+                    {/* Expand/Collapse Breakdown */}
+                    <button
+                      type="button"
+                      onClick={() => setExpandedConsensusTeam(isExpanded ? null : lineItem.teamKey)}
+                      className="w-full pt-1.5 text-[10px] font-bold text-cyan-400 hover:text-cyan-300 flex items-center justify-between border-t border-slate-800/80"
+                    >
+                      <span>{isExpanded ? 'Hide Manager Picks' : 'View Who Picked What'}</span>
+                      <span className="text-xs">{isExpanded ? '▲' : '▼'}</span>
+                    </button>
+
+                    {isExpanded && (
+                      <div className="pt-2 border-t border-slate-800 space-y-2 text-[11px] animate-fadeIn">
+                        {overManagers.length > 0 && (
+                          <div>
+                            <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block mb-1">
+                              Picked OVER ({overManagers.length}):
+                            </span>
+                            <div className="flex flex-wrap gap-1.5">
+                              {overManagers.map(m => (
+                                <span key={m.franchiseKey || m.name} className="px-2 py-0.5 rounded-lg bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 text-[10px] font-bold">
+                                  {m.name}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                        {underManagers.length > 0 && (
+                          <div className="pt-1">
+                            <span className="text-[10px] font-bold text-rose-400 uppercase tracking-wider block mb-1">
+                              Picked UNDER ({underManagers.length}):
+                            </span>
+                            <div className="flex flex-wrap gap-1.5">
+                              {underManagers.map(m => (
+                                <span key={m.franchiseKey || m.name} className="px-2 py-0.5 rounded-lg bg-rose-950/40 border border-rose-500/30 text-rose-300 text-[10px] font-bold">
+                                  {m.name}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {/* Grid Table: on desktop ALWAYS visible, on mobile only if mode === 'grid' */}
+          <div className={`${mobileConsensusMode === 'grid' ? 'block' : 'hidden md:block'} overflow-x-auto`}>
+            <div className="min-w-[800px]">
+              <table className="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr className="bg-slate-900 border-b border-slate-800 text-[10px] font-black uppercase tracking-wider text-slate-400">
+                    <th className="py-3 px-4">Team & Line</th>
+                    {Object.keys(franchises).map(fKey => (
+                      <th key={fKey} className="py-3 px-2 text-center truncate max-w-[80px]">
+                        {franchises[fKey].name.split(' ')[0]}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800/60 font-mono font-bold">
+                  {lines.map(lineItem => {
+                    return (
+                      <tr key={lineItem.teamKey} className="hover:bg-slate-800/30">
+                        <td className="py-3 px-4 flex items-center space-x-2">
+                          <span className="text-white font-bold">{lineItem.teamName}</span>
+                          <span className="text-amber-400 text-[10px] font-black">({lineItem.line})</span>
+                        </td>
+                        {Object.keys(franchises).map(fKey => {
+                          const userPick = predictions[fKey]?.picks?.[lineItem.teamKey];
+                          return (
+                            <td key={fKey} className="py-3 px-2 text-center">
+                              {userPick === 'OVER' ? (
+                                <span className="px-2 py-0.5 rounded bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[10px]">
+                                  OVER
+                                </span>
+                              ) : userPick === 'UNDER' ? (
+                                <span className="px-2 py-0.5 rounded bg-rose-500/20 border border-rose-500/40 text-rose-400 text-[10px]">
+                                  UNDER
+                                </span>
+                              ) : (
+                                <span className="text-slate-600">—</span>
+                              )}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
 
           {/* Award Picks Summary */}
