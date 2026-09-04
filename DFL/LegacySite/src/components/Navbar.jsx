@@ -29,13 +29,13 @@ export default function Navbar({
   }, [mobileMenuOpen]);
 
   const navItems = [
-    { id: 'champions', label: 'Hall of Champions', icon: Trophy },
-    { id: 'leaderboard', label: 'Leaderboard & Records', icon: BarChart3 },
-    { id: 'rivalry', label: 'Rivalry Matrix', icon: Swords },
-    { id: 'dynastypot', label: 'Dynasty Cup', icon: Coins },
-    { id: 'predictions', label: 'Over/Under & Picks', icon: TrendingUp },
-    { id: 'betting', label: 'DFL Sportsbook', icon: DollarSign },
-    { id: 'managers', label: 'Franchise Profiles', icon: Users },
+    { id: 'champions', label: 'Hall of Champions', shortLabel: 'Champions', icon: Trophy },
+    { id: 'leaderboard', label: 'Leaderboard & Records', shortLabel: 'Leaderboard', icon: BarChart3 },
+    { id: 'rivalry', label: 'Rivalry Matrix', shortLabel: 'Rivalry Matrix', icon: Swords },
+    { id: 'dynastypot', label: 'Dynasty Cup', shortLabel: 'Dynasty Cup', icon: Coins },
+    { id: 'predictions', label: 'Over/Under & Picks', shortLabel: 'Over/Under', icon: TrendingUp },
+    { id: 'betting', label: 'DFL Sportsbook', shortLabel: 'Sportsbook', icon: DollarSign },
+    { id: 'managers', label: 'Franchise Profiles', shortLabel: 'Franchises', icon: Users },
   ];
 
   return (
@@ -191,7 +191,7 @@ export default function Navbar({
         </div>
 
         {/* Desktop Navigation Tabs Bar */}
-        <nav className="hidden md:flex items-center justify-between space-x-1 lg:space-x-1.5 overflow-x-auto no-scrollbar py-2 border-t border-slate-800/80">
+        <nav className="hidden md:grid grid-cols-7 gap-1 lg:gap-1.5 py-2 border-t border-slate-800/80 overflow-hidden">
           {navItems.map(item => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
@@ -199,14 +199,15 @@ export default function Navbar({
               <button
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
-                className={`flex items-center space-x-1.5 lg:space-x-2 px-2.5 xl:px-3.5 py-1.5 lg:py-2 rounded-xl text-xs xl:text-sm font-semibold whitespace-nowrap transition-all ${
+                className={`flex items-center justify-center space-x-1.5 px-1 xl:px-2 py-1.5 rounded-xl text-xs xl:text-[13px] font-semibold transition-all ${
                   isActive
                     ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 shadow-glow-cyan'
                     : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent'
                 }`}
               >
-                <Icon className={`w-3.5 h-3.5 xl:w-4 xl:h-4 ${isActive ? 'text-cyan-400' : 'text-slate-400'}`} />
-                <span>{item.label}</span>
+                <Icon className={`w-3.5 h-3.5 xl:w-4 xl:h-4 flex-shrink-0 ${isActive ? 'text-cyan-400' : 'text-slate-400'}`} />
+                <span className="hidden xl:inline truncate">{item.label}</span>
+                <span className="inline xl:hidden truncate">{item.shortLabel}</span>
               </button>
             );
           })}
