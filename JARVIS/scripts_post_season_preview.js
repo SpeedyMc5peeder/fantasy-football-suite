@@ -1,4 +1,4 @@
-﻿const fs = require('fs');
+const fs = require('fs');
 const path = require('path');
 const { postToSleeper } = require('./src/poster');
 const imageClient = require('./src/imageClient');
@@ -71,7 +71,7 @@ Jason won it all in 2024, but that championship banner is waving over a team tha
 
 const PART_3_CHALLENGE = `🗳️ THE COMMISSIONER'S CHALLENGE
 
-Think you know better than the AI?
+Think you know better than JARVIS?
 
 Dom is setting up an official league prediction portal to track everyone's picks on the ledger all season long. You will be submitting your locked OVER or UNDER for all 10 teams.
 
