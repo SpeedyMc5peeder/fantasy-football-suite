@@ -4,7 +4,6 @@ import { Trophy, Medal, Crown, Star, Sparkles, Heart, GitBranch, ChevronRight, A
 export default function HallOfChampions({ champions, seasons, franchises }) {
   const [selectedSeason, setSelectedSeason] = useState('2025');
   const [showMickeyBanter, setShowMickeyBanter] = useState(false);
-  const [mobileBracketRound, setMobileBracketRound] = useState('champ'); // 'champ' | 'semi' | 'qf' | 'tree'
 
   const activeSeasonData = seasons.find(s => s.year === selectedSeason);
 
@@ -252,373 +251,203 @@ export default function HallOfChampions({ champions, seasons, franchises }) {
                 const seed1 = sf1?.team1;
                 const seed2 = sf2?.team1;
 
-                const renderByeCard = (team, seedNum) => {
-                  return (
-                    <div className="glass-panel p-3.5 rounded-2xl border border-slate-800 flex items-center justify-between shadow-md transition hover:border-slate-700">
-                      <div className="flex items-center space-x-3 truncate">
-                        <img
-                          src={team?.avatar || 'https://sleepercdn.com/images/v2/icons/player_default.webp'}
-                          alt=""
-                          className="w-9 h-9 rounded-full object-cover border border-slate-700 flex-shrink-0 shadow"
-                        />
-                        <div className="truncate">
-                          <div className="flex items-center space-x-1.5">
-                            <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-cyan-500/20 text-cyan-400 border border-cyan-500/40">
-                              #{seedNum} SEED
-                            </span>
-                            <span className="text-xs font-black text-white truncate leading-tight">
-                              {team?.teamName || team?.name || `Seed ${seedNum}`}
-                            </span>
-                          </div>
-                          <span className="text-[11px] text-slate-400 block truncate">{team?.name}</span>
-                        </div>
-                      </div>
-                      <span className="px-3 py-1 rounded-full bg-cyan-500/15 border border-cyan-500/40 text-cyan-400 font-black text-xs uppercase tracking-wider flex-shrink-0">
-                        BYE
-                      </span>
-                    </div>
-                  );
+                const getSeed = (franchiseKey) => {
+                  if (!activeSeasonData?.standings) return '';
+                  const item = activeSeasonData.standings.find(s => s.franchiseKey === franchiseKey);
+                  return item?.rank ? String(item.rank) : '';
                 };
 
+                const seed1Num = getSeed(seed1?.franchiseKey) || '1';
+                const seed2Num = getSeed(seed2?.franchiseKey) || '2';
+
+                // Sleeper-accurate Compact Match Card
                 const renderSleeperMatchCard = (match, label, isChamp = false) => {
                   if (!match) return null;
                   const t1Won = match.winner?.franchiseKey === match.team1?.franchiseKey || match.w === match.t1;
                   const t2Won = match.winner?.franchiseKey === match.team2?.franchiseKey || match.w === match.t2;
+                  const s1 = getSeed(match.team1?.franchiseKey);
+                  const s2 = getSeed(match.team2?.franchiseKey);
 
                   return (
                     <div
-                      className={`glass-panel p-3.5 rounded-2xl border transition space-y-2.5 shadow-md ${
+                      className={`rounded-xl border transition overflow-hidden shadow-sm ${
                         isChamp
-                          ? 'border-amber-500/70 shadow-glow-gold'
-                          : 'border-slate-800 hover:border-slate-700'
+                          ? 'bg-[#152033] border-amber-500/60 shadow-glow-gold'
+                          : 'bg-[#131b2a] border-slate-800 hover:border-slate-700'
                       }`}
                     >
-                      {/* Match Header */}
-                      <div className="flex items-center justify-between text-[10px] font-black uppercase text-slate-400 pb-1.5 border-b border-slate-800">
-                        <span className={isChamp ? 'text-amber-400 font-extrabold flex items-center space-x-1' : 'text-slate-400'}>
-                          {isChamp ? <span>🏆 Championship Match</span> : <span>{label || `Match ${match.m}`}</span>}
-                        </span>
-                        {match.winner && (
-                          <span className="text-amber-400 font-bold flex items-center space-x-1">
-                            <Crown className="w-3 h-3 text-amber-400" />
-                            <span className="truncate max-w-[130px]">{match.winner.teamName || match.winner.name}</span>
-                          </span>
-                        )}
-                      </div>
+                      {isChamp && (
+                        <div className="bg-amber-500/20 border-b border-amber-500/40 px-1 py-0.5 text-[8.5px] sm:text-[10px] font-black text-amber-300 text-center flex items-center justify-center space-x-1">
+                          <span>🏆 Championship</span>
+                        </div>
+                      )}
 
-                      {/* Team 1 */}
+                      {/* Team 1 Row */}
                       <div
-                        className={`p-2 rounded-xl border flex items-center justify-between transition ${
-                          t1Won
-                            ? 'bg-amber-500/15 border-amber-500/60 font-bold text-white shadow-sm'
-                            : 'bg-slate-950/40 border-slate-800/80 text-slate-300'
+                        className={`px-1.5 py-1.5 sm:px-2.5 sm:py-2 flex items-center justify-between border-b border-slate-800/60 ${
+                          t1Won ? 'bg-amber-500/15 text-white font-bold' : 'text-slate-300'
                         }`}
                       >
-                        <div className="flex items-center space-x-2.5 truncate">
-                          <img
-                            src={match.team1?.avatar || 'https://sleepercdn.com/images/v2/icons/player_default.webp'}
-                            alt=""
-                            className="w-7 h-7 rounded-full object-cover flex-shrink-0 border border-slate-700 shadow"
-                          />
-                          <div className="truncate">
-                            <span className="block font-bold text-xs truncate leading-tight text-white">
-                              {match.team1?.teamName || match.team1?.name || `Roster #${match.t1 || 'TBD'}`}
-                            </span>
-                            <span className="block text-[10px] text-slate-400 truncate">
-                              {match.team1?.name}
-                            </span>
+                        <div className="flex items-center space-x-1 sm:space-x-1.5 min-w-0 flex-1">
+                          <div className="relative flex-shrink-0">
+                            <img
+                              src={match.team1?.avatar || 'https://sleepercdn.com/images/v2/icons/player_default.webp'}
+                              alt=""
+                              className="w-5 h-5 sm:w-6 sm:h-6 rounded-full object-cover border border-slate-700"
+                            />
+                            {s1 && (
+                              <span className="absolute -bottom-1 -right-1 bg-black text-[7px] sm:text-[8px] font-mono font-bold text-slate-300 w-3 h-3 rounded-full flex items-center justify-center border border-slate-700">
+                                {s1}
+                              </span>
+                            )}
                           </div>
+                          <span className="text-[9px] sm:text-[11px] font-bold truncate block leading-tight">
+                            {match.team1?.name || match.team1?.teamName || `Seed ${match.t1}`}
+                          </span>
                         </div>
                         {t1Won && (
-                          <span className="text-[9px] uppercase font-black px-2 py-0.5 rounded-md bg-amber-500 text-black flex-shrink-0 ml-1.5 shadow-sm">
-                            {isChamp ? 'CHAMP 🏆' : 'ADV'}
+                          <span className="text-[8px] sm:text-[9px] font-black text-amber-400 flex-shrink-0 ml-1">
+                            {isChamp ? 'CHAMP' : 'ADV'}
                           </span>
                         )}
                       </div>
 
-                      {/* Team 2 */}
+                      {/* Team 2 Row */}
                       <div
-                        className={`p-2 rounded-xl border flex items-center justify-between transition ${
-                          t2Won
-                            ? 'bg-amber-500/15 border-amber-500/60 font-bold text-white shadow-sm'
-                            : 'bg-slate-950/40 border-slate-800/80 text-slate-300'
+                        className={`px-1.5 py-1.5 sm:px-2.5 sm:py-2 flex items-center justify-between ${
+                          t2Won ? 'bg-amber-500/15 text-white font-bold' : 'text-slate-300'
                         }`}
                       >
-                        <div className="flex items-center space-x-2.5 truncate">
-                          <img
-                            src={match.team2?.avatar || 'https://sleepercdn.com/images/v2/icons/player_default.webp'}
-                            alt=""
-                            className="w-7 h-7 rounded-full object-cover flex-shrink-0 border border-slate-700 shadow"
-                          />
-                          <div className="truncate">
-                            <span className="block font-bold text-xs truncate leading-tight text-white">
-                              {match.team2?.teamName || match.team2?.name || `Roster #${match.t2 || 'TBD'}`}
-                            </span>
-                            <span className="block text-[10px] text-slate-400 truncate">
-                              {match.team2?.name}
-                            </span>
+                        <div className="flex items-center space-x-1 sm:space-x-1.5 min-w-0 flex-1">
+                          <div className="relative flex-shrink-0">
+                            <img
+                              src={match.team2?.avatar || 'https://sleepercdn.com/images/v2/icons/player_default.webp'}
+                              alt=""
+                              className="w-5 h-5 sm:w-6 sm:h-6 rounded-full object-cover border border-slate-700"
+                            />
+                            {s2 && (
+                              <span className="absolute -bottom-1 -right-1 bg-black text-[7px] sm:text-[8px] font-mono font-bold text-slate-300 w-3 h-3 rounded-full flex items-center justify-center border border-slate-700">
+                                {s2}
+                              </span>
+                            )}
                           </div>
+                          <span className="text-[9px] sm:text-[11px] font-bold truncate block leading-tight">
+                            {match.team2?.name || match.team2?.teamName || `Seed ${match.t2}`}
+                          </span>
                         </div>
                         {t2Won && (
-                          <span className="text-[9px] uppercase font-black px-2 py-0.5 rounded-md bg-amber-500 text-black flex-shrink-0 ml-1.5 shadow-sm">
-                            {isChamp ? 'CHAMP 🏆' : 'ADV'}
+                          <span className="text-[8px] sm:text-[9px] font-black text-amber-400 flex-shrink-0 ml-1">
+                            {isChamp ? 'CHAMP' : 'ADV'}
                           </span>
                         )}
+                      </div>
+                    </div>
+                  );
+                };
+
+                // Sleeper-accurate Bye Card
+                const renderByeCard = (team, seedNum) => {
+                  return (
+                    <div className="rounded-xl border border-slate-800/90 bg-[#131b2a] overflow-hidden shadow-sm">
+                      <div className="px-1.5 py-1.5 sm:px-2.5 sm:py-2 flex items-center space-x-1 sm:space-x-1.5 min-w-0">
+                        <div className="relative flex-shrink-0">
+                          <img
+                            src={team?.avatar || 'https://sleepercdn.com/images/v2/icons/player_default.webp'}
+                            alt=""
+                            className="w-5 h-5 sm:w-6 sm:h-6 rounded-full object-cover border border-slate-700"
+                          />
+                          <span className="absolute -bottom-1 -right-1 bg-black text-[7px] sm:text-[8px] font-mono font-bold text-slate-300 w-3 h-3 rounded-full flex items-center justify-center border border-slate-700">
+                            {seedNum}
+                          </span>
+                        </div>
+                        <span className="text-[9px] sm:text-[11px] font-bold text-white truncate block leading-tight">
+                          {team?.name || team?.teamName || `Seed ${seedNum}`}
+                        </span>
+                      </div>
+                      <div className="bg-cyan-500/10 border-t border-slate-800/60 py-0.5 text-center">
+                        <span className="text-[8px] sm:text-[9px] font-black tracking-wider text-cyan-400 uppercase">
+                          BYE
+                        </span>
                       </div>
                     </div>
                   );
                 };
 
                 return (
-                  <div className="space-y-6">
-                    {/* Mobile Round Switcher (< md screens) */}
-                    <div className="block md:hidden space-y-4">
-                      <div className="flex items-center justify-between bg-slate-900/90 border border-slate-800 p-1 rounded-2xl text-xs font-bold gap-1">
-                        <button
-                          type="button"
-                          onClick={() => setMobileBracketRound('champ')}
-                          className={`flex-1 py-2 px-2 rounded-xl transition text-center ${
-                            mobileBracketRound === 'champ'
-                              ? 'bg-gradient-to-r from-amber-500 to-amber-400 text-black font-black shadow-glow-gold'
-                              : 'text-slate-400 hover:text-white'
-                          }`}
-                        >
-                          🏆 Final
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setMobileBracketRound('semi')}
-                          className={`flex-1 py-2 px-2 rounded-xl transition text-center ${
-                            mobileBracketRound === 'semi'
-                              ? 'bg-amber-500 text-black font-black shadow-md'
-                              : 'text-slate-400 hover:text-white'
-                          }`}
-                        >
-                          ⚔️ Semis
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setMobileBracketRound('qf')}
-                          className={`flex-1 py-2 px-2 rounded-xl transition text-center ${
-                            mobileBracketRound === 'qf'
-                              ? 'bg-amber-500 text-black font-black shadow-md'
-                              : 'text-slate-400 hover:text-white'
-                          }`}
-                        >
-                          🎯 Quarters
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setMobileBracketRound('tree')}
-                          className={`py-2 px-2.5 rounded-xl transition text-center ${
-                            mobileBracketRound === 'tree'
-                              ? 'bg-cyan-500 text-black font-black shadow-md'
-                              : 'text-slate-400 hover:text-white'
-                          }`}
-                          title="Full Tree View"
-                        >
-                          Tree
-                        </button>
-                      </div>
-
-                      {/* Mobile Round Contents */}
-                      {mobileBracketRound === 'champ' && (
-                        <div className="space-y-4 animate-fadeIn">
-                          <div className="text-center py-2 px-3 rounded-xl bg-gradient-to-r from-amber-500/20 via-amber-400/25 to-amber-500/20 border border-amber-500/50 text-xs font-black uppercase tracking-wider text-amber-300 shadow-glow-gold">
-                            The Championship Match (Week 17)
-                          </div>
-                          {renderSleeperMatchCard(champMatch, '🏆 Championship Match', true)}
-
-                          {champMatch?.winner && (
-                            <div className="p-4 rounded-2xl bg-gradient-to-br from-amber-400 via-amber-500 to-yellow-500 text-black shadow-glow-gold flex items-center space-x-3.5 border-2 border-amber-300">
-                              <div className="w-12 h-12 rounded-xl bg-black/20 flex items-center justify-center text-2xl flex-shrink-0 shadow-inner">
-                                🏆
-                              </div>
-                              <div className="min-w-0">
-                                <span className="text-[10px] font-black uppercase tracking-widest text-black/75 block">
-                                  {activeSeasonData.year} DFL League Champion
-                                </span>
-                                <h4 className="text-xl font-black leading-tight font-display truncate">
-                                  {podiumTeamName}
-                                </h4>
-                                <p className="text-xs font-bold text-black/85 mt-0.5">
-                                  Manager: {podiumManagerName}
-                                </p>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      )}
-
-                      {mobileBracketRound === 'semi' && (
-                        <div className="space-y-4 animate-fadeIn">
-                          <div className="text-center py-2 px-3 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-black uppercase tracking-wider text-slate-300">
-                            Round 2: Semifinal Gauntlet (Week 16)
-                          </div>
-                          {renderSleeperMatchCard(sf1, 'Semifinal 1')}
-                          {renderSleeperMatchCard(sf2, 'Semifinal 2')}
-                        </div>
-                      )}
-
-                      {mobileBracketRound === 'qf' && (
-                        <div className="space-y-4 animate-fadeIn">
-                          <div className="text-center py-2 px-3 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-black uppercase tracking-wider text-slate-300">
-                            Round 1: Quarterfinals & Byes (Week 15)
-                          </div>
-                          <div className="space-y-3">
-                            <span className="text-[10px] uppercase font-black tracking-wider text-cyan-400 block">Top Seed Byes</span>
-                            {renderByeCard(seed1, 1)}
-                            {renderByeCard(seed2, 2)}
-                          </div>
-                          <div className="space-y-3 pt-2">
-                            <span className="text-[10px] uppercase font-black tracking-wider text-slate-400 block">Quarterfinal Matches</span>
-                            {renderSleeperMatchCard(qf1, 'Quarterfinal 1')}
-                            {renderSleeperMatchCard(qf2, 'Quarterfinal 2')}
-                          </div>
-                        </div>
-                      )}
-
-                      {mobileBracketRound === 'tree' && (
-                        <div className="overflow-x-auto pb-4">
-                          <div className="min-w-[1020px] flex items-stretch justify-between relative py-2">
-                            {/* COLUMN 1 */}
-                            <div className="w-[300px] flex flex-col justify-between space-y-3">
-                              <div className="text-center py-2 px-3 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-black uppercase tracking-wider text-slate-300 shadow-sm">
-                                Round 1 • (Week 15)
-                              </div>
-                              <div className="space-y-4">
-                                {renderByeCard(seed1, 1)}
-                                {renderSleeperMatchCard(qf1, 'Quarterfinal 1')}
-                              </div>
-                              <div className="space-y-4">
-                                {renderByeCard(seed2, 2)}
-                                {renderSleeperMatchCard(qf2, 'Quarterfinal 2')}
-                              </div>
-                            </div>
-                            <div className="w-12 flex flex-col justify-between py-10">
-                              <div className="h-44 flex items-center">
-                                <svg className="w-12 h-full text-slate-600" viewBox="0 0 48 160" fill="none" preserveAspectRatio="none">
-                                  <path d="M 0 20 H 24 V 140 H 0 M 24 80 H 48" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                                </svg>
-                              </div>
-                              <div className="h-44 flex items-center">
-                                <svg className="w-12 h-full text-slate-600" viewBox="0 0 48 160" fill="none" preserveAspectRatio="none">
-                                  <path d="M 0 20 H 24 V 140 H 0 M 24 80 H 48" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                                </svg>
-                              </div>
-                            </div>
-                            {/* COLUMN 2 */}
-                            <div className="w-[300px] flex flex-col justify-between">
-                              <div className="text-center py-2 px-3 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-black uppercase tracking-wider text-slate-300 shadow-sm mb-3">
-                                Round 2 • (Week 16)
-                              </div>
-                              <div className="flex-1 flex flex-col justify-around py-4">
-                                {renderSleeperMatchCard(sf1, 'Semifinal 1')}
-                                {renderSleeperMatchCard(sf2, 'Semifinal 2')}
-                              </div>
-                            </div>
-                            <div className="w-12 flex items-center justify-center">
-                              <svg className="w-12 h-72 text-amber-500/70" viewBox="0 0 48 260" fill="none" preserveAspectRatio="none">
-                                <path d="M 0 35 H 24 V 225 H 0 M 24 130 H 48" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-                              </svg>
-                            </div>
-                            {/* COLUMN 3 */}
-                            <div className="w-[320px] flex flex-col justify-center space-y-4">
-                              <div className="text-center py-2 px-3 rounded-xl bg-gradient-to-r from-amber-500/20 via-amber-400/25 to-amber-500/20 border border-amber-500/50 text-xs font-black uppercase tracking-wider text-amber-300 shadow-glow-gold">
-                                Round 3 • 🏆 The Championship (Week 17)
-                              </div>
-                              {renderSleeperMatchCard(champMatch, '🏆 Championship Match', true)}
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Desktop Tournament Bracket Tree (>= md screens) */}
-                    <div className="hidden md:block overflow-x-auto pb-4">
-                      <div className="min-w-[1020px] flex items-stretch justify-between relative py-2">
-                        {/* COLUMN 1: WEEK 15 (Quarterfinals & Byes) */}
-                        <div className="w-[300px] flex flex-col justify-between space-y-3">
-                          <div className="text-center py-2 px-3 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-black uppercase tracking-wider text-slate-300 shadow-sm">
-                            Round 1 • (Week 15)
+                  <div className="space-y-4">
+                    {/* Sleeper Mobile & Responsive Playoff Tree (Fits on Screen) */}
+                    <div className="w-full relative py-2">
+                      <div className="grid grid-cols-3 gap-1.5 sm:gap-4 items-stretch">
+                        {/* COLUMN 1: ROUND 1 (Week 15) */}
+                        <div className="flex flex-col justify-between space-y-2 sm:space-y-3">
+                          <div className="text-center py-1 sm:py-1.5 px-1 rounded-xl bg-slate-900/90 border border-slate-800 shadow-sm">
+                            <span className="text-[9px] sm:text-xs font-black uppercase tracking-wider text-slate-300 block">
+                              Round 1
+                            </span>
+                            <span className="text-[7.5px] sm:text-[9px] text-slate-500 font-mono block">
+                              (Week 15)
+                            </span>
                           </div>
 
-                          {/* Top Half: Seed 1 Bye + QF 1 */}
-                          <div className="space-y-4">
-                            {renderByeCard(seed1, 1)}
-                            {renderSleeperMatchCard(qf1, 'Quarterfinal 1')}
+                          <div className="space-y-2 sm:space-y-3">
+                            {renderByeCard(seed1, seed1Num)}
+                            {renderSleeperMatchCard(qf1, 'QF 1')}
                           </div>
 
-                          {/* Bottom Half: Seed 2 Bye + QF 2 */}
-                          <div className="space-y-4">
-                            {renderByeCard(seed2, 2)}
-                            {renderSleeperMatchCard(qf2, 'Quarterfinal 2')}
+                          <div className="space-y-2 sm:space-y-3">
+                            {renderByeCard(seed2, seed2Num)}
+                            {renderSleeperMatchCard(qf2, 'QF 2')}
                           </div>
                         </div>
 
-                        {/* CONNECTOR 1: Branch from Round 1 into Round 2 */}
-                        <div className="w-12 flex flex-col justify-between py-10">
-                          {/* Upper fork for Semi 1 */}
-                          <div className="h-44 flex items-center">
-                            <svg className="w-12 h-full text-slate-600" viewBox="0 0 48 160" fill="none" preserveAspectRatio="none">
-                              <path d="M 0 20 H 24 V 140 H 0 M 24 80 H 48" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                            </svg>
+                        {/* COLUMN 2: ROUND 2 (Week 16) */}
+                        <div className="flex flex-col justify-between">
+                          <div className="text-center py-1 sm:py-1.5 px-1 rounded-xl bg-slate-900/90 border border-slate-800 shadow-sm mb-2">
+                            <span className="text-[9px] sm:text-xs font-black uppercase tracking-wider text-slate-300 block">
+                              Round 2
+                            </span>
+                            <span className="text-[7.5px] sm:text-[9px] text-slate-500 font-mono block">
+                              (Week 16)
+                            </span>
                           </div>
 
-                          {/* Lower fork for Semi 2 */}
-                          <div className="h-44 flex items-center">
-                            <svg className="w-12 h-full text-slate-600" viewBox="0 0 48 160" fill="none" preserveAspectRatio="none">
-                              <path d="M 0 20 H 24 V 140 H 0 M 24 80 H 48" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                            </svg>
-                          </div>
-                        </div>
-
-                        {/* COLUMN 2: WEEK 16 (Semifinals) */}
-                        <div className="w-[300px] flex flex-col justify-between">
-                          <div className="text-center py-2 px-3 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-black uppercase tracking-wider text-slate-300 shadow-sm mb-3">
-                            Round 2 • (Week 16)
-                          </div>
-
-                          <div className="flex-1 flex flex-col justify-around py-4">
-                            {renderSleeperMatchCard(sf1, 'Semifinal 1')}
-                            {renderSleeperMatchCard(sf2, 'Semifinal 2')}
+                          <div className="flex-1 flex flex-col justify-around py-3 sm:py-6 space-y-3">
+                            {renderSleeperMatchCard(sf1, 'Semi 1')}
+                            {renderSleeperMatchCard(sf2, 'Semi 2')}
                           </div>
                         </div>
 
-                        {/* CONNECTOR 2: Branch from Semifinals into Finals */}
-                        <div className="w-12 flex items-center justify-center">
-                          <svg className="w-12 h-72 text-amber-500/70" viewBox="0 0 48 260" fill="none" preserveAspectRatio="none">
-                            <path d="M 0 35 H 24 V 225 H 0 M 24 130 H 48" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-                          </svg>
-                        </div>
-
-                        {/* COLUMN 3: WEEK 17 (Championship) */}
-                        <div className="w-[320px] flex flex-col justify-center space-y-4">
-                          <div className="text-center py-2 px-3 rounded-xl bg-gradient-to-r from-amber-500/20 via-amber-400/25 to-amber-500/20 border border-amber-500/50 text-xs font-black uppercase tracking-wider text-amber-300 shadow-glow-gold">
-                            Round 3 • 🏆 The Championship (Week 17)
+                        {/* COLUMN 3: FINALS (Week 17) */}
+                        <div className="flex flex-col justify-between">
+                          <div className="text-center py-1 sm:py-1.5 px-1 rounded-xl bg-gradient-to-r from-amber-500/20 via-amber-400/25 to-amber-500/20 border border-amber-500/50 shadow-glow-gold mb-2">
+                            <span className="text-[9px] sm:text-xs font-black uppercase tracking-wider text-amber-300 block">
+                              Finals
+                            </span>
+                            <span className="text-[7.5px] sm:text-[9px] text-amber-400/70 font-mono block">
+                              (Week 17)
+                            </span>
                           </div>
 
-                          {renderSleeperMatchCard(champMatch, '🏆 Championship Match', true)}
+                          <div className="flex-1 flex flex-col justify-center space-y-2.5 sm:space-y-3">
+                            {renderSleeperMatchCard(champMatch, '🏆 Championship Match', true)}
 
-                          {/* Crowned League Champion Podium Banner */}
-                          {champMatch?.winner && (
-                            <div className="p-4 rounded-2xl bg-gradient-to-br from-amber-400 via-amber-500 to-yellow-500 text-black shadow-glow-gold flex items-center space-x-3.5 border-2 border-amber-300 transform hover:scale-[1.02] transition">
-                              <div className="w-12 h-12 rounded-xl bg-black/20 flex items-center justify-center text-2xl flex-shrink-0 shadow-inner">
-                                🏆
+                            {/* Crowned League Champion Podium Banner */}
+                            {champMatch?.winner && (
+                              <div className="p-2 sm:p-3.5 rounded-xl sm:rounded-2xl bg-gradient-to-br from-amber-400 via-amber-500 to-yellow-500 text-black shadow-glow-gold flex items-center space-x-1.5 sm:space-x-3 border sm:border-2 border-amber-300">
+                                <div className="w-7 h-7 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-black/20 flex items-center justify-center text-sm sm:text-xl flex-shrink-0 shadow-inner">
+                                  🏆
+                                </div>
+                                <div className="min-w-0">
+                                  <span className="text-[7.5px] sm:text-[9px] font-black uppercase tracking-wider text-black/75 block">
+                                    {activeSeasonData.year} Champion
+                                  </span>
+                                  <h4 className="text-xs sm:text-lg font-black leading-tight font-display truncate">
+                                    {podiumTeamName}
+                                  </h4>
+                                </div>
                               </div>
-                              <div className="min-w-0">
-                                <span className="text-[10px] font-black uppercase tracking-widest text-black/75 block">
-                                  {activeSeasonData.year} DFL League Champion
-                                </span>
-                                <h4 className="text-xl font-black leading-tight font-display truncate">
-                                  {podiumTeamName}
-                                </h4>
-                                <p className="text-xs font-bold text-black/85 mt-0.5">
-                                  Manager: {podiumManagerName}
-                                </p>
-                              </div>
-                            </div>
-                          )}
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>

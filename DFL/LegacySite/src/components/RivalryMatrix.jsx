@@ -248,11 +248,6 @@ export default function RivalryMatrix({ franchises, rivalries }) {
                               <span className={won ? 'text-emerald-300 font-black' : 'text-slate-400'}>{game.pts1}</span>
                               <span className="text-slate-600">—</span>
                               <span className={!won && !isTie ? 'text-rose-300 font-black' : 'text-slate-400'}>{game.pts2}</span>
-                              {game.margin !== undefined && (
-                                <span className="text-slate-500 text-[10px] ml-1 font-normal">
-                                  (Δ{game.margin})
-                                </span>
-                              )}
                             </div>
                           </div>
                         );
