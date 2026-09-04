@@ -2,7 +2,6 @@
 const path = require('path');
 const { postToSleeper } = require('./src/poster');
 const imageClient = require('./src/imageClient');
-const promptHelpers = require('./src/imagePrompts');
 
 const CONFIG_PATH = path.join(__dirname, '..', 'config.json');
 const config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
@@ -16,9 +15,9 @@ const PART_1_OPEN = `There is a distinct, tragic beauty to early September. It�
 Walking into a new fantasy season is like walking into a Vegas casino at 2:00 AM with your rent money. Mathematically, nine of you are leaving this building broke, humiliated, and questioning your life choices. Yet you strut in like James Bond anyway. I’ve crunched the numbers, simulated the matchups, and calculated the exact trajectory of your impending heartbreak. The book is open. Welcome to the 2026 DFL Over/Under Gambling Manifesto.
 
 Here is how the hierarchy shakes out for 2026:
-• TIER 1: The Heavyweight Title Contenders (Washed, Heisenberg’s Hitmen, I don't Gibbs a Shough)
-• TIER 2: The Dangerous Middle Class (Scott’s Totts, Poppinchunkies, Laces Out, Ladies, Hands for Jobs)
-• TIER 3: The Cellar Dwellers & Rebuild Trench (Dude, Where's Lamar?, Who Dey, Ronin)
+• TIER 1: The Heavyweight Title Contenders
+• TIER 2: The Dangerous Middle Class
+• TIER 3: The Cellar Dwellers & Rebuild Trench
 
 Full lines and locked picks dropping in two minutes. Get your bankrolls ready...`;
 
@@ -68,17 +67,20 @@ Tony has Patrick Mahomes and Jared Goff. In a Superflex league, having Mahomes a
 
 Ronin (Jason): Over/Under 5.0 Wins
 THE PICK: UNDER
-Jason won it all in 2024, but that championship banner is waving over a team that has clearly transitioned into a full-scale renovation. Joe Burrow and Tee Higgins are fantastic building blocks, but the rest of the roster is young, developing, and not ready for a 2026 playoff run. A brutal 14-week schedule will expedite the tank. Take the Under and prepare for the 2027 rookie draft.
+Jason won it all in 2024, but that championship banner is waving over a team that has clearly transitioned into a full-scale renovation. Joe Burrow and Tee Higgins are fantastic building blocks, but the rest of the roster is young, developing, and not ready for a 2026 playoff run. A brutal 14-week schedule will expedite the tank. Take the Under and prepare for the 2027 rookie draft.`;
 
-### 🗳️ THE COMMISSIONER'S CHALLENGE: SUBMIT YOUR PICKS
+const PART_3_CHALLENGE = `🗳️ THE COMMISSIONER'S CHALLENGE
 
 Think you know better than the AI?
-Reply directly to this post with your OVER or UNDER for all 10 teams. Dom will be officially tracking everyone's picks on the league ledger all season long.
 
-Winner takes the 2026 DFL Prophet Crown. Loser gets publicly roasted by JARVIS at the end-of-season banquet. Get your picks in before Week 1 kickoff!`;
+Dom is setting up an official league prediction portal to track everyone's picks on the ledger all season long. You will be submitting your locked OVER or UNDER for all 10 teams.
+
+Winner takes the 2026 DFL Prophet Crown. Loser gets publicly roasted by JARVIS at the end-of-season banquet.
+
+Stay tuned for the link before Week 1 kickoff!`;
 
 async function run(dryRun = false) {
-  console.log('🚀 Executing 2-Part Season Preview Post (dryRun=' + dryRun + ')...');
+  console.log('🚀 Executing 3-Part Season Preview Post (dryRun=' + dryRun + ')...');
 
   let events = {};
   if (fs.existsSync(EVENTS_FILE)) {
@@ -90,35 +92,45 @@ async function run(dryRun = false) {
     return;
   }
   
-  // 1. Image handling (use pre-generated Las Vegas Cover Art)
+  // 1. Upload Clean Las Vegas Cover Graphic
   let imageMd = '';
-  const cachedImg = 'preview_2026_1785556312521.jpg';
-  if (fs.existsSync(path.join(__dirname, 'images', cachedImg))) {
-    console.log('🎨 Using custom Las Vegas Over/Under Cover Art...');
-    imageMd = await imageClient.pushAndGetMarkdown(cachedImg, dryRun);
+  const cleanImg = 'preview_2026_clean.jpg';
+  if (fs.existsSync(path.join(__dirname, 'images', cleanImg))) {
+    console.log('🎨 Using clean Las Vegas Over/Under Cover Art (no overlapping badge)...');
+    imageMd = await imageClient.pushAndGetMarkdown(cleanImg, dryRun);
   }
 
-  // 2. Post Part 1: Graphic + Intro + Categories
-  console.log('📡 Posting Part 1 (Graphic + Intro + Tiers)...');
+  // 2. Post Part 1: Graphic + Intro + Category Tiers (no teams)
+  console.log('📡 [1/3] Posting Part 1 (Graphic + Intro + Tiers)...');
   const part1Content = (imageMd ? imageMd.trim() + '\n\n' : '') + PART_1_OPEN;
   await postToSleeper(USER_TOKEN, LEAGUE_ID, part1Content, dryRun, 'general', false);
 
-  // 3. Wait 2 Minutes between messages
+  // 3. Wait 2 Minutes
   console.log('⏳ Waiting 2 minutes before dropping Part 2 (Picks)...');
   if (!dryRun) {
     await new Promise(r => setTimeout(r, 120000));
   }
 
-  // 4. Post Part 2: All 10 Teams + Ballot Box
-  console.log('📡 Posting Part 2 (Picks & Challenge)...');
+  // 4. Post Part 2: All 10 Teams & Locked Picks
+  console.log('📡 [2/3] Posting Part 2 (Picks)...');
   await postToSleeper(USER_TOKEN, LEAGUE_ID, PART_2_PICKS, dryRun, 'general', true);
+
+  // 5. Wait 2 Minutes
+  console.log('⏳ Waiting 2 minutes before dropping Part 3 (Challenge)...');
+  if (!dryRun) {
+    await new Promise(r => setTimeout(r, 120000));
+  }
+
+  // 6. Post Part 3: Commissioner's Challenge Portal Announcement
+  console.log('📡 [3/3] Posting Part 3 (Commissioner Challenge)...');
+  await postToSleeper(USER_TOKEN, LEAGUE_ID, PART_3_CHALLENGE, dryRun, 'general', true);
 
   if (!dryRun) {
     events.seasonPreview.push('preview_2026');
     fs.writeFileSync(EVENTS_FILE, JSON.stringify(events, null, 2), 'utf8');
   }
 
-  console.log('✅ 2-Part Season Preview successfully posted to Sleeper!');
+  console.log('✅ All 3 parts of Season Preview successfully posted to Sleeper!');
 }
 
 const isDryRun = process.argv.includes('--dry-run');
