@@ -3,6 +3,54 @@ import { Users, Palette, Trophy, Shield, Sparkles, Check, TrendingUp, KeyRound, 
 import RosterModal from './RosterModal';
 import rostersData from '../data/league_rosters_and_picks.json';
 
+const FRANCHISE_ACCOLADES = {
+  Rhymenoceros: [
+    { icon: '👑', label: 'DFL Commissioner', desc: 'League Architect & Chief Trade Officer', color: 'border-cyan-500/40 bg-cyan-500/10 text-cyan-300' },
+    { icon: '📈', label: 'Steady Climb', desc: 'Rose from #10 in 2022 to #5 in 2025', color: 'border-blue-500/40 bg-blue-500/10 text-blue-300' },
+    { icon: '🤝', label: 'Market Maker', desc: '"Don\'t smoke and trade, kids"', color: 'border-slate-700 bg-slate-800/60 text-slate-300' },
+  ],
+  PoppinChunkies: [
+    { icon: '🏆', label: '2023 DFL Champion', desc: 'Undefeated Powerhouse Title', color: 'border-amber-500/50 bg-amber-500/15 text-amber-300 shadow-glow-gold' },
+    { icon: '🐐', label: '14-0 Undefeated Reg Season', desc: 'Historic 2023 zero-loss regular season', color: 'border-emerald-500/40 bg-emerald-500/10 text-emerald-300' },
+    { icon: '⚡', label: 'All-Time Win King', desc: '44-12 career record (.786)', color: 'border-purple-500/40 bg-purple-500/10 text-purple-300' },
+    { icon: '💥', label: 'Single-Game Scoring Record', desc: '257.21 pts in Week 16, 2022', color: 'border-rose-500/40 bg-rose-500/10 text-rose-300' },
+  ],
+  MattyiceR: [
+    { icon: '🏆', label: '2025 Reigning Champion', desc: 'Defending DFL Title Holder', color: 'border-amber-500/50 bg-amber-500/15 text-amber-300 shadow-glow-gold' },
+    { icon: '⚔️', label: 'Heavyweight Anchor', desc: '33-23 All-Time (.589)', color: 'border-blue-500/40 bg-blue-500/10 text-blue-300' },
+    { icon: '🔥', label: 'Century Explosion', desc: '239.26 pt nuclear game (2024)', color: 'border-rose-500/40 bg-rose-500/10 text-rose-300' },
+  ],
+  JayZone13: [
+    { icon: '🏆', label: '2024 DFL Champion', desc: 'Legendary Cinderella Underdog Run', color: 'border-amber-500/50 bg-amber-500/15 text-amber-300 shadow-glow-gold' },
+    { icon: '🎯', label: 'Clutch Elimination King', desc: 'Ran the playoff gauntlet to glory', color: 'border-cyan-500/40 bg-cyan-500/10 text-cyan-300' },
+  ],
+  LMcVicker: [
+    { icon: '🏆', label: '2022 Inaugural Champion', desc: 'Team Pupinsuds • In Loving Memory of Tre', color: 'border-amber-500/50 bg-amber-500/15 text-amber-300 shadow-glow-gold' },
+    { icon: '🥈', label: 'All-Time #2 Score', desc: '256.73 pts in Week 8, 2022', color: 'border-pink-500/40 bg-pink-500/10 text-pink-300' },
+    { icon: '🧀', label: 'Pupinsuds Legacy', desc: 'Inherited franchise standard of excellence', color: 'border-purple-500/40 bg-purple-500/10 text-purple-300' },
+  ],
+  doesntfleeze: [
+    { icon: '🥊', label: 'Tier 1 Contender', desc: 'Consensus 9.5 Win Line Pace Setter', color: 'border-red-500/40 bg-red-500/10 text-red-300' },
+    { icon: '🛡️', label: 'Postseason Fixture', desc: 'Perennial playoff contender', color: 'border-slate-700 bg-slate-800/60 text-slate-300' },
+  ],
+  MaffuJames: [
+    { icon: '🔄', label: 'Trade Machine Maestro', desc: 'Most active negotiator in DFL history', color: 'border-emerald-500/40 bg-emerald-500/10 text-emerald-300' },
+    { icon: '🚀', label: 'High-Upside Roster', desc: 'Tier 1 Challenger at 8.5 Win Line', color: 'border-cyan-500/40 bg-cyan-500/10 text-cyan-300' },
+  ],
+  DukeofWales: [
+    { icon: '💎', label: 'Youth Stockpile', desc: 'Loaded with top-tier young dynamos', color: 'border-cyan-500/40 bg-cyan-500/10 text-cyan-300' },
+    { icon: '🎯', label: 'Dangerous Underdog', desc: 'Capable of taking down any heavyweight', color: 'border-amber-500/40 bg-amber-500/10 text-amber-300' },
+  ],
+  SamBaugh: [
+    { icon: '⚡', label: 'Dual-MVP Arsenal', desc: 'Mahomes, Hurts & Amon-Ra core', color: 'border-yellow-500/40 bg-yellow-500/10 text-yellow-300' },
+    { icon: '💣', label: 'Explosive Ceiling', desc: 'Highest single-game ceiling in Tier 3', color: 'border-orange-500/40 bg-orange-500/10 text-orange-300' },
+  ],
+  Tklumb86: [
+    { icon: '👑', label: 'New Era Architect', desc: 'Tony taking the reins for 2026', color: 'border-orange-500/40 bg-orange-500/10 text-orange-300' },
+    { icon: '📦', label: 'Draft Capital Vault', desc: 'Stockpile of future picks for dynasty build', color: 'border-emerald-500/40 bg-emerald-500/10 text-emerald-300' },
+  ],
+};
+
 export default function ManagerDossiers({ franchises, currentUser, onOpenBranding, onOpenLogin, onOpenChangePin }) {
   const [selectedRosterKey, setSelectedRosterKey] = useState(null);
   return (
@@ -167,6 +215,27 @@ export default function ManagerDossiers({ franchises, currentUser, onOpenBrandin
                     <span className="font-mono font-bold text-amber-400">{f.allTime.championships}</span>
                   </div>
                 </div>
+
+                {/* Career Accolades & Badges Cabinet */}
+                {FRANCHISE_ACCOLADES[key] && (
+                  <div className="pt-2.5 border-t border-slate-800/80 space-y-1.5">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-slate-500 block">
+                      Career Accolades & Badges
+                    </span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {FRANCHISE_ACCOLADES[key].map((badge, bIdx) => (
+                        <div
+                          key={bIdx}
+                          title={badge.desc}
+                          className={`flex items-center space-x-1.5 px-2.5 py-1 rounded-xl border text-[11px] font-bold ${badge.color} transition hover:scale-105 cursor-default`}
+                        >
+                          <span className="text-xs flex-shrink-0">{badge.icon}</span>
+                          <span className="leading-tight">{badge.label}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 {/* Yearly Finish History */}
                 <div className="pt-2 border-t border-slate-800/80">

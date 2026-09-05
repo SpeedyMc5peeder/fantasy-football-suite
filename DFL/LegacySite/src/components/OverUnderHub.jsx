@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TrendingUp, CheckCircle, Save, Award, Users, AlertCircle, Sparkles, ExternalLink } from 'lucide-react';
+import { TrendingUp, CheckCircle, Save, Award, Users, AlertCircle, Sparkles, ExternalLink, Clock } from 'lucide-react';
 import RosterModal from './RosterModal';
 
 export default function OverUnderHub({ franchises, lines, predictions, currentUser, onOpenLogin, onSavePredictions }) {
@@ -16,6 +16,30 @@ export default function OverUnderHub({ franchises, lines, predictions, currentUs
   const [activeSubTab, setActiveSubTab] = useState('ballot'); // 'ballot' or 'consensus'
   const [mobileConsensusMode, setMobileConsensusMode] = useState('cards'); // 'cards' | 'grid'
   const [expandedConsensusTeam, setExpandedConsensusTeam] = useState(null);
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0, isPassed: false });
+
+  // Live countdown to 2026 season kickoff (Thursday, September 10, 2026, 7:15 PM CST)
+  useEffect(() => {
+    const kickoffTime = new Date('2026-09-10T19:15:00-05:00').getTime();
+    const updateTimer = () => {
+      const now = Date.now();
+      const diff = kickoffTime - now;
+      if (diff <= 0) {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0, isPassed: true });
+        return;
+      }
+      setTimeLeft({
+        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+        minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+        seconds: Math.floor((diff % (1000 * 60)) / 1000),
+        isPassed: false,
+      });
+    };
+    updateTimer();
+    const interval = setInterval(updateTimer, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Sync state with current user's existing saved predictions
   useEffect(() => {
@@ -103,6 +127,55 @@ export default function OverUnderHub({ franchises, lines, predictions, currentUs
             <span>League Consensus Grid</span>
           </button>
         </div>
+      </div>
+
+      {/* Live Kickoff Countdown Ticker */}
+      <div className="relative overflow-hidden p-4 sm:p-5 rounded-3xl bg-gradient-to-r from-cyan-950/40 via-slate-900 to-blue-950/40 border border-cyan-500/40 shadow-glow-cyan flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="flex items-center space-x-3 text-left w-full md:w-auto">
+          <div className="w-11 h-11 rounded-2xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-400 flex-shrink-0 shadow-inner">
+            <Clock className="w-5 h-5 animate-pulse" />
+          </div>
+          <div>
+            <div className="flex items-center space-x-2">
+              <span className="inline-block w-2 h-2 rounded-full bg-rose-500 animate-ping" />
+              <span className="text-[10px] sm:text-xs font-black uppercase tracking-wider text-cyan-400">
+                Official 2026 Season Kickoff
+              </span>
+            </div>
+            <h3 className="text-sm sm:text-base font-black text-white font-display tracking-wide">
+              {timeLeft.isPassed ? '🔥 2026 SEASON IS LIVE! PICKS ARE LOCKED!' : 'Lock in your Over/Unders before Thursday Night kickoff!'}
+            </h3>
+          </div>
+        </div>
+
+        {/* Countdown Timer Blocks */}
+        {!timeLeft.isPassed ? (
+          <div className="flex items-center space-x-2 sm:space-x-3 text-center font-mono">
+            <div className="bg-slate-950/80 border border-slate-800 rounded-xl px-2.5 py-1.5 sm:px-3 sm:py-2 min-w-[52px] sm:min-w-[62px] shadow-sm">
+              <span className="text-base sm:text-2xl font-black text-white block leading-tight">{String(timeLeft.days).padStart(2, '0')}</span>
+              <span className="text-[8.5px] sm:text-[9.5px] font-bold text-slate-500 uppercase block tracking-wider">Days</span>
+            </div>
+            <span className="text-cyan-400 font-black text-base sm:text-lg">:</span>
+            <div className="bg-slate-950/80 border border-slate-800 rounded-xl px-2.5 py-1.5 sm:px-3 sm:py-2 min-w-[52px] sm:min-w-[62px] shadow-sm">
+              <span className="text-base sm:text-2xl font-black text-white block leading-tight">{String(timeLeft.hours).padStart(2, '0')}</span>
+              <span className="text-[8.5px] sm:text-[9.5px] font-bold text-slate-500 uppercase block tracking-wider">Hours</span>
+            </div>
+            <span className="text-cyan-400 font-black text-base sm:text-lg">:</span>
+            <div className="bg-slate-950/80 border border-slate-800 rounded-xl px-2.5 py-1.5 sm:px-3 sm:py-2 min-w-[52px] sm:min-w-[62px] shadow-sm">
+              <span className="text-base sm:text-2xl font-black text-cyan-400 block leading-tight">{String(timeLeft.minutes).padStart(2, '0')}</span>
+              <span className="text-[8.5px] sm:text-[9.5px] font-bold text-slate-500 uppercase block tracking-wider">Mins</span>
+            </div>
+            <span className="text-cyan-400 font-black text-base sm:text-lg">:</span>
+            <div className="bg-slate-950/80 border border-slate-800 rounded-xl px-2.5 py-1.5 sm:px-3 sm:py-2 min-w-[52px] sm:min-w-[62px] shadow-sm">
+              <span className="text-base sm:text-2xl font-black text-amber-400 block leading-tight">{String(timeLeft.seconds).padStart(2, '0')}</span>
+              <span className="text-[8.5px] sm:text-[9.5px] font-bold text-slate-500 uppercase block tracking-wider">Secs</span>
+            </div>
+          </div>
+        ) : (
+          <div className="px-3.5 py-2 rounded-xl bg-rose-500/20 text-rose-300 font-black text-xs font-mono border border-rose-500/40">
+            LOCKED AT KICKOFF
+          </div>
+        )}
       </div>
 
       {/* User Login Warning if Guest */}

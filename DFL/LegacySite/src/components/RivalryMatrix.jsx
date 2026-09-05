@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Swords, X, Flame, Shield, ArrowRight } from 'lucide-react';
+import { Swords, X, Flame, Shield, ArrowRight, Copy, Check } from 'lucide-react';
 
 // Formats team names into two clean, balanced lines so names never get clipped or word-chopped
 const formatHeaderTeamName = (teamName, franchiseKey) => {
@@ -51,6 +51,36 @@ export default function RivalryMatrix({ franchises, rivalries }) {
   const [mobileTeamA, setMobileTeamA] = useState(franchiseKeys[0] || 'Rhymenoceros');
   const [mobileTeamB, setMobileTeamB] = useState(franchiseKeys[1] || 'PoppinChunkies');
   const [mobileMatrixMode, setMobileMatrixMode] = useState('inspector'); // 'inspector' | 'grid'
+
+  const [copiedKey, setCopiedKey] = useState(null);
+
+  const handleCopyTrashTalk = (t1, t2, data, keyId) => {
+    if (!t1 || !t2 || !data) return;
+    const wins = data.wins || 0;
+    const losses = data.losses || 0;
+    const ties = data.ties || 0;
+    const leader = wins > losses ? t1.teamName : (losses > wins ? t2.teamName : 'Tied');
+    const recordStr = `${wins}-${losses}${ties ? `-${ties}` : ''}`;
+    const pts1 = Math.round(data.pointsFor || 0);
+    const pts2 = Math.round(data.pointsAgainst || 0);
+    
+    // Last game info if exists
+    const lastGame = data.matchups?.[0];
+    const lastGameStr = lastGame ? `• Last Meeting: ${lastGame.year} (${lastGame.pts1} — ${lastGame.pts2})\n` : '';
+
+    const shareText = `🥊 DFL TALE OF THE TAPE: ${t1.teamName} vs. ${t2.teamName}\n` +
+      `• All-Time Record: ${recordStr} (${leader === 'Tied' ? 'Series Tied' : `${leader} leads`})\n` +
+      `• Lifetime Points: ${pts1} — ${pts2}\n` +
+      `• Total Battles: ${data.matchups?.length || (wins + losses + ties)} games\n` +
+      lastGameStr +
+      `🔗 Check the full receipts: https://dfl-legacy.onrender.com`;
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(shareText);
+    }
+    setCopiedKey(keyId);
+    setTimeout(() => setCopiedKey(null), 2500);
+  };
 
   const handleCellClick = (f1, f2) => {
     if (f1 === f2) return;
@@ -211,6 +241,25 @@ export default function RivalryMatrix({ franchises, rivalries }) {
                       />
                     </div>
                   </div>
+
+                  {/* Copy Tale of the Tape Button for Sleeper */}
+                  <button
+                    type="button"
+                    onClick={() => handleCopyTrashTalk(t1, t2, data, `mobile-${mobileTeamA}-${mobileTeamB}`)}
+                    className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-amber-500/15 via-slate-800 to-amber-500/15 hover:from-amber-500/25 hover:to-amber-500/25 border border-amber-500/40 text-amber-300 hover:text-white font-bold text-xs flex items-center justify-center space-x-2 transition shadow-sm active:scale-95"
+                  >
+                    {copiedKey === `mobile-${mobileTeamA}-${mobileTeamB}` ? (
+                      <>
+                        <Check className="w-4 h-4 text-emerald-400" />
+                        <span className="text-emerald-300 font-black">Copied to Clipboard! Ready for Sleeper 🔥</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-4 h-4" />
+                        <span>📋 Copy Tale of the Tape for Sleeper Chat</span>
+                      </>
+                    )}
+                  </button>
 
                   {/* Matchup History */}
                   <div className="space-y-2">
@@ -443,6 +492,27 @@ export default function RivalryMatrix({ franchises, rivalries }) {
                   }}
                 />
               </div>
+            </div>
+
+            {/* Copy Tale of the Tape Button for Sleeper */}
+            <div className="mb-6">
+              <button
+                type="button"
+                onClick={() => handleCopyTrashTalk(selectedMatchup.info1, selectedMatchup.info2, selectedMatchup, 'desktop-modal')}
+                className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-amber-500/15 via-slate-800 to-amber-500/15 hover:from-amber-500/25 hover:to-amber-500/25 border border-amber-500/40 text-amber-300 hover:text-white font-bold text-xs flex items-center justify-center space-x-2 transition shadow-sm active:scale-95"
+              >
+                {copiedKey === 'desktop-modal' ? (
+                  <>
+                    <Check className="w-4 h-4 text-emerald-400" />
+                    <span className="text-emerald-300 font-black">Copied to Clipboard! Ready for Sleeper 🔥</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-4 h-4" />
+                    <span>📋 Copy Tale of the Tape for Sleeper Chat</span>
+                  </>
+                )}
+              </button>
             </div>
 
             {/* Matchup History List */}
