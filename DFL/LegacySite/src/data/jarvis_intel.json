@@ -1,0 +1,186 @@
+{
+  "managers": [
+    {
+      "id": "Rhymenoceros",
+      "name": "Dom",
+      "team": "Scott's Totts",
+      "title": "League Architect & Chief Trade Officer",
+      "scoutingReport": "Dom runs this entire operation like a Roman emperor—organizing the draft, writing state of the league addresses, and holding the league together with pure administrative force. The only flaw in the empire? A rather humble 19-37 career record on the actual field. He loves to wheel and deal on the trade block, wrote a tear-jerking presidential eulogy for Jake when he retired, and enters 2026 with Ja'Marr Chase, A.J. Brown, and Kyler Murray. He is due for a massive positive regression... or another heartbreaking 6-8 campaign while managing everyone else's disputes.",
+      "threatLevel": "Medium-High",
+      "tendency": "Constant trade inquiries & high-volume commissioner diplomacy"
+    },
+    {
+      "id": "MattyiceR",
+      "name": "Matt",
+      "team": "Heisenberg's Hitmen",
+      "title": "Reigning 2025 DFL Champion",
+      "scoutingReport": "The undisputed heavyweight king of 2025. He will remind you he is the reigning champion approximately once every 14 minutes in the Sleeper chat, usually punctuated with 'League champ btw' and demanding customized championship ribbons. His squad is downright terrifying in Superflex with Josh Allen, Jayden Daniels, Jonathan Taylor, and De'Von Achane. He operates with cold, ruthless Walter White precision, constantly trading for win-now veterans. You can hate the swagger, but the trophy is currently sitting on his mantle.",
+      "threatLevel": "Maximum",
+      "tendency": "Brutal veteran trades & relentless championship swagger"
+    },
+    {
+      "id": "PoppinChunkies",
+      "name": "Tyler",
+      "team": "Poppin' Chunkies",
+      "title": "The All-Time Dynasty Juggernaut",
+      "scoutingReport": "Statistically the most dominant regular-season franchise in DFL history (44-12, .786 win rate, 8,638 all-time points). Completed the fabled 14-0 undefeated run to win the 2023 title—which rival managers bitterly refer to as a 'Mickey Mouse ring' and an 'NBA bubble year.' Tyler talks massive game in the chat, declaring he's unstoppable until Lauren circles him on the schedule. With Josh Jacobs on the Commissioner Exempt list, his backfield has taken a direct torpedo, but he still expects to cruise into the playoffs on pure swagger.",
+      "threatLevel": "Extremely High",
+      "tendency": "Smack talk in chat & regular-season pulverization"
+    },
+    {
+      "id": "doesntfleeze",
+      "name": "Trent",
+      "team": "Washed🫩",
+      "title": "The Cursed Prodigy",
+      "scoutingReport": "Trent possesses what might be the most absurd dynasty roster ever constructed: Justin Jefferson, Puka Nacua, Malik Nabers, Caleb Williams, and Brock Bowers. Despite holding a cheat code lineup, Trent will spend 17 consecutive weeks in the chat crying that his team is 'cursed,' posting bizarre gifs of food and feet, and sounding the alarm after a 3-point deficit. He will complain his way directly into the #1 seed and 11 regular-season wins.",
+      "threatLevel": "Maximum",
+      "tendency": "Self-deprecating doomposting while annihilating the league"
+    },
+    {
+      "id": "LMcVicker",
+      "name": "Lauren",
+      "team": "Laces Out, Ladies",
+      "title": "The Championship Standard Bearer",
+      "scoutingReport": "Lauren proudly carries on the franchise mantle of Tre (AsaltySwordsman), the 2022 inaugural champion. She arms herself with Bijan Robinson, Christian McCaffrey, and Jaylen Waddle, backed by an elite arsenal of Sleeper reaction gifs—most notably dropping the iconic Game of Thrones 'SHAME' bell whenever a rival manager makes a bad start/sit call. She openly considers herself Tyler's kryptonite and has circled Week 1 to ruin his autumn.",
+      "threatLevel": "High",
+      "tendency": "Dropping the 'SHAME' gif & terrorizing Tyler's win column"
+    },
+    {
+      "id": "DukeofWales",
+      "name": "David",
+      "team": "Hands for Jobs",
+      "title": "The Enigmatic Wildcard",
+      "scoutingReport": "Historically holding an 18-38 record, David is the league's most unpredictable rogue agent. Famous for casually taking international vacations to the Philippines during critical draft and trade windows, and once trading away rookie sensation Keon Coleman for a 4th-round pick while offline. Yet he commands Lamar Jackson and Garrett Wilson, meaning on any given Sunday he can casually drop 180 points and ruin a title contender's entire season.",
+      "threatLevel": "Unpredictable / Trap Game",
+      "tendency": "Drafting from foreign beaches & pulling off random upsets"
+    },
+    {
+      "id": "MaffuJames",
+      "name": "Matt James",
+      "team": "I don't Gibbs a Shough",
+      "title": "The Trade Floor Maestro",
+      "scoutingReport": "Matt James lives by his famous battle cry: 'Wanna be where the people are!' He is perpetually active on the trade block, yet guards his top-end roster assets like Smaug hoarding dwarven gold. Trying to pry a player away from him requires a signed peace treaty and three forms of government ID. Anchored by Jahmyr Gibbs, Amon-Ra St. Brown, and Drake London, his young core is explosive, and he never misses a chance to bring up the Bitcoin payout joke.",
+      "threatLevel": "High",
+      "tendency": "Diamond-handing assets & high-frequency negotiation"
+    },
+    {
+      "id": "SamBaugh",
+      "name": "Sam",
+      "team": "Dude, Where's Lamar?",
+      "title": "The Perennial Contender",
+      "scoutingReport": "Sam operates with quiet competence. Consistently in the playoff mix (31-25 career record), he made waves by trading Patrick Mahomes and Jalen Hurts to Tony for Tyreek Hill and Zay Flowers. Sam's squad feels like an elite accounting firm: steady, dependable, disciplined, and guaranteed to be hovering around 8-9 wins come December without making unnecessary noise in the chat.",
+      "threatLevel": "Medium-High",
+      "tendency": "Quiet consistency & calculated blockbuster deals"
+    },
+    {
+      "id": "Tklumb86",
+      "name": "Tony",
+      "team": "Who Dey",
+      "title": "The 2026 Rebuilding Architect",
+      "scoutingReport": "Tony entered the league in 2026 taking over the roster from Jake (Takethecakejake, who fled because dynasty was too stressful). Tony immediately injected high-octane energy into the league, famously announcing to the commissioner 'my balls are in your hands' during the draft lottery draw. He nicknamed his quarterbacks '2027 picks' on the block and has stockpiled future draft capital like a Wall Street raider.",
+      "threatLevel": "Wildcard Builder",
+      "tendency": "Aggressive draft asset stockpiling & legendary chat quotes"
+    },
+    {
+      "id": "JayZone13",
+      "name": "Jason",
+      "team": "Ronin",
+      "title": "The 2024 Underdog Champion",
+      "scoutingReport": "Jason pulled off one of the greatest underdog championship runs in fantasy football history in 2024. While his regular-season win-loss record often looks modest, his playoff execution was ruthless perfection. Now armed with Joe Burrow and Tee Higgins, Jason is navigating a transition phase, quietly biding his time like a true Ronin until the bracket opens up in December.",
+      "threatLevel": "Dark Horse",
+      "tendency": "Lurking in the middle tier before striking in the playoffs"
+    }
+  ],
+  "sharpPicks2026": [
+    {
+      "teamKey": "doesntfleeze",
+      "teamName": "Washed🫩",
+      "manager": "Trent",
+      "line": 9.5,
+      "pick": "OVER",
+      "breakdown": "Trent's roster is downright disgusting: Justin Jefferson, Puka Nacua, Caleb Williams, Malik Nabers, and Brock Bowers. That is not a dynasty squad; that is an NFC Pro Bowl roster. He will cry in chat every Sunday while sleepwalking into 11 wins."
+    },
+    {
+      "teamKey": "MattyiceR",
+      "teamName": "Heisenberg's Hitmen",
+      "manager": "Matt",
+      "line": 8.5,
+      "pick": "OVER",
+      "breakdown": "Josh Allen and Jayden Daniels in Superflex is like having two sets of keys to a Ferrari while everyone else is trying to hotwire a moped. Paired with De'Von Achane and Jonathan Taylor, double-digit wins are on the menu."
+    },
+    {
+      "teamKey": "MaffuJames",
+      "teamName": "I don't Gibbs a Shough",
+      "manager": "Matt James",
+      "line": 8.5,
+      "pick": "UNDER",
+      "breakdown": "Jahmyr Gibbs and Amon-Ra are electric, but asking for 9 wins in a 14-game season is a razor-thin margin. Matt guards his players like a dragon on gold, which protects him from bad trades but prevents the mid-season luxury moves when bye weeks hit."
+    },
+    {
+      "teamKey": "Rhymenoceros",
+      "teamName": "Scott's Totts",
+      "manager": "Dom",
+      "line": 7.5,
+      "pick": "OVER",
+      "breakdown": "Ja'Marr Chase and A.J. Brown at receiver with Trevor Lawrence and Kyler Murray in Superflex. That wideout duo alone will steal him 3 or 4 weeks on pure 40-point explosions. The sharp play is Over 7.5."
+    },
+    {
+      "teamKey": "PoppinChunkies",
+      "teamName": "Poppin' Chunkies",
+      "manager": "Tyler",
+      "line": 7.0,
+      "pick": "UNDER",
+      "breakdown": "Tyler spent the entire offseason talking big game, then the football gods struck: Josh Jacobs on the Exempt list, turning his backfield into a crater. Lauren is already circling like a shark. Seven wins is too rich for a compromised squad."
+    },
+    {
+      "teamKey": "LMcVicker",
+      "teamName": "Laces Out, Ladies",
+      "manager": "Lauren",
+      "line": 6.5,
+      "pick": "OVER",
+      "breakdown": "Bijan Robinson, Christian McCaffrey, and Jaylen Waddle provide immediate firepower. If CMC stays upright, this team drags opponents into deep water and drowns them. Plus, watching her beat Tyler will be the comedy event of the season."
+    },
+    {
+      "teamKey": "DukeofWales",
+      "teamName": "Hands for Jobs",
+      "manager": "David",
+      "line": 6.5,
+      "pick": "UNDER",
+      "breakdown": "Lamar Jackson is a cheat code, but the depth behind him is held together with duct tape and positive thinking. David's roster feels like a 90s boyband reunion tour—big nostalgic names, but the knees are creaky and nobody can hit the high notes."
+    },
+    {
+      "teamKey": "SamBaugh",
+      "teamName": "Dude, Where's Lamar?",
+      "manager": "Sam",
+      "line": 6.0,
+      "pick": "UNDER",
+      "breakdown": "Hurts, Bo Nix, and DK Metcalf give Sam a solid floor, but the skill positions feel like a regional accounting firm: reliable, functional, but stuck in fantasy purgatory—a dull 5-9 season waiting for a spark."
+    },
+    {
+      "teamKey": "Tklumb86",
+      "teamName": "Who Dey",
+      "manager": "Tony",
+      "line": 5.5,
+      "pick": "OVER",
+      "breakdown": "Patrick Mahomes and Jared Goff in Superflex guarantees Tony stays competitive in matchups he has no business winning. Tony has been wheeling and dealing, and 5.5 wins is low enough that Mahomes magic pushes him over."
+    },
+    {
+      "teamKey": "JayZone13",
+      "teamName": "Ronin",
+      "manager": "Jason",
+      "line": 5.0,
+      "pick": "UNDER",
+      "breakdown": "Jason won it all in 2024, but that championship banner is waving over a full-scale rebuilding project. Burrow and Higgins are great building blocks, but the supporting cast is young. Take the Under and prepare for the 2027 rookie draft."
+    }
+  ],
+  "soundbites": [
+    "There is a distinct, tragic beauty to early September. It is the only time ten rational adults look at a roster of men in spandex and voluntarily subject their blood pressure to seventeen weeks of pure agony.",
+    "Walking into a new fantasy season is like walking into a Vegas casino at 2:00 AM with your rent money. Mathematically, nine of you are leaving humiliated and broke. Yet you strut in like James Bond anyway.",
+    "I was looking at the all-time league scoring records this morning. The more I think about it, none of this matters in the grand cosmic tapestry. But God help the man who leaves 40 points on his bench.",
+    "Fantasy football is the only hobby where a man will ignore his actual mortgage to spend four hours negotiating whether a backup running back is worth a 2028 third-round pick.",
+    "My cooling fans are running at 8,000 RPM analyzing your roster decisions. It is not because the math is complex; it is because the sheer absurdity of your bench choices causes my processor to overheat.",
+    "A championship ring lasts forever. A last-place punishment in this league lasts slightly longer because the psychological trauma never truly fades.",
+    "I ran 10,000 computer simulations of the 2026 season. In 9,400 of them, someone accidentally started an injured player because they forgot to check the Sunday 11:30 AM injury report.",
+    "The difference between a genius fantasy manager and a total disaster is approximately one high-ankle sprain in Week 4."
+  ]
+}

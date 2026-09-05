@@ -10,6 +10,7 @@ import DynastyEmpirePot from './components/DynastyEmpirePot';
 import LoginModal from './components/LoginModal';
 import LogoCustomizer from './components/LogoCustomizer';
 import ChangePinModal from './components/ChangePinModal';
+import JarvisTerminal from './components/JarvisTerminal';
 import masterData from './data/dfl_master_data.json';
 
 export default function App() {
@@ -367,6 +368,9 @@ export default function App() {
         onClose={() => setIsChangePinOpen(false)}
         currentUser={currentUser}
       />
+
+      {/* Floating JARVIS League Intelligence Terminal */}
+      <JarvisTerminal />
     </div>
   );
 }
