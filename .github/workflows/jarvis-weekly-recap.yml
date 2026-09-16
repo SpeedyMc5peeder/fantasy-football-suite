@@ -1,0 +1,75 @@
+name: JARVIS Weekly Recap
+
+on:
+  schedule:
+    - cron: '0 13 * * 2' # Runs every Tuesday at 13:00 UTC (8:00 AM Central)
+  workflow_dispatch: # Allows manual triggering
+
+permissions:
+  contents: write
+
+jobs:
+  weekly-recap:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+          cache-dependency-path: |
+            JARVIS/package-lock.json
+            Image-Gen/package-lock.json
+
+      - name: Install JARVIS dependencies
+        run: |
+          cd JARVIS
+          npm ci || npm install
+
+      - name: Install Image-Gen dependencies
+        run: |
+          cd Image-Gen
+          npm ci || npm install
+
+      - name: Run Weekly Recap
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          SLEEPER_USER_TOKEN: ${{ secrets.SLEEPER_USER_TOKEN }}
+          SLEEPER_LEAGUE_ID: ${{ secrets.SLEEPER_LEAGUE_ID }}
+        run: |
+          cd JARVIS
+          echo "Running JARVIS weekly recap..."
+          node index.js --weekly-recap
+
+      - name: Commit and Push State Changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          # Add the events json which tracks that the weekly recap was posted
+          git add JARVIS/data/processed_events.json || true
+          
+          if git diff --cached --quiet; then
+            echo "No state changes to commit."
+            exit 0
+          fi
+          
+          git commit -m "chore: update JARVIS processed events (weekly recap) [skip ci]"
+          
+          for attempt in 1 2 3 4 5; do
+            if git push; then
+              echo "State pushed (attempt $attempt)."
+              exit 0
+            fi
+            echo "Push rejected - rebasing on latest main and retrying..."
+            git fetch origin main
+            git rebase origin/main || { git rebase --abort; exit 1; }
+          done
+          echo "::warning::Could not push JARVIS state after 5 attempts."
+          exit 1
