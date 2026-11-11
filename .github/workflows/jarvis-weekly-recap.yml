@@ -2,7 +2,7 @@ name: JARVIS Weekly Recap
 
 on:
   schedule:
-    - cron: '0 13 * * 2' # Runs every Tuesday at 13:00 UTC (8:00 AM Central)
+    - cron: '0 17 * * 2' # Runs every Tuesday at 17:00 UTC (11:00 AM Central / Noon CDT)
   workflow_dispatch: # Allows manual triggering
 
 permissions:
