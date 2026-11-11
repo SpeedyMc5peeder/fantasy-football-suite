@@ -194,7 +194,7 @@ async function getTeamDetailsByRosterId(leagueId, rosterId) {
     'PoppinChunkies': 'Tyler',
     'Doesntfleeze': 'Trent',
     'Tklumb86': 'Tony',
-    'MattyIcer': 'Matty Ice'
+    'MattyIcer': 'Matty Big-Stick'
   };
 
   const username = user.display_name;
