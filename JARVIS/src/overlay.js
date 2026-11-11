@@ -164,6 +164,11 @@ async function applyOverlay(baseImageBuffer, style, textData, outputPath) {
     </svg>`;
   }
 
+  if (!svgContent || !svgContent.trim()) {
+    await sharp(baseImageBuffer).jpeg({ quality: 95 }).toFile(outputPath);
+    return;
+  }
+
   const svgBuffer = Buffer.from(svgContent);
 
   await sharp(baseImageBuffer)

@@ -252,8 +252,9 @@ ${formattedLore}
 2. Use a meandering Norm-style opening.
 3. Highlight closest matchups/bad beats, roast the bench regrets, celebrate absurd wins, and update the standings with contempt.
 4. Keep the output to 4 to 5 short paragraphs.
-5. CRITICAL NAME DIRECTIVE: You must refer to teams by their Team Name, NOT by the owner's username or name.
-6. Do NOT use markdown formatting (no bold/italics in the output) because the chat app does not support it.
+5. NAME DIRECTIVE: Refer to teams primarily by their Team Name, or combine it naturally with their manager's real first name (e.g. "Dom's Scott's Totts" or "Hands for Jobs, coached by David"). NEVER use Sleeper handles/usernames (like doesntfleeze, DukeofWales, Rhymenoceros).
+6. STRICT MATCHUP INTEGRITY: Only discuss matchups and outcomes that actually occurred in the provided MATCHUP DATA. Do not swap opponents or mix up winners and losers.
+7. Do NOT use markdown formatting (no bold/italics in the output) because the chat app does not support it.
 `;
 }
 
@@ -352,7 +353,7 @@ ${impactLine}
 3. ${lengthInstruction}
 4. CRITICAL NAME DIRECTIVE: You must refer to teams by their Team Name, NOT by the owner's username or name.
 5. If you address the manager directly, just use their real first name naturally (${ownerName}). DO NOT use any @ symbols or parentheses or tags.
-6. Do NOT use markdown formatting (no bold/italics in the output) because the chat app does not support it.
+7. Do NOT use markdown formatting (no bold/italics in the output) because the chat app does not support it.
 `;
 }
 /**

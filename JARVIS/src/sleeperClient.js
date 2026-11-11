@@ -186,7 +186,7 @@ async function getTeamDetailsByRosterId(leagueId, rosterId) {
 
   const REAL_NAMES_MAP = {
     'DukeofWales': 'David',
-    'MaffuJames': 'Matt',
+    'MaffuJames': 'Matt James',
     'Rhymenoceros': 'Dom',
     'LMcVicker': 'Lauren',
     'SamBaugh': 'Sam',
@@ -194,7 +194,7 @@ async function getTeamDetailsByRosterId(leagueId, rosterId) {
     'PoppinChunkies': 'Tyler',
     'Doesntfleeze': 'Trent',
     'Tklumb86': 'Tony',
-    'MattyIcer': 'Matt'
+    'MattyIcer': 'Matty Ice'
   };
 
   const username = user.display_name;

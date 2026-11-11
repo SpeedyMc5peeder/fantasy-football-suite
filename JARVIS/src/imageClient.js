@@ -54,33 +54,38 @@ async function generateImage(payload) {
       }
     }
 
-    console.log(`   Calling Imagen 3 via Gemini API...`);
-
-    const response = await ai.models.generateImages({
-      model: 'imagen-3.0-generate-002',
-      prompt: prompt,
-      config: {
-        numberOfImages: 1,
-        aspectRatio: finalAspectRatio,
-        outputMimeType: 'image/jpeg'
+    let baseBuffer = null;
+    try {
+      console.log(`   Calling Imagen 3 via Gemini API...`);
+      const response = await ai.models.generateImages({
+        model: 'imagen-3.0-generate-002',
+        prompt: prompt,
+        config: {
+          numberOfImages: 1,
+          aspectRatio: finalAspectRatio,
+          outputMimeType: 'image/jpeg'
+        }
+      });
+      const imgBase64 = response.generatedImages?.[0]?.image?.imageBytes;
+      if (imgBase64) {
+        baseBuffer = Buffer.from(imgBase64, 'base64');
       }
-    });
-
-    if (!response.generatedImages || response.generatedImages.length === 0) {
-      throw new Error("No images returned from API.");
+    } catch (genErr) {
+      console.log(`   Imagen 3 API unavailable (${genErr.message}), falling back to gemini-2.5-flash-image...`);
+      const response = await ai.models.generateContent({
+        model: 'gemini-2.5-flash-image',
+        contents: prompt
+      });
+      for (const part of (response.candidates?.[0]?.content?.parts || [])) {
+        if (part.inlineData && part.inlineData.data) {
+          baseBuffer = Buffer.from(part.inlineData.data, 'base64');
+          break;
+        }
+      }
     }
 
-    // Guard against empty payloads — when Imagen is overloaded (503) or the prompt
-    // is safety-blocked, it can still return a generatedImages entry with no bytes.
-    // Without this check, Buffer.from(undefined) yields an empty buffer and sharp
-    // throws the cryptic "Input buffer is empty" downstream.
-    const imgBase64 = response.generatedImages[0]?.image?.imageBytes;
-    if (!imgBase64) {
-      throw new Error("API returned an image with no data (likely 503/quota or a safety block).");
-    }
-    const baseBuffer = Buffer.from(imgBase64, 'base64');
-    if (baseBuffer.length === 0) {
-      throw new Error("Decoded image buffer is empty.");
+    if (!baseBuffer || baseBuffer.length === 0) {
+      throw new Error("API returned no image bytes (likely quota or safety block).");
     }
 
     const safeFilename = filename ? `${filename}.jpg` : `img_${Date.now()}.jpg`;

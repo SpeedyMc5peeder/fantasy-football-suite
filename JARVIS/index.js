@@ -97,11 +97,12 @@ try {
 }
 
 // Load processed weekly events history
-let processedEvents = { matchupOfWeek: [], mondayMiracle: [], seasonPreview: [] };
+let processedEvents = { matchupOfWeek: [], mondayMiracle: [], seasonPreview: [], weeklyRecap: [] };
 try {
   if (fs.existsSync(EVENTS_HISTORY_FILE)) {
     processedEvents = JSON.parse(fs.readFileSync(EVENTS_HISTORY_FILE, 'utf8'));
     if (!processedEvents.seasonPreview) processedEvents.seasonPreview = [];
+    if (!processedEvents.weeklyRecap) processedEvents.weeklyRecap = [];
   }
 } catch (err) {
   console.warn('⚠️ Failed to load processed events history, starting fresh.', err.message);
@@ -547,23 +548,42 @@ async function checkTransactions(options) {
  * Core Logic: Gather matchup data and generate weekly recaps.
  */
 async function generateWeeklyRecap(options) {
-  // 1. Determine which week to recap
-  let week = options.week;
-  if (!week) {
-    const league = await sleeper.getLeague(LEAGUE_ID);
-    const currentWeek = league.settings.leg || 1;
-    // Recap the completed week (currentWeek - 1), or week 1 if we are still in week 1
-    week = currentWeek > 1 ? currentWeek - 1 : 1;
-  }
-
-  console.log(`🏈 Generating weekly recap for Week ${week}...`);
-
-  // 2. Fetch league data
+  // 1. Fetch league data and verify season status
   const league = await sleeper.getLeague(LEAGUE_ID);
   if (league.status !== 'in_season') {
     console.log(`⏳ League is not in season. Skipping Weekly Recap.`);
     return;
   }
+
+  // 2. Determine which week to recap
+  let week = options.week;
+  if (!week) {
+    const leg = league.settings.leg || 1;
+    // Check if the current leg has scored games
+    const currentLegMatchups = await sleeper.getMatchups(LEAGUE_ID, leg);
+    const currentLegHasScores = currentLegMatchups && currentLegMatchups.some(m => (m.points || 0) > 0);
+
+    if (currentLegHasScores) {
+      // Check if next leg also has scores (in case next week has already kicked off)
+      const nextLegMatchups = await sleeper.getMatchups(LEAGUE_ID, leg + 1);
+      const nextLegHasScores = nextLegMatchups && nextLegMatchups.some(m => (m.points || 0) > 0);
+      week = nextLegHasScores ? leg + 1 : leg;
+    } else {
+      // Current leg has not started yet; recap the completed previous week
+      week = Math.max(1, leg - 1);
+    }
+  }
+
+  // Deduplication check
+  if (!options.dryRun && !options.force) {
+    if (!processedEvents.weeklyRecap) processedEvents.weeklyRecap = [];
+    if (processedEvents.weeklyRecap.includes(`week_${week}`)) {
+      console.log(`ℹ️ Weekly recap for Week ${week} has already been posted. Skipping (use --force to re-post).`);
+      return;
+    }
+  }
+
+  console.log(`🏈 Generating weekly recap for Week ${week}...`);
   const rosters = await sleeper.getRosters(LEAGUE_ID);
   const users = await sleeper.getUsers(LEAGUE_ID);
   const matchups = await sleeper.getMatchups(LEAGUE_ID, week);
@@ -687,7 +707,7 @@ async function generateWeeklyRecap(options) {
   for (const [mgr, lore] of Object.entries(MANAGER_LORE)) {
     const roster = sortedRosters.find(r => {
       const user = users.find(u => u.user_id === r.owner_id);
-      return user && user.display_name === mgr;
+      return user && user.display_name && user.display_name.toLowerCase() === mgr.toLowerCase();
     });
     if (roster) {
       const details = await sleeper.getTeamDetailsByRosterId(LEAGUE_ID, roster.roster_id);
@@ -712,7 +732,7 @@ async function generateWeeklyRecap(options) {
       console.log(`   🎨 Generating weekly recap image...`);
       const imagePayload = {
         prompt: promptHelpers.getRandomPrompt('recap'),
-        style: "weekly-recap",
+        style: "sports-illustrated",
         overlayText: {
           title: "WEEKLY RECAP",
           mainHeadline: `WEEK ${week}`,
@@ -734,6 +754,18 @@ async function generateWeeklyRecap(options) {
     article = article.replace(/\*/g, '');
 
     await postToSleeper(USER_TOKEN, LEAGUE_ID, article, options.dryRun, 'recaps', true);
+
+    if (!options.dryRun) {
+      if (!processedEvents.weeklyRecap) processedEvents.weeklyRecap = [];
+      if (!processedEvents.weeklyRecap.includes(`week_${week}`)) {
+        processedEvents.weeklyRecap.push(`week_${week}`);
+      }
+      try {
+        fs.writeFileSync(EVENTS_HISTORY_FILE, JSON.stringify(processedEvents, null, 2));
+      } catch (saveErr) {
+        console.warn('⚠️ Could not save processed events file:', saveErr.message);
+      }
+    }
   } catch (err) {
     console.error('❌ Failed to generate or post weekly recap:', err.message);
   }
@@ -1307,6 +1339,7 @@ async function generateSeasonPreview(options) {
 
     if (!options.dryRun) {
       if (!processedEvents.seasonPreview) processedEvents.seasonPreview = [];
+    if (!processedEvents.weeklyRecap) processedEvents.weeklyRecap = [];
       processedEvents.seasonPreview.push(`preview_${year}`);
       saveEventsHistory();
     }
