@@ -1,6 +1,6 @@
 {
   "meta": {
-    "scraped_at": "2026-11-24T20:33:10.694Z",
+    "scraped_at": "2026-11-25T19:50:07.661Z",
     "ktc_source": "https://keeptradecut.com/fantasy-rankings",
     "ecr_source": "https://api.fantasycalc.com/values/current?isDynasty=false&numQbs=2&numTeams=12&ppr=0.5",
     "market_weight": 0.6,
